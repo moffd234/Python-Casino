@@ -1,4 +1,7 @@
-class ANSI_COLORS:
+from enum import Enum
+
+
+class ANSI_COLORS(Enum):
     BLACK = '\033[30m'
     RED = '\033[31m'
     GREEN = '\033[32m'
