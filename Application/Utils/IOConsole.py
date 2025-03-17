@@ -3,7 +3,9 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 class IOConsole:
     def __init__(self, color:ANSI_COLORS=ANSI_COLORS.RED):
-        self.color:str = color
+        if not isinstance(color, ANSI_COLORS):
+            raise TypeError("color must be an instance of ANSI_COLORS")
+        self.color:ANSI_COLORS = color
 
     def get_string_input(self, prompt: str) -> str:
         user_input = input(self.color + prompt)
