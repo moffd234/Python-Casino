@@ -28,11 +28,21 @@ class IO_Console_Tests(unittest.TestCase):
         self.assertEqual(subject, "test input")
         self.assertTrue(isinstance(subject, str))
 
-    patch("builtins.input", return_value="test input")  # Mock user input
-
     @patch("builtins.input", return_value="exit")
     def test_exit_called_with_code_0(self, mock_input):
         with self.assertRaises(SystemExit) as sys_exit:
-            self.console.get_string_input("Enter something: ")
+            self.console.get_string_input("Some Prompt")
 
         self.assertEqual(sys_exit.exception.code, 0)
+
+    @patch("builtins.print")
+    @patch("builtins.input", return_value="test input")
+    def test_get_string_input_default_color(self,mock_print, mock_input):
+        self.console.get_string_input("Some Prompt")
+        mock_print.assert_called_once_with(self.console.color + "Some Prompt")
+
+    @patch("builtins.print")
+    @patch("builtins.input", return_value="test input")
+    def test_get_string_input_custom_color(self,mock_print, mock_input):
+        self.console.get_string_input("Some Prompt", ANSI_COLORS.BLUE)
+        mock_print.assert_called_once_with(ANSI_COLORS.BLUE.value + "Some Prompt")
