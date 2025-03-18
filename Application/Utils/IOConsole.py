@@ -8,17 +8,25 @@ class IOConsole:
         self.color:str = color.value
 
     def get_string_input(self, prompt: str, color:ANSI_COLORS=None) -> str:
-        if color is None:
+        if color is None or not isinstance(color, ANSI_COLORS):
             color = self.color
 
         else:
             color = color.value
 
-        user_input = input(color + prompt)
+        user_input = input(color + prompt + "\n")
         if self.check_for_exit(user_input):
             exit(0)
 
         return user_input
+
+    def get_integer_input(self, prompt: str, color:ANSI_COLORS=None):
+        string_response: str = self.get_string_input(prompt, color)
+        try:
+            return int(string_response)
+        except ValueError:
+            print(f"{string_response} is not a valid integer.")
+
 
     def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
