@@ -1,5 +1,9 @@
-import datetime
 import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class CasinoAccount:
@@ -26,7 +30,11 @@ class CasinoAccount:
         self._balance += wager
         logging.debug(f"{self.username} added {wager} to balance. New balance: {self._balance}")
 
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format="%(asctime)s - %(levelname)s - %(message)s"
-    )
+    def subtract_losses(self, wager):
+        if wager <= 0:
+            raise ValueError("Wager must be positive")
+        if wager > self._balance:
+            raise ValueError(f"Insufficient funds! Available: {self._balance}, Tried to subtract: {wager}")
+
+        self._balance -= wager
+        logging.debug(f"{self.username} subtracted {wager} to balance. New balance: {self._balance}")
