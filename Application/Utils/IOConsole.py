@@ -26,7 +26,7 @@ class IOConsole:
             return int(string_response)
         except ValueError:
             print(f"{string_response} is not a valid integer.")
-            return None
+            return self.get_integer_input(prompt, color)
 
 
     def check_for_exit(self, user_input: str) -> bool:

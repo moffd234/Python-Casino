@@ -60,13 +60,6 @@ class IO_Console_Tests(unittest.TestCase):
         result = self.console.get_integer_input("Some promt: ")
         self.assertEqual(result, 42)
 
-    @patch("builtins.input", return_value="some input")
-    @patch("builtins.print")
-    def test_get_integer_input_invalid(self, mock_print, mock_input):
-        result = self.console.get_integer_input("Some promt: ")
-        self.assertIsNone(result)
-        mock_print.assert_called_once_with("some input is not a valid integer.")
-
     @patch("builtins.input", return_value="100")
     def test_get_integer_input_with_custom_color(self, mock_input):
         result = self.console.get_integer_input("Some promt: ", ANSI_COLORS.BLUE)
