@@ -46,3 +46,11 @@ class IO_Console_Tests(unittest.TestCase):
     def test_get_string_input_custom_color(self,mock_print, mock_input):
         self.console.get_string_input("Some Prompt", ANSI_COLORS.BLUE)
         mock_print.assert_called_once_with(ANSI_COLORS.BLUE.value + "Some Prompt")
+
+    def test_check_for_exit_true(self):
+        subject: bool = self.console.check_for_exit("exit")
+        self.assertTrue(subject)
+
+    def test_check_for_exit_false(self):
+        subject: bool = self.console.check_for_exit("some input")
+        self.assertFalse(subject)
