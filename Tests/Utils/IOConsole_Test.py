@@ -39,13 +39,13 @@ class IO_Console_Tests(unittest.TestCase):
     @patch("builtins.input", return_value="test input")
     def test_get_string_input_default_color(self,mock_print, mock_input):
         self.console.get_string_input("Some Prompt")
-        mock_print.assert_called_once_with(self.console.color + "Some Prompt")
+        mock_print.assert_called_once_with(self.console.color + "Some Prompt\n")
 
     @patch("builtins.print")
     @patch("builtins.input", return_value="test input")
     def test_get_string_input_custom_color(self,mock_print, mock_input):
         self.console.get_string_input("Some Prompt", ANSI_COLORS.BLUE)
-        mock_print.assert_called_once_with(ANSI_COLORS.BLUE.value + "Some Prompt")
+        mock_print.assert_called_once_with(ANSI_COLORS.BLUE.value + "Some Prompt\n")
 
     def test_check_for_exit_true(self):
         subject: bool = self.console.check_for_exit("exit")
@@ -54,3 +54,20 @@ class IO_Console_Tests(unittest.TestCase):
     def test_check_for_exit_false(self):
         subject: bool = self.console.check_for_exit("some input")
         self.assertFalse(subject)
+
+    @patch("builtins.input", return_value="42")
+    def test_get_integer_input_valid(self, mock_input):
+        result = self.console.get_integer_input("Some promt: ")
+        self.assertEqual(result, 42)
+
+    @patch("builtins.input", return_value="some input")
+    @patch("builtins.print")
+    def test_get_integer_input_invalid(self, mock_print, mock_input):
+        result = self.console.get_integer_input("Some promt: ")
+        self.assertIsNone(result)
+        mock_print.assert_called_once_with("some input is not a valid integer.")
+
+    @patch("builtins.input", return_value="100")
+    def test_get_integer_input_with_custom_color(self, mock_input):
+        result = self.console.get_integer_input("Some promt: ", ANSI_COLORS.BLUE)
+        self.assertEqual(result, 100) 
