@@ -15,13 +15,13 @@ class IOConsole:
             color = color.value
 
         user_input = input(color + prompt)
-        if self.check_for_exit(user_input) == 1:
+        if self.check_for_exit(user_input):
             exit(0)
 
         return user_input
 
-    def check_for_exit(self, user_input: str) -> int:
+    def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
             print(self.color + "Exiting the game")
-            return 1
-        return 0
+            return True
+        return False
