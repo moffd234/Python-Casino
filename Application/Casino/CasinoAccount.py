@@ -29,6 +29,7 @@ class CasinoAccount:
 
         self._balance += wager
         logging.debug(f"{self.username} added {wager} to balance. New balance: {self._balance}")
+        return self._balance
 
     def subtract_losses(self, wager):
         if wager <= 0:
@@ -38,3 +39,4 @@ class CasinoAccount:
 
         self._balance -= wager
         logging.debug(f"{self.username} subtracted {wager} to balance. New balance: {self._balance}")
+        return self._balance

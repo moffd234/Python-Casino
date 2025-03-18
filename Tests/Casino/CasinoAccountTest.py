@@ -27,4 +27,11 @@ class CasinoAccountTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.account.balance = -25
 
+    def test_add_winnings(self):
+        expected = self.account.balance + 25
+        actual = self.account.add_winnings(25)
+        self.assertEqual(expected, actual)
 
+    def test_add_winnings_negative(self):
+        with self.assertRaises(ValueError):
+            self.account.add_winnings(-1)
