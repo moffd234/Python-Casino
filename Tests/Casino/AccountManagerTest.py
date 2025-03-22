@@ -1,5 +1,6 @@
 import unittest
 from Application.Casino.AccountManager import AccountManager
+from Application.Casino.CasinoAccount import CasinoAccount
 
 
 class AccountManagerTest(unittest.TestCase):
@@ -21,3 +22,9 @@ class AccountManagerTest(unittest.TestCase):
         self.assertEqual(expected_username, actual_username)
         self.assertEqual(expected_password, actual_password)
         self.assertEqual(expected_balance, actual_balance)
+
+    def test_create_account_username_exist(self):
+        self.manager.accounts.append(CasinoAccount("username", "password"))
+        subject = self.manager.create_account("username", "password")
+
+        self.assertIsNone(subject)
