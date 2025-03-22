@@ -3,7 +3,7 @@ from Application.Casino.CasinoAccount import CasinoAccount
 
 class AccountManager:
     def __init__(self):
-        self.accounts: [CasinoAccount] = None
+        self.accounts: [CasinoAccount] = []
 
 
     def create_account(self, username: str, password: str) -> CasinoAccount | None:
