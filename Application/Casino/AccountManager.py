@@ -5,10 +5,10 @@ from Application.Casino.CasinoAccount import CasinoAccount
 def write_new_account_to_csv(account: CasinoAccount):
     account_details: list = [account.username, account.password, account.balance]
 
-    fp = "/accounts.csv"
+    fp = "./accounts.csv"
     with open(fp, "a", newline='') as file:
         writer = csv.writer(file)
-        writer.writerows(account_details)
+        writer.writerow(account_details)
 
 class AccountManager:
     def __init__(self):

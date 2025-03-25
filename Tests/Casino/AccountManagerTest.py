@@ -1,5 +1,7 @@
 import unittest
-from Application.Casino.AccountManager import AccountManager
+from unittest.mock import patch, mock_open
+
+from Application.Casino.AccountManager import AccountManager, write_new_account_to_csv
 from Application.Casino.CasinoAccount import CasinoAccount
 
 
@@ -28,3 +30,18 @@ class AccountManagerTest(unittest.TestCase):
         subject = self.manager.create_account("username", "password")
 
         self.assertIsNone(subject)
+
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("csv.writer")
+    def test_write_new_account_to_csv(self, mock_csv_writer, mock_file):
+        # Create a test CasinoAccount
+        test_account = CasinoAccount("test_user", "secure123", 500)
+
+        # Call the function
+        write_new_account_to_csv(test_account)
+
+        # Ensure the file was opened in append mode
+        mock_file.assert_called_once_with("./accounts.csv", "a", newline='')
+
+        # Ensure writerow was called with correct account details
+        mock_csv_writer.return_value.writerow.assert_called_once_with(["test_user", "secure123", 500])
