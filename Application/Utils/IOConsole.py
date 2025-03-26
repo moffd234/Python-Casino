@@ -34,7 +34,19 @@ class IOConsole:
             return float(string_response)
         except ValueError:
             print(f"{string_response} is not a valid float.")
+        return self.get_boolean_input(prompt, color)
 
+    def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None):
+        string_response: str = self.get_string_input(prompt, color)
+        string_response = string_response.strip().lower()
+
+        if string_response in ["yes", "y", "true", "1"]:
+            return True
+        elif string_response in ["no", "n", "false", "0"]:
+            return False
+        else:
+            print(f"{string_response} is not a valid boolean. Please enter 'yes' or 'no'.")
+            return self.get_boolean_input(prompt, color)
 
     def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
