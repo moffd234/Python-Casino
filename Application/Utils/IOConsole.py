@@ -21,32 +21,32 @@ class IOConsole:
         return user_input
 
     def get_integer_input(self, prompt: str, color:ANSI_COLORS=None):
-        string_response: str = self.get_string_input(prompt, color)
-        try:
-            return int(string_response)
-        except ValueError:
-            print(f"{string_response} is not a valid integer.")
-            return self.get_integer_input(prompt, color)
+        while True:
+            string_response: str = self.get_string_input(prompt, color)
+            try:
+                return int(string_response)
+            except ValueError:
+                print(f"{string_response} is not a valid integer.")
 
     def get_float_input(self, prompt: str, color: ANSI_COLORS=None):
-        string_response: str = self.get_string_input(prompt, color)
-        try:
-            return float(string_response)
-        except ValueError:
-            print(f"{string_response} is not a valid float.")
-        return self.get_boolean_input(prompt, color)
+        while True:
+            string_response: str = self.get_string_input(prompt, color)
+            try:
+                return float(string_response)
+            except ValueError:
+                print(f"{string_response} is not a valid float.")
 
     def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None):
-        string_response: str = self.get_string_input(prompt, color)
-        string_response = string_response.strip().lower()
+        while True:
+            string_response: str = self.get_string_input(prompt, color)
+            string_response = string_response.strip().lower()
 
-        if string_response in ["yes", "y", "true", "1"]:
-            return True
-        elif string_response in ["no", "n", "false", "0"]:
-            return False
-        else:
-            print(f"{string_response} is not a valid boolean. Please enter 'yes' or 'no'.")
-            return self.get_boolean_input(prompt, color)
+            if string_response in ["yes", "y", "true", "1"]:
+                return True
+            elif string_response in ["no", "n", "false", "0"]:
+                return False
+            else:
+                print(f"{string_response} is not a valid boolean. Please enter 'yes' or 'no'.")
 
     def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
