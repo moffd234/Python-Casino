@@ -40,5 +40,16 @@ class AccountManagerTest(unittest.TestCase):
         mock_file.assert_called_once_with("./accounts.csv", "a", newline='')
         mock_csv_writer.return_value.writerow.assert_called_once_with(["test_user", "secure123", 500])
 
+    def test_get_account(self):
+        expected: CasinoAccount = CasinoAccount("test_user", "secure123")
 
+        self.manager.accounts.append(expected)
+        actual: CasinoAccount = self.manager.get_account("test_user","secure123")
 
+        self.assertEqual(expected, actual)
+
+    def test_get_account_none(self):
+
+        actual: CasinoAccount = self.manager.get_account("test_user", "secure123")
+
+        self.assertIsNone(actual)
