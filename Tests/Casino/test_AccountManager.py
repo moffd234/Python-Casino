@@ -51,7 +51,7 @@ class AccountManagerTest(unittest.TestCase):
 
     def test_get_account_none(self):
 
-        actual: CasinoAccount = self.manager.get_account("test_user", "secure123")
+        actual: CasinoAccount = self.manager.get_account("this_name_won't_be_used", "secure123")
 
         self.assertIsNone(actual)
 
