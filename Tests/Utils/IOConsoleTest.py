@@ -57,10 +57,20 @@ class IO_Console_Tests(unittest.TestCase):
 
     @patch("builtins.input", return_value="42")
     def test_get_integer_input_valid(self, mock_input):
-        result = self.console.get_integer_input("Some promt: ")
+        result = self.console.get_integer_input("Some prompt: ")
         self.assertEqual(result, 42)
 
     @patch("builtins.input", return_value="100")
     def test_get_integer_input_with_custom_color(self, mock_input):
-        result = self.console.get_integer_input("Some promt: ", ANSI_COLORS.BLUE)
-        self.assertEqual(result, 100) 
+        result = self.console.get_integer_input("Some prompt: ", ANSI_COLORS.BLUE)
+        self.assertEqual(result, 100)
+
+    @patch("builtins.input", return_value="42.23")
+    def test_get_float_input_valid(self, mock_input):
+        result = self.console.get_float_input("Some prompt: ")
+        self.assertEqual(result, 42.23)
+
+    @patch("builtins.input", return_value="100.63")
+    def test_get_float_input_with_custom_color(self, mock_input):
+        result = self.console.get_float_input("Some prompt: ", ANSI_COLORS.BLUE)
+        self.assertEqual(result, 100.63)
