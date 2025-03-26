@@ -1,7 +1,13 @@
 import unittest
+from unittest.mock import patch
+
 from Application.Casino.Casino import *
 
 class test_Casino(unittest.TestCase):
+
+    @patch("Application.Casino.AccountManager.read_from_csv", return_value=[])
+    def setUp(self, mock_read_from_csv):
+        self.casino = Casino()
 
     def test_print_welcome(self):
         expected: str = r"""[34m
@@ -14,5 +20,5 @@ class test_Casino(unittest.TestCase):
         8888P   Y8888 Y8b.     888 Y88b.   Y88..88P 888  888  888 Y8b.      "   "  
         888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888 
         """
-        actual: str = print_welcome()
+        actual: str = self.casino.print_welcome()
         self.assertEqual(expected.strip(), actual.strip())
