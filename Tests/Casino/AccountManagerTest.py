@@ -7,7 +7,8 @@ from Application.Casino.CasinoAccount import CasinoAccount
 
 class AccountManagerTest(unittest.TestCase):
 
-    def setUp(self):
+    @patch("Application.Casino.AccountManager.read_from_csv", return_value=[])
+    def setUp(self, mock_read_from_csv):
         self.manager: AccountManager = AccountManager()
 
     def test_create_account(self):
@@ -53,3 +54,21 @@ class AccountManagerTest(unittest.TestCase):
         actual: CasinoAccount = self.manager.get_account("test_user", "secure123")
 
         self.assertIsNone(actual)
+
+    @patch("builtins.open", new_callable=mock_open, read_data="user1,pass1,500\nuser2,pass2,1000\n")
+    @patch("csv.reader")
+    def test_read_from_csv(self, mock_csv_reader, mock_file):
+        mock_csv_reader.return_value = [["user1", "pass1", 500], ["user2", "pass2", 1000]]
+
+        manager = AccountManager()
+
+        user_one = manager.accounts[0]
+        user_two = manager.accounts[1]
+
+        self.assertEqual(len(manager.accounts), 2)
+        self.assertEqual(user_one.username, "user1")
+        self.assertEqual(user_two.username, "user2")
+        self.assertEqual(user_one.password, "pass1")
+        self.assertEqual(user_two.password, "pass2")
+        self.assertEqual(user_one.balance, 500)
+        self.assertEqual(user_two.balance, 1000)
