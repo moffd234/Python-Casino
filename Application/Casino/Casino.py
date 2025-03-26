@@ -1,7 +1,10 @@
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
+from Application.Utils.IOConsole import IOConsole
 
+IOConsole = IOConsole()
 
 def print_welcome():
-    return r"""
+    return IOConsole.print_colored(r"""
         888       888          888                                         888 888 
         888   o   888          888                                         888 888 
         888  d8b  888          888                                         888 888 
@@ -10,4 +13,4 @@ def print_welcome():
         88888P Y88888 88888888 888 888     888  888 888  888  888 88888888 Y8P Y8P 
         8888P   Y8888 Y8b.     888 Y88b.   Y88..88P 888  888  888 Y8b.      "   "  
         888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888
-        """
+        """, ANSI_COLORS.BLUE)

@@ -4,7 +4,7 @@ from Application.Casino.Casino import *
 class test_Casino(unittest.TestCase):
 
     def test_print_welcome(self):
-        expected: str = r"""
+        expected: str = r"""[34m
         888       888          888                                         888 888 
         888   o   888          888                                         888 888 
         888  d8b  888          888                                         888 888 
