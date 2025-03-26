@@ -53,3 +53,12 @@ class IOConsole:
             print(self.color + "Exiting the game")
             return True
         return False
+
+    def print_colored(self, prompt: str, color: ANSI_COLORS = None) -> str:
+        if color is None or not isinstance(color, ANSI_COLORS):
+            color = self.color
+
+        else:
+            color = color.value
+
+        return color + prompt
