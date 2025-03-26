@@ -34,7 +34,7 @@ class AccountManager:
         return CasinoAccount(username, password)
 
     def register_account(self, account: CasinoAccount):
-        self.accounts.append(CasinoAccount)
+        self.accounts.append(account)
         write_new_account_to_csv(account)
 
     def get_account(self, username: str, password: str) -> CasinoAccount | None:
