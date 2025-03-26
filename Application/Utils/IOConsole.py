@@ -28,6 +28,13 @@ class IOConsole:
             print(f"{string_response} is not a valid integer.")
             return self.get_integer_input(prompt, color)
 
+    def get_float_input(self, prompt: str, color: ANSI_COLORS=None):
+        string_response: str = self.get_string_input(prompt, color)
+        try:
+            return float(string_response)
+        except ValueError:
+            print(f"{string_response} is not a valid float.")
+
 
     def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
