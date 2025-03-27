@@ -1,3 +1,5 @@
+from rich.ansi import console
+
 from Application.Casino.AccountManager import AccountManager
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
@@ -7,6 +9,13 @@ class Casino:
     def __init__(self):
         self.console = IOConsole(ANSI_COLORS.BLUE)
         self.manager = AccountManager()
+
+    def run(self):
+        self.print_welcome()
+
+        account: CasinoAccount | None = self.handle_initial_action()
+        while not account:
+            account = self.handle_initial_action()
 
     def print_welcome(self):
         return self.console.print_colored(r"""
@@ -66,9 +75,14 @@ class Casino:
             else:
                 answer = self.console.get_string_input("Invalid input. Please try again")
 
-    def run(self):
-        self.print_welcome()
+    def prompt_manage_or_select(self):
+        while True:
+            answer = self.console.get_string_input("You are logged in!" +
+                "\nFrom here, you can select any of the following options:" +
+                "\n\t[ manage-account ], [ select-game ]")
 
-        account: CasinoAccount | None = self.handle_initial_action()
-        while not account:
-            account = self.handle_initial_action()
+            if answer == "manage-account" or "manage account" or "manage":
+                pass
+
+            elif answer == "select-game" or "select game" or "select":
+                pass
