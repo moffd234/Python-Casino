@@ -44,3 +44,16 @@ class Casino:
 
             else:
                 print("Account with that username already exists")
+
+    def handle_initial_action(self):
+        answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
+                "\nFrom here, you can select any of the following options:" +
+                "\n\t[ create-account ], [ login ]").strip()
+
+        if answer == "login":
+            account: CasinoAccount | None = self.handle_login()
+            return account
+
+        elif answer == "signup":
+            account: CasinoAccount = self.handle_signup()
+            return account
