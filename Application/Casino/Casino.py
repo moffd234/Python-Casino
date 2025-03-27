@@ -30,4 +30,5 @@ class Casino:
                 return account
             else:
                 print("Invalid login info")
+        print("Too many login attempts - returning to main screen")
         return None
