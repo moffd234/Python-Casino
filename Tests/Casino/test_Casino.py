@@ -46,3 +46,21 @@ class test_Casino(unittest.TestCase):
     def test_handle_login_fail(self, mock_get_string_input, mock_get_account):
         account = self.casino.handle_login()
         self.assertIsNone(account)
+
+    @patch("Application.Casino.AccountManager.AccountManager.create_account",
+           return_value=CasinoAccount("test_username", "test_password", 0.0))
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
+    def test_handle_signup(self, mock_inputs, mock_get_account):
+        account: CasinoAccount = self.casino.handle_signup()
+
+        expected_username = "test_username"
+        expected_password = "test_password"
+        expected_balance = 0.0
+
+        actual_username = account.username
+        actual_password = account.password
+        actual_balance = account.balance
+
+        self.assertEqual(expected_username, actual_username)
+        self.assertEqual(expected_password, actual_password)
+        self.assertEqual(expected_balance, actual_balance)
