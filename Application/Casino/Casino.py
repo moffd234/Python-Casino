@@ -18,7 +18,7 @@ class Casino:
             88888P Y88888 88888888 888 888     888  888 888  888  888 88888888 Y8P Y8P 
             8888P   Y8888 Y8b.     888 Y88b.   Y88..88P 888  888  888 Y8b.      "   "  
             888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888
-            """, ANSI_COLORS.BLUE)
+            """)
 
     def handle_login(self) -> CasinoAccount | None:
         username: str = self.console.get_string_input("Enter your username\n")
@@ -36,8 +36,8 @@ class Casino:
     def handle_signup(self) -> CasinoAccount:
 
         while True:
-            username: str = self.console.get_string_input("Enter your username\n")
-            password: str = self.console.get_string_input("Enter your password\n")
+            username: str = self.console.get_string_input("Create your username")
+            password: str = self.console.get_string_input("Create your password")
             account: CasinoAccount = self.manager.create_account(username=username, password=password)
             if account:
                 self.manager.register_account(account)
