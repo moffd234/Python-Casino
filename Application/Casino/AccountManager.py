@@ -7,7 +7,7 @@ def write_new_account_to_csv(account: CasinoAccount):
     account_details: list = [account.username, account.password, account.balance]
 
     with open(FP, "a", newline='') as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, lineterminator="\n")
         writer.writerow(account_details)
 
 
