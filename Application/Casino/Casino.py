@@ -34,15 +34,13 @@ class Casino:
         return None
 
     def handle_signup(self) -> CasinoAccount:
-        username: str = self.console.get_string_input("Enter your username\n")
-        password: str = self.console.get_string_input("Enter your password\n")
 
         while True:
+            username: str = self.console.get_string_input("Enter your username\n")
+            password: str = self.console.get_string_input("Enter your password\n")
             account: CasinoAccount = self.manager.create_account(username=username, password=password)
             if account:
                 self.manager.register_account(account)
-
-            if account:
                 return account
 
             else:
@@ -65,3 +63,10 @@ class Casino:
 
             else:
                 answer = self.console.get_string_input("Invalid input. Please try again")
+
+    def run(self):
+        self.print_welcome()
+
+        account: CasinoAccount | None = self.handle_initial_action()
+        while not account:
+            account = self.handle_initial_action()
