@@ -40,6 +40,9 @@ class Casino:
         while True:
             account: CasinoAccount = self.manager.create_account(username=username, password=password)
             if account:
+                self.manager.register_account(account)
+
+            if account:
                 return account
 
             else:
@@ -48,7 +51,7 @@ class Casino:
     def handle_initial_action(self):
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ create-account ], [ login ]").strip()
+                "\n\t[ signup ], [ login ]").strip()
 
         while True:
 
