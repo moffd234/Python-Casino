@@ -20,13 +20,14 @@ class Casino:
             888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888
             """, ANSI_COLORS.BLUE)
 
-    def handle_login(self) -> CasinoAccount:
+    def handle_login(self) -> CasinoAccount | None:
         username: str = self.console.get_string_input("Enter your username\n")
         password: str = self.console.get_string_input("Enter your password\n")
 
         account: CasinoAccount | None = self.manager.get_account(username=username, password=password)
-        while True:
+        for i in range(0, 5):
             if account:
                 return account
             else:
                 print("Invalid login info")
+        return None
