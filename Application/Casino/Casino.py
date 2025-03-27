@@ -21,16 +21,18 @@ class Casino:
             """)
 
     def handle_login(self) -> CasinoAccount | None:
-        username: str = self.console.get_string_input("Enter your username\n")
-        password: str = self.console.get_string_input("Enter your password\n")
-
-        account: CasinoAccount | None = self.manager.get_account(username=username, password=password)
         for i in range(0, 5):
+
+            username: str = self.console.get_string_input("Enter your username")
+            password: str = self.console.get_string_input("Enter your password")
+
+            account: CasinoAccount | None = self.manager.get_account(username=username, password=password)
+
             if account:
                 return account
             else:
                 print("Invalid login info")
-        print("Too many login attempts - returning to main screen")
+        print("Too many login attempts - returning to main screen\n\n\n")
         return None
 
     def handle_signup(self) -> CasinoAccount:
