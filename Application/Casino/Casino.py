@@ -60,7 +60,7 @@ class Casino:
     def handle_initial_action(self):
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ signup ], [ login ]").strip()
+                "\n\t[ signup ], [ login ]").lower()
 
         while True:
 
@@ -79,10 +79,29 @@ class Casino:
         while True:
             answer = self.console.get_string_input("You are logged in!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ manage-account ], [ select-game ]")
+                "\n\t[ manage-account ], [ select-game ]").lower()
 
-            if answer == "manage-account" or "manage account" or "manage":
+            if answer == "manage-account" or answer == "manage account" or answer == "manage":
                 pass
 
-            elif answer == "select-game" or "select game" or "select":
+            elif answer == "select-game" or answer == "select game" or answer == "select":
+                pass
+
+    def prompt_game(self):
+        while True:
+            answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
+                "\nFrom here, you can select any of the following options:" +
+                "\n\t[ SLOTS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]").lower()
+
+            # The following are placeholders until the games are made
+            if answer == "slots":
+                pass
+
+            elif answer == "numberguess":
+                pass
+
+            elif answer == "trivia":
+                pass
+
+            elif answer == "tic-tac-toe" or answer == "tictactoe":
                 pass
