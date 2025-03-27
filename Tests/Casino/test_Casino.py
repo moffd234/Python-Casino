@@ -40,3 +40,9 @@ class test_Casino(unittest.TestCase):
         self.assertEqual(expected_username, actual_username)
         self.assertEqual(expected_password, actual_password)
         self.assertEqual(expected_balance, actual_balance)
+
+    @patch("Application.Casino.AccountManager.AccountManager.get_account", return_value=None)
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["wrong_user", "wrong_pass"] * 5)
+    def test_handle_login_fail(self, mock_get_string_input, mock_get_account):
+        account = self.casino.handle_login()
+        self.assertIsNone(account)
