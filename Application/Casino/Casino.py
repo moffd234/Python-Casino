@@ -5,7 +5,7 @@ from Application.Utils.IOConsole import IOConsole
 
 class Casino:
     def __init__(self):
-        self.console = IOConsole()
+        self.console = IOConsole(ANSI_COLORS.BLUE)
         self.manager = AccountManager()
 
     def print_welcome(self):
@@ -50,10 +50,15 @@ class Casino:
                 "\nFrom here, you can select any of the following options:" +
                 "\n\t[ create-account ], [ login ]").strip()
 
-        if answer == "login":
-            account: CasinoAccount | None = self.handle_login()
-            return account
+        while True:
 
-        elif answer == "signup":
-            account: CasinoAccount = self.handle_signup()
-            return account
+            if answer == "login":
+                account: CasinoAccount | None = self.handle_login()
+                return account
+
+            elif answer == "signup":
+                account: CasinoAccount = self.handle_signup()
+                return account
+
+            else:
+                answer = self.console.get_string_input("Invalid input. Please try again")
