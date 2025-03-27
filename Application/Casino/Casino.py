@@ -32,3 +32,15 @@ class Casino:
                 print("Invalid login info")
         print("Too many login attempts - returning to main screen")
         return None
+
+    def handle_signup(self) -> CasinoAccount:
+        username: str = self.console.get_string_input("Enter your username\n")
+        password: str = self.console.get_string_input("Enter your password\n")
+
+        while True:
+            account: CasinoAccount = self.manager.create_account(username=username, password=password)
+            if account:
+                return account
+
+            else:
+                print("Account with that username already exists")
