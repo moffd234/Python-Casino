@@ -1,6 +1,17 @@
+import random
+
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Casino.Games.Game import Game
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
+
+
+def handle_heads_tails() -> str:
+    flip_num: int = random.randint(0, 1)
+
+    if flip_num == 0:
+        return "tails"
+    else:
+        return "heads"
 
 
 class CoinFlip(Game):
@@ -31,6 +42,6 @@ class CoinFlip(Game):
 
         while guess != "heads" and guess != "tails":
             print(self.console.print_colored("Guess must be 'heads' or 'tails'", ANSI_COLORS.RED),)
-            guess = self.console.get_string_input("Enter your guess: (heads or tails)")
+            guess = self.console.get_string_input("Enter your guess: (heads or tails)").lower()
 
         return guess
