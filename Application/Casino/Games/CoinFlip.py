@@ -45,3 +45,11 @@ class CoinFlip(Game):
             guess = self.console.get_string_input("Enter your guess: (heads or tails)").lower()
 
         return guess
+
+    def handle_outcome(self, guess: str, flip: str, wager: float):
+        if guess == flip:
+            self.player.add_winnings(wager * 1.25)
+            return f"You Won! The coin was {flip}"
+
+        else:
+            return f"You Loss! The coin was {flip}"
