@@ -1,6 +1,5 @@
-from Application.Casino.CasinoAccount import CasinoAccount
-from Application.Utils.IOConsole import IOConsole
+from Application.Casino.Casino import Casino
 
 if __name__ == '__main__':
-    casinoAccount = CasinoAccount("abc", "abc", 45)
-    casinoAccount.add_winnings(-12)
+    casino = Casino()
+    casino.run()

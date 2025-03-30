@@ -1,5 +1,3 @@
-from rich.ansi import console
-
 from Application.Casino.AccountManager import AccountManager
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
