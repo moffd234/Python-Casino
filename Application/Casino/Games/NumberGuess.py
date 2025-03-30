@@ -25,7 +25,14 @@ class NumberGuess(Game):
         """)
 
     def run(self):
-        num: int = random.randint(1, 10) # From 1 to 10 [inclusive]
+        print(self.print_welcome_message())
+
+        while self.get_continue_input():
+            num: int = random.randint(1, 10) # From 1 to 10 [inclusive]
+            wager: float = self.get_wager_amount()
+            self.player.subtract_losses(wager)
+            guess: int = self.get_guess()
+            print(self.handle_guess(guess, num, wager))
 
 
     def get_guess(self) -> int:
