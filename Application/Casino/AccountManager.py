@@ -3,7 +3,7 @@ from Application.Casino.CasinoAccount import CasinoAccount
 
 FP = "./accounts.csv"
 
-def write_new_account_to_csv(account: CasinoAccount):
+def write_new_account_to_csv(account: CasinoAccount) -> None:
     account_details: list = [account.username, account.password, account.balance]
 
     with open(FP, "a", newline='') as file:
@@ -33,7 +33,7 @@ class AccountManager:
 
         return CasinoAccount(username, password)
 
-    def register_account(self, account: CasinoAccount):
+    def register_account(self, account: CasinoAccount) -> None:
         self.accounts.append(account)
         write_new_account_to_csv(account)
 

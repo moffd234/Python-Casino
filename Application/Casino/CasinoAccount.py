@@ -13,17 +13,17 @@ class CasinoAccount:
         self._balance = balance
 
     @property
-    def balance(self):
+    def balance(self) -> float:
         return self._balance
 
     @balance.setter
-    def balance(self, value: float):
+    def balance(self, value: float) -> None:
         if value < 0:
             raise ValueError("Balance cannot be negative")
 
         self._balance = value
 
-    def add_winnings(self, wager: float):
+    def add_winnings(self, wager: float) -> float:
         if wager <= 0:
             raise ValueError("Wager must be positive")
 
@@ -31,7 +31,7 @@ class CasinoAccount:
         logging.debug(f"{self.username} added {wager} to balance. New balance: {self._balance}")
         return self._balance
 
-    def subtract_losses(self, wager):
+    def subtract_losses(self, wager) -> float:
         if wager <= 0:
             raise ValueError("Wager must be positive")
         if wager > self._balance:

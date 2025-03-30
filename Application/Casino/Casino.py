@@ -8,14 +8,14 @@ class Casino:
         self.console = IOConsole(ANSI_COLORS.BLUE)
         self.manager = AccountManager()
 
-    def run(self):
+    def run(self) -> None:
         self.print_welcome()
 
         account: CasinoAccount | None = self.handle_initial_action()
         while not account:
             account = self.handle_initial_action()
 
-    def print_welcome(self):
+    def print_welcome(self) -> str:
         return self.console.print_colored(r"""
             888       888          888                                         888 888 
             888   o   888          888                                         888 888 

@@ -20,7 +20,7 @@ class IOConsole:
 
         return user_input
 
-    def get_integer_input(self, prompt: str, color:ANSI_COLORS=None):
+    def get_integer_input(self, prompt: str, color:ANSI_COLORS=None) -> int:
         while True:
             string_response: str = self.get_string_input(prompt, color)
             try:
@@ -28,7 +28,7 @@ class IOConsole:
             except ValueError:
                 print(self.print_colored(f"{string_response} is not a valid integer.", ANSI_COLORS.RED))
 
-    def get_float_input(self, prompt: str, color: ANSI_COLORS=None):
+    def get_float_input(self, prompt: str, color: ANSI_COLORS=None) -> float:
         while True:
             string_response: str = self.get_string_input(prompt, color)
             try:
@@ -36,7 +36,7 @@ class IOConsole:
             except ValueError:
                 print(self.print_colored(f"{string_response} is not a valid float.", ANSI_COLORS.RED))
 
-    def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None):
+    def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None) -> bool:
         while True:
             string_response: str = self.get_string_input(prompt, color)
             string_response = string_response.strip().lower()
