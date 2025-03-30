@@ -35,7 +35,17 @@ class CoinFlip(Game):
         """)
 
     def run(self):
-        pass
+        print(self.print_welcome_message())
+
+        while self.get_continue_input():
+            wager: float = self.get_wager_amount()
+            self.player.subtract_losses(wager)
+
+            flip: str = handle_heads_tails()
+            guess: str = self.get_guess()
+
+            print(self.handle_outcome(guess, flip, wager))
+
 
     def get_guess(self) -> str:
         guess: str = self.console.get_string_input("Enter your guess: (heads or tails)").lower()
