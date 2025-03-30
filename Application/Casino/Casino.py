@@ -57,7 +57,7 @@ class Casino:
             else:
                 print("Account with that username already exists")
 
-    def handle_initial_action(self):
+    def handle_initial_action(self) -> CasinoAccount:
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
                 "\n\t[ signup ], [ login ]").lower()
@@ -75,7 +75,7 @@ class Casino:
             else:
                 answer = self.console.get_string_input("Invalid input. Please try again")
 
-    def prompt_manage_or_select(self):
+    def prompt_manage_or_select(self) -> None:
         while True:
             answer = self.console.get_string_input("You are logged in!" +
                 "\nFrom here, you can select any of the following options:" +
@@ -87,7 +87,7 @@ class Casino:
             elif answer == "select-game" or answer == "select game" or answer == "select":
                 pass
 
-    def prompt_game(self):
+    def prompt_game(self) -> None:
         while True:
             answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
