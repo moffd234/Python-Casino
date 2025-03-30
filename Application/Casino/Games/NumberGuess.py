@@ -1,10 +1,14 @@
+import random
+
 from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Tests.Casino.Games.Game import Game
 
 
 class NumberGuess(Game):
     def __init__(self, player: CasinoAccount):
         super().__init__(player)
+        self.console.color = ANSI_COLORS.CYAN.value
 
     def print_welcome_message(self) -> str:
         return self.console.print_colored(r"""
@@ -17,4 +21,13 @@ class NumberGuess(Game):
         """)
 
     def run(self):
-        pass
+        num: int = random.randint(1, 10) # From 1 to 10 [inclusive]
+
+
+    def get_guess(self) -> int:
+        guess: int = self.console.get_integer_input("Enter your guess from 1 - 10 (inclusive)")
+
+        while guess < 1 or guess > 10:
+            print(self.console.print_colored("Number should be from 1 - 10 (inclusive)", ANSI_COLORS.RED))
+            guess = self.console.get_integer_input("Enter your guess from 1 - 10")
+        return guess
