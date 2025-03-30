@@ -26,7 +26,7 @@ class IOConsole:
             try:
                 return int(string_response)
             except ValueError:
-                print(f"{string_response} is not a valid integer.")
+                print(self.print_colored(f"{string_response} is not a valid integer.", ANSI_COLORS.RED))
 
     def get_float_input(self, prompt: str, color: ANSI_COLORS=None):
         while True:
@@ -34,7 +34,7 @@ class IOConsole:
             try:
                 return float(string_response)
             except ValueError:
-                print(f"{string_response} is not a valid float.")
+                print(self.print_colored(f"{string_response} is not a valid float.", ANSI_COLORS.RED))
 
     def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None):
         while True:
@@ -46,7 +46,8 @@ class IOConsole:
             elif string_response in ["no", "n", "false", "0"]:
                 return False
             else:
-                print(f"{string_response} is not a valid boolean. Please enter 'yes' or 'no'.")
+                print(self.print_colored(f"{string_response} is not a valid boolean. Please enter yes or no."
+                                         , ANSI_COLORS.RED))
 
     def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
