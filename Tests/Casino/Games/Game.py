@@ -10,7 +10,7 @@ class Game(ABC):
         self.console = IOConsole()
 
     @abstractmethod
-    def print_welcome_message(self) -> float:
+    def print_welcome_message(self) -> str:
         pass
 
     @abstractmethod
