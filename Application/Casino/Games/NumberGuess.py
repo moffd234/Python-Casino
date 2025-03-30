@@ -2,7 +2,7 @@ import random
 
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
-from Tests.Casino.Games.Game import Game
+from Application.Casino.Games.Game import Game
 
 
 class NumberGuess(Game):
