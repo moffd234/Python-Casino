@@ -22,8 +22,11 @@ class Game(ABC):
         amount: float = self.console.get_float_input("Enter a wager amount")
 
         while amount > self.player.balance or amount < 1.00:
-            print(self.console.print_colored(f"Wager amount must be between $1.00 - {self.player.balance}"),
-                  ANSI_COLORS.RED)
+            print(self.console.print_colored(f"Wager amount must be between $1.00 - ${self.player.balance}",
+                                             ANSI_COLORS.RED))
             amount = self.console.get_float_input("Enter a wager amount")
 
         return amount
+
+    def get_continue_input(self) -> bool:
+        return self.console.get_boolean_input("Would you like to keep playing?")
