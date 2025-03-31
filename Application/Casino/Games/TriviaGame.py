@@ -51,3 +51,11 @@ class TriviaGame(Game):
             question_type = self.console.get_string_input("Enter the type of questions you want to play ")
 
         return question_type
+
+    def get_difficulty(self) -> str:
+        difficulty: str = self.console.get_string_input("Enter the difficulty you want to play (easy, medium, hard): ").lower()
+        while difficulty != "easy" and difficulty != "medium" and difficulty != "hard":
+            print(self.console.print_colored("Invalid input. Please enter either 'easy', 'medium', or 'hard'", ANSI_COLORS.RED))
+            difficulty = self.console.get_string_input("Enter the difficulty you want to play ")
+
+        return difficulty
