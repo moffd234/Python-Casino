@@ -2,6 +2,7 @@ import requests
 
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Casino.Games.Game import Game
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 class TriviaGame(Game):
@@ -29,6 +30,8 @@ class TriviaGame(Game):
 
     def __init__(self, player: CasinoAccount):
         super().__init__(player)
+        self.console.color = ANSI_COLORS.GREEN.value
+        self.url = "https://opentdb.com/api.php/amount=10"
 
     def get_response(self, url) -> None | dict:
         response = requests.get(url)
@@ -38,3 +41,13 @@ class TriviaGame(Game):
             print("Problem getting questions. Please try again later.")
             return None
         return response.json()
+
+    def get_question_type(self) -> str:
+        question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
+                                                           "(for multiple choice enter mc "
+                                                           "for true or false enter tf): ").lower()
+        while question_type != "mc" and question_type != "tf":
+            print(self.console.print_colored("Invalid input. Please enter either 'mc' or 'tf'", ANSI_COLORS.RED))
+            question_type = self.console.get_string_input("Enter the type of questions you want to play ")
+
+        return question_type
