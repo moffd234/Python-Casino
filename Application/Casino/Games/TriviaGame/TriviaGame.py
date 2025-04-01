@@ -1,3 +1,6 @@
+import datetime
+import json
+
 import requests
 
 from Application.Casino.CasinoAccount import CasinoAccount
@@ -5,6 +8,8 @@ from Application.Casino.Games.Game import Game
 from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
+
+CACHE_FILE_PATH = "category_cache.txt"
 
 
 def get_response(url) -> None | dict:
@@ -25,6 +30,14 @@ def create_questions(q_response: dict) -> [Question]:
                                        answer=question["correct_answer"],
                                        wrong_answers=question["incorrect_answers"]))
     return questions_list
+
+
+def category_cacher(categories) -> None:
+    cache: dict = {"timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                   "categories": [cat.__dict__ for cat in categories]}
+
+    with open(CACHE_FILE_PATH, mode='w') as cache_file:
+        json.dump(cache, cache_file, indent=4)
 
 
 class TriviaGame(Game):
@@ -146,7 +159,7 @@ class TriviaGame(Game):
                     med_num=category_data.get("total_medium_question_count", 0),
                     hard_num=category_data.get("total_hard_question_count", 0)
                 ))
-
+        category_cacher(possible_categories)
         return possible_categories
 
     def get_valid_categories(self, difficulty: str) -> [Category]:
