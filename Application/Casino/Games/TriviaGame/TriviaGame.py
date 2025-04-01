@@ -44,7 +44,13 @@ class TriviaGame(Game):
         '''
 
     def run(self):
-        pass
+
+        self.console.print_colored(self.print_welcome_message())
+
+        while self.get_continue_input():
+            q_type: str = self.get_question_type()
+            difficulty: str = self.get_difficulty()
+
 
     def get_question_type(self) -> str:
         question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
@@ -64,7 +70,25 @@ class TriviaGame(Game):
 
         return difficulty
 
+    def get_category(self, valid_cats: [Category]) -> Category:
+        print(self.console.print_colored("Available Categories:"))
+        for i in range(len(valid_cats)):
+            print(self.console.print_colored(f"{i}. {valid_cats[i].name}"))
+
+        print()
+
+        choice = -1
+        while choice < 0 or choice >= len(valid_cats):
+            choice = self.console.get_integer_input("Enter category number")
+
+            if choice < 0 or choice >= len(valid_cats):
+                print(self.console.print_colored("Invalid category number", ANSI_COLORS.RED))
+
+        return valid_cats[choice]
+
+
     def get_possible_categories(self) -> list | None:
+        print(self.console.print_colored("loading.........\n\n\n"))
         cat_response = get_response(f"{self.base_url}api_category.php")
 
         if cat_response is None:
