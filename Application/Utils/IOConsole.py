@@ -7,7 +7,7 @@ class IOConsole:
             raise TypeError("color must be an instance of ANSI_COLORS")
         self.color:str = color.value
 
-    def get_string_input(self, prompt: str, color:ANSI_COLORS=None) -> str:
+    def get_string_input(self, prompt: str, color:ANSI_COLORS=None, return_in_lower: bool=True) -> str:
         if color is None or not isinstance(color, ANSI_COLORS):
             color = self.color
 
@@ -17,6 +17,9 @@ class IOConsole:
         user_input = input(color + prompt + "\n")
         if self.check_for_exit(user_input):
             exit(0)
+
+        if return_in_lower:
+            return user_input.lower()
 
         return user_input
 

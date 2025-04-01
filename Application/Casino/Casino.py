@@ -30,8 +30,8 @@ class Casino:
     def handle_login(self) -> CasinoAccount | None:
         for i in range(0, 5):
 
-            username: str = self.console.get_string_input("Enter your username")
-            password: str = self.console.get_string_input("Enter your password")
+            username: str = self.console.get_string_input("Enter your username", return_in_lower=False)
+            password: str = self.console.get_string_input("Enter your password", return_in_lower=False)
 
             account: CasinoAccount | None = self.manager.get_account(username=username, password=password)
 
@@ -45,8 +45,8 @@ class Casino:
     def handle_signup(self) -> CasinoAccount:
 
         while True:
-            username: str = self.console.get_string_input("Create your username")
-            password: str = self.console.get_string_input("Create your password")
+            username: str = self.console.get_string_input("Create your username", return_in_lower=False)
+            password: str = self.console.get_string_input("Create your password", return_in_lower=False)
             account: CasinoAccount = self.manager.create_account(username=username, password=password)
             if account:
                 self.manager.register_account(account)
@@ -58,7 +58,7 @@ class Casino:
     def handle_initial_action(self) -> CasinoAccount:
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ signup ], [ login ]").lower()
+                "\n\t[ signup ], [ login ]")
 
         while True:
 
@@ -77,7 +77,7 @@ class Casino:
         while True:
             answer = self.console.get_string_input("You are logged in!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ manage-account ], [ select-game ]").lower()
+                "\n\t[ manage-account ], [ select-game ]")
 
             if answer == "manage-account" or answer == "manage account" or answer == "manage":
                 pass
@@ -89,7 +89,7 @@ class Casino:
         while True:
             answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ SLOTS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]").lower()
+                "\n\t[ SLOTS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]")
 
             # The following are placeholders until the games are made
             if answer == "slots":
