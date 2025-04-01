@@ -37,13 +37,13 @@ class IO_Console_Tests(unittest.TestCase):
 
     @patch("builtins.print")
     @patch("builtins.input", return_value="test input")
-    def test_get_string_input_default_color(self,mock_print, mock_input):
+    def test_get_string_input_default_color(self, mock_print, mock_input):
         self.console.get_string_input("Some Prompt")
         mock_print.assert_called_once_with(self.console.color + "Some Prompt\n")
 
     @patch("builtins.print")
     @patch("builtins.input", return_value="test input")
-    def test_get_string_input_custom_color(self,mock_print, mock_input):
+    def test_get_string_input_custom_color(self, mock_print, mock_input):
         self.console.get_string_input("Some Prompt", ANSI_COLORS.BLUE)
         mock_print.assert_called_once_with(ANSI_COLORS.BLUE.value + "Some Prompt\n")
 

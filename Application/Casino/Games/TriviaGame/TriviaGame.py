@@ -22,8 +22,8 @@ def create_questions(q_response: dict) -> [Question]:
     questions_list: [Question] = []
     for question in q_response["results"]:
         questions_list.append(Question(question=question["question"],
-                                  answer=question["correct_answer"],
-                                  wrong_answers=question["incorrect_answers"]))
+                                       answer=question["correct_answer"],
+                                       wrong_answers=question["incorrect_answers"]))
     return questions_list
 
 
@@ -59,8 +59,8 @@ class TriviaGame(Game):
         print(self.console.print_colored(self.print_welcome_message()))
 
         while self.get_continue_input():
-
-            url: str = f"{self.base_url}api.php?amount=10&category={self.cat.id}&difficulty={self.difficulty}&type={self.q_type}"
+            url: str = (f"{self.base_url}api.php?amount=10&category={self.cat.id}"
+                        f"&difficulty={self.difficulty}&type={self.q_type}")
             response = get_response(url)
             questions: dict = create_questions(response)
             self.play_game(questions)
@@ -78,7 +78,8 @@ class TriviaGame(Game):
     def get_difficulty(self) -> str:
         difficulty: str = self.console.get_string_input("Enter the difficulty you want to play (easy, medium, hard): ")
         while difficulty != "easy" and difficulty != "medium" and difficulty != "hard":
-            print(self.console.print_colored("Invalid input. Please enter either 'easy', 'medium', or 'hard'", ANSI_COLORS.RED))
+            print(self.console.print_colored("Invalid input. Please enter either 'easy', 'medium', or 'hard'",
+                                             ANSI_COLORS.RED))
             difficulty = self.console.get_string_input("Enter the difficulty you want to play ")
 
         return difficulty
@@ -108,7 +109,6 @@ class TriviaGame(Game):
 
         return q_type, difficulty, cat
 
-
     def get_possible_categories(self) -> list | None:
         print(self.console.print_colored("loading.........\n\n\n"))
         cat_response = get_response(f"{self.base_url}api_category.php")
@@ -118,7 +118,7 @@ class TriviaGame(Game):
             return None
 
         all_categories = {category["name"]: category["id"] for category in cat_response["trivia_categories"]}
-        possible_categories: list[Category] =[]
+        possible_categories: list[Category] = []
 
         for key, value in all_categories.items():
             response = get_response(f"{self.base_url}api_count.php?category={value}")
@@ -172,7 +172,7 @@ class TriviaGame(Game):
 
     def play_game(self, questions: [Question]) -> int:
         for i in range(len(questions)):
-            if len (questions[i].wrong_answers) == 1:  # ASSERT: Must be a true or false question
+            if len(questions[i].wrong_answers) == 1:  # ASSERT: Must be a true or false question
                 guess = str(self.console.get_boolean_input(questions[i].question))
 
             else:

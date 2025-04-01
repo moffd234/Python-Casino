@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from Application.Casino.Casino import *
 
+
 class test_Casino(unittest.TestCase):
 
     @patch("Application.Casino.AccountManager.read_from_csv", return_value=[])

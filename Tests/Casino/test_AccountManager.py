@@ -45,7 +45,7 @@ class AccountManagerTest(unittest.TestCase):
         expected: CasinoAccount = CasinoAccount("test_user", "secure123")
 
         self.manager.accounts.append(expected)
-        actual: CasinoAccount = self.manager.get_account("test_user","secure123")
+        actual: CasinoAccount = self.manager.get_account("test_user", "secure123")
 
         self.assertEqual(expected, actual)
 
