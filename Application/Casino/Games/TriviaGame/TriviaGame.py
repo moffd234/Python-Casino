@@ -1,3 +1,5 @@
+from unicodedata import category
+
 import requests
 
 from Application.Casino.CasinoAccount import CasinoAccount
@@ -48,8 +50,8 @@ class TriviaGame(Game):
         self.console.print_colored(self.print_welcome_message())
 
         while self.get_continue_input():
-            q_type: str = self.get_question_type()
-            difficulty: str = self.get_difficulty()
+            q_type, difficulty, cat = self.get_choices()
+
 
 
     def get_question_type(self) -> str:
@@ -85,6 +87,15 @@ class TriviaGame(Game):
                 print(self.console.print_colored("Invalid category number", ANSI_COLORS.RED))
 
         return valid_cats[choice]
+
+    def get_choices(self) -> tuple[str, str, Category]:
+        q_type: str = self.get_question_type()
+        difficulty: str = self.get_difficulty()
+
+        valid_cats = self.get_valid_categories(difficulty)
+        cat: Category = self.get_category(valid_cats)
+
+        return q_type, difficulty, cat
 
 
     def get_possible_categories(self) -> list | None:
