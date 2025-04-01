@@ -31,7 +31,9 @@ class TriviaGame(Game):
 
     def __init__(self, player: CasinoAccount):
         super().__init__(player)
-        self.q_type, self.difficulty, self.cat = self.get_choices()
+        self.q_type: str = ""
+        self.difficulty: str = ""
+        self.cat: Category | None = None
         self.console.color = ANSI_COLORS.GREEN.value
         self.base_url = "https://opentdb.com/"
         self.score = 0
@@ -62,6 +64,7 @@ class TriviaGame(Game):
             wager: float = self.get_wager_amount()
             self.player.subtract_losses(wager)
 
+            self.get_choices()
             url: str = (f"{self.base_url}api.php?amount=10&category={self.cat.id}"
                         f"&difficulty={self.difficulty}&type={self.q_type}")
             response = get_response(url)
@@ -110,14 +113,12 @@ class TriviaGame(Game):
 
         return valid_cats[choice]
 
-    def get_choices(self) -> tuple[str, str, Category]:
-        q_type: str = self.get_question_type()
-        difficulty: str = self.get_difficulty()
+    def get_choices(self):
+        self.q_type = self.get_question_type()
+        self.difficulty = self.get_difficulty()
 
-        valid_cats = self.get_valid_categories(difficulty)
-        cat: Category = self.get_category(valid_cats)
-
-        return q_type, difficulty, cat
+        valid_cats = self.get_valid_categories(self.difficulty)
+        self.cat: Category = self.get_category(valid_cats)
 
     def get_possible_categories(self) -> list | None:
         print(self.console.print_colored("loading.........\n\n\n"))
