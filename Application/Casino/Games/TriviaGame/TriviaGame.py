@@ -31,6 +31,7 @@ class TriviaGame(Game):
 
     def __init__(self, player: CasinoAccount):
         super().__init__(player)
+        self.q_type, self.difficulty, self.cat = self.get_choices()
         self.console.color = ANSI_COLORS.GREEN.value
         self.base_url = "https://opentdb.com/"
         self.score = 0
@@ -58,9 +59,8 @@ class TriviaGame(Game):
         print(self.console.print_colored(self.print_welcome_message()))
 
         while self.get_continue_input():
-            q_type, difficulty, cat = self.get_choices()
 
-            url: str = f"{self.base_url}api.php?amount=10&category={cat.id}&difficulty={difficulty}&type={q_type}"
+            url: str = f"{self.base_url}api.php?amount=10&category={self.cat.id}&difficulty={self.difficulty}&type={self.q_type}"
             response = get_response(url)
             questions: dict = create_questions(response)
             self.play_game(questions)
@@ -170,7 +170,7 @@ class TriviaGame(Game):
         else:
             print(f"Wrong. Current score is {self.score}/{question_num}")
 
-    def play_game(self, questions) -> int:
+    def play_game(self, questions: [Question]) -> int:
         for i in range(len(questions)):
             if len (questions[i].wrong_answers) == 1:  # ASSERT: Must be a true or false question
                 guess = str(self.console.get_boolean_input(questions[i].question))
