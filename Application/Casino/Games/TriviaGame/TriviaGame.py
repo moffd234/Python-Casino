@@ -2,6 +2,7 @@ import requests
 
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Casino.Games.Game import Game
+from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
@@ -59,3 +60,28 @@ class TriviaGame(Game):
             difficulty = self.console.get_string_input("Enter the difficulty you want to play ")
 
         return difficulty
+
+    def get_possible_categories(self) -> list | None:
+        cat_response = self.get_response("https://opentdb.com/api_category.php")
+
+        if cat_response is None:
+            print("Problem getting questions. Please try again later.")
+            return None
+
+        all_categories = {category["name"]: category["id"] for category in cat_response["trivia_categories"]}
+        possible_categories: list[Category] =[]
+
+        for key, value in all_categories.items():
+            response = self.get_response(f"https://opentdb.com/api_count.php?category={value}")
+
+            if response:
+                category_data = response.get("category_question_count", {})
+                possible_categories.append(Category(
+                    name=key,
+                    id_num=value,
+                    easy_num=category_data.get("total_easy_question_count", 0),
+                    med_num=category_data.get("total_medium_question_count", 0),
+                    hard_num=category_data.get("total_hard_question_count", 0)
+                ))
+
+        return possible_categories
