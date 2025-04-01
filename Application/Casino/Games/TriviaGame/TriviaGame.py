@@ -169,3 +169,15 @@ class TriviaGame(Game):
             print(f"Correct!! Your new score is {self.score}/{question_num}")
         else:
             print(f"Wrong. Current score is {self.score}/{question_num}")
+
+    def play_game(self, questions) -> int:
+        for i in range(len(questions)):
+            if len (questions[i].wrong_answers) == 1:  # ASSERT: Must be a true or false question
+                guess = str(self.console.get_boolean_input(questions[i].question))
+
+            else:
+                guess = self.console.get_string_input(questions[i].question)
+
+            self.check_answer(guess, questions[i], i + 1)
+
+        return self.score
