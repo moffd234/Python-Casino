@@ -6,6 +6,45 @@ from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
+def get_valid_categories(difficulty: str, categories: [Category]) -> [Category]:
+    """
+
+    Iterates through list of Categories and returns a list of only the categories that are valid
+
+    :param difficulty: the chosen difficulty of the questions
+    :param categories: a list of all the possible categories
+    :return: a list of valid categories to use
+
+    Currently, the only way to check a category's question count is the get the count of all questions. However,
+    this does not specify how many of those questions are true/false and how many are multiple choice. Thus,
+    we must iterate through all the possible categories and see if it has 50+ questions for a given difficulty at
+    which point we can assume it has 10+ for both true/false and multiple choice
+    """
+    valid_categories: [Category] = []
+
+    for cat in categories:
+        if difficulty == "easy" and cat.easy_num >= 50:
+            valid_categories.append(cat)
+
+        elif difficulty == "medium" and cat.med_num >= 50:
+            valid_categories.append(cat)
+
+        elif difficulty == "hard" and cat.hard_num >= 50:
+            valid_categories.append(cat)
+
+    return valid_categories
+
+
+def get_response(url) -> None | dict:
+    response = requests.get(url)
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print("Problem getting questions. Please try again later.")
+        return None
+    return response.json()
+
+
 class TriviaGame(Game):
 
     def __init__(self, player: CasinoAccount):
@@ -34,15 +73,6 @@ class TriviaGame(Game):
     def run(self):
         pass
 
-    def get_response(self, url) -> None | dict:
-        response = requests.get(url)
-        try:
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as err:
-            print("Problem getting questions. Please try again later.")
-            return None
-        return response.json()
-
     def get_question_type(self) -> str:
         question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
                                                            "(for multiple choice enter mc "
@@ -62,7 +92,7 @@ class TriviaGame(Game):
         return difficulty
 
     def get_possible_categories(self) -> list | None:
-        cat_response = self.get_response(f"{self.base_url}api_category.php")
+        cat_response = get_response(f"{self.base_url}api_category.php")
 
         if cat_response is None:
             print("Problem getting questions. Please try again later.")
@@ -72,7 +102,7 @@ class TriviaGame(Game):
         possible_categories: list[Category] =[]
 
         for key, value in all_categories.items():
-            response = self.get_response(f"{self.base_url}api_count.php?category={value}")
+            response = get_response(f"{self.base_url}api_count.php?category={value}")
 
             if response:
                 category_data = response.get("category_question_count", {})
@@ -85,31 +115,3 @@ class TriviaGame(Game):
                 ))
 
         return possible_categories
-
-    def get_valid_categories(self, difficulty: str, categories: [Category]) -> [Category]:
-        """
-
-        Iterates through list of Categories and returns a list of only the categories that are valid
-
-        :param difficulty: the chosen difficulty of the questions
-        :param categories: a list of all the possible categories
-        :return: a list of valid categories to use
-
-        Currently, the only way to check a category's question count is the get the count of all questions. However,
-        this does not specify how many of those questions are true/false and how many are multiple choice. Thus,
-        we must iterate through all the possible categories and see if it has 50+ questions for a given difficulty at
-        which point we can assume it has 10+ for both true/false and multiple choice
-        """
-        valid_categories: [Category] = []
-
-        for cat in categories:
-            if difficulty == "easy" and cat.easy_num >= 50:
-                valid_categories.append(cat)
-
-            elif difficulty == "medium" and cat.med_num >= 50:
-                valid_categories.append(cat)
-
-            elif difficulty == "hard" and cat.hard_num >= 50:
-                valid_categories.append(cat)
-
-        return valid_categories
