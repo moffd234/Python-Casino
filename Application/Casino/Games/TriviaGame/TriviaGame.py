@@ -59,11 +59,21 @@ class TriviaGame(Game):
         print(self.console.print_colored(self.print_welcome_message()))
 
         while self.get_continue_input():
+            wager: float = self.get_wager_amount()
+            self.player.subtract_losses(wager)
+
             url: str = (f"{self.base_url}api.php?amount=10&category={self.cat.id}"
                         f"&difficulty={self.difficulty}&type={self.q_type}")
             response = get_response(url)
+
             questions: dict = create_questions(response)
             self.play_game(questions)
+
+            if self.score > 6:
+                winnings = self.get_winnings_total(wager)
+                self.player.add_winnings(winnings)
+                print(self.console.print_colored(f"You Won!!! Your winnings were {winnings}.\n"
+                                                 f"This brings your account total to {self.player.balance}"))
 
     def get_question_type(self) -> str:
         question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
@@ -182,7 +192,7 @@ class TriviaGame(Game):
 
         return self.score
 
-    def get_winnings(self, wager: float) -> float:
+    def get_winnings_total(self, wager: float) -> float:
         multipliers = {"easy": 1, "medium": 1.25, "hard": 1.5, "boolean": 1, "multiple": 1.25}
         multiplier = multipliers[self.difficulty] * multipliers[self.q_type]
         return round(wager * multiplier, 2)
