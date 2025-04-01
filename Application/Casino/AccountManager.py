@@ -1,4 +1,6 @@
 import csv
+import os.path
+
 from Application.Casino.CasinoAccount import CasinoAccount
 
 FP = "./accounts.csv"
@@ -6,10 +8,15 @@ FP = "./accounts.csv"
 def write_new_account_to_csv(account: CasinoAccount) -> None:
     account_details: list = [account.username, account.password, account.balance]
 
-    with open(FP, "a", newline='') as file:
-        writer = csv.writer(file, lineterminator="\n")
-        writer.writerow(account_details)
+    try:
+        with open(FP, "a", newline='') as file:
+            writer = csv.writer(file, lineterminator="\n")
+            writer.writerow(account_details)
 
+    except FileNotFoundError:
+        with open(FP, "w", newline='') as file:
+            writer = csv.writer(file, lineterminator="\n")
+            writer.writerow(account_details)
 
 def read_from_csv() -> list[CasinoAccount]:
     accounts: list = []
@@ -23,8 +30,10 @@ def read_from_csv() -> list[CasinoAccount]:
 
 class AccountManager:
     def __init__(self):
-        self.accounts: [CasinoAccount] = read_from_csv()
-
+        if os.path.exists("./accounts.csv"):
+            self.accounts: [CasinoAccount] = read_from_csv()
+        else:
+            self.accounts: [CasinoAccount] = []
 
     def create_account(self, username: str, password: str) -> CasinoAccount | None:
         for account in self.accounts:
