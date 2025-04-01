@@ -181,3 +181,8 @@ class TriviaGame(Game):
             self.check_answer(guess, questions[i], i + 1)
 
         return self.score
+
+    def get_winnings(self, wager: float) -> float:
+        multipliers = {"easy": 1, "medium": 1.25, "hard": 1.5, "boolean": 1, "multiple": 1.25}
+        multiplier = multipliers[self.difficulty] * multipliers[self.q_type]
+        return round(wager * multiplier, 2)
