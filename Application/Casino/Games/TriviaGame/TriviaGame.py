@@ -3,6 +3,7 @@ import requests
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Casino.Games.Game import Game
 from Application.Casino.Games.TriviaGame.Category import Category
+from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
@@ -51,6 +52,7 @@ class TriviaGame(Game):
         super().__init__(player)
         self.console.color = ANSI_COLORS.GREEN.value
         self.base_url = "https://opentdb.com/"
+        self.score = 0
 
     def print_welcome_message(self) -> str:
         return r'''
@@ -115,3 +117,10 @@ class TriviaGame(Game):
                 ))
 
         return possible_categories
+
+    def check_answer(self, answer: str, question: Question) -> bool:
+        if answer == question:
+            self.score += 1
+            return True
+        else:
+            return False
