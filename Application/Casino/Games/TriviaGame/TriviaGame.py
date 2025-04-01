@@ -15,6 +15,7 @@ def get_response(url) -> None | dict:
         response.raise_for_status()
     except requests.exceptions.HTTPError as err:
         print("Problem getting questions. Please try again later.")
+        print(err)
         return None
     return response.json()
 
@@ -46,12 +47,7 @@ class TriviaGame(Game):
         '''
 
     def run(self):
-
-        self.console.print_colored(self.print_welcome_message())
-
-        while self.get_continue_input():
-            q_type, difficulty, cat = self.get_choices()
-
+        pass
 
 
     def get_question_type(self) -> str:
@@ -62,7 +58,7 @@ class TriviaGame(Game):
             print(self.console.print_colored("Invalid input. Please enter either 'mc' or 'tf'", ANSI_COLORS.RED))
             question_type = self.console.get_string_input("Enter the type of questions you want to play ")
 
-        return question_type
+        return "boolean" if question_type == "tf" else "multiple"
 
     def get_difficulty(self) -> str:
         difficulty: str = self.console.get_string_input("Enter the difficulty you want to play (easy, medium, hard): ")
