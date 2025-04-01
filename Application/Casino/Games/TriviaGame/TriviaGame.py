@@ -24,7 +24,6 @@ def create_questions(q_response: dict) -> [Question]:
         questions_list.append(Question(question=question["question"],
                                   answer=question["correct_answer"],
                                   wrong_answers=question["incorrect_answers"]))
-
     return questions_list
 
 
@@ -55,8 +54,16 @@ class TriviaGame(Game):
         '''
 
     def run(self):
-        pass
 
+        print(self.console.print_colored(self.print_welcome_message()))
+
+        while self.get_continue_input():
+            q_type, difficulty, cat = self.get_choices()
+
+            url: str = f"{self.base_url}api.php?amount=10&category={cat.id}&difficulty={difficulty}&type={q_type}"
+            response = get_response(url)
+            questions: dict = create_questions(response)
+            self.play_game(questions)
 
     def get_question_type(self) -> str:
         question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
@@ -156,9 +163,9 @@ class TriviaGame(Game):
 
         return valid_categories
 
-    def check_answer(self, answer: str, question: Question) -> bool:
-        if answer == question:
+    def check_answer(self, answer: str, question: Question, question_num) -> None:
+        if answer == question.answer:
             self.score += 1
-            return True
+            print(f"Correct!! Your new score is {self.score}/{question_num}")
         else:
-            return False
+            print(f"Wrong. Current score is {self.score}/{question_num}")
