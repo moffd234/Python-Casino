@@ -1,5 +1,7 @@
-import datetime
+import logging
+from datetime import datetime, timedelta
 import json
+import os.path
 
 import requests
 
@@ -32,12 +34,24 @@ def create_questions(q_response: dict) -> [Question]:
     return questions_list
 
 
-def category_cacher(categories) -> None:
-    cache: dict = {"timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+def category_cacher(categories: list[Category]) -> None:
+    cache: dict = {"timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                    "categories": [cat.__dict__ for cat in categories]}
 
     with open(CACHE_FILE_PATH, mode='w') as cache_file:
         json.dump(cache, cache_file, indent=4)
+
+
+def cache_loader() -> dict | None:
+    if os.path.exists(CACHE_FILE_PATH):
+        with open(CACHE_FILE_PATH, mode='r') as cache_file:
+            cache = json.load(cache_file)
+
+            cache_date = datetime.strptime(cache["timestamp"], "%Y-%m-%d %H:%M:%S")
+            if datetime.now() - cache_date < timedelta(hours=24):
+                return cache["categories"]
+
+    return None
 
 
 class TriviaGame(Game):
@@ -159,6 +173,7 @@ class TriviaGame(Game):
                     med_num=category_data.get("total_medium_question_count", 0),
                     hard_num=category_data.get("total_hard_question_count", 0)
                 ))
+
         category_cacher(possible_categories)
         return possible_categories
 
