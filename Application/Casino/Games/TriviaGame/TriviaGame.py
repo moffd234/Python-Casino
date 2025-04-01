@@ -8,6 +8,11 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 class TriviaGame(Game):
 
+    def __init__(self, player: CasinoAccount):
+        super().__init__(player)
+        self.console.color = ANSI_COLORS.GREEN.value
+        self.base_url = "https://opentdb.com/"
+
     def print_welcome_message(self) -> str:
         return r'''
         
@@ -28,11 +33,6 @@ class TriviaGame(Game):
 
     def run(self):
         pass
-
-    def __init__(self, player: CasinoAccount):
-        super().__init__(player)
-        self.console.color = ANSI_COLORS.GREEN.value
-        self.url = "https://opentdb.com/api.php/amount=10"
 
     def get_response(self, url) -> None | dict:
         response = requests.get(url)
@@ -62,7 +62,7 @@ class TriviaGame(Game):
         return difficulty
 
     def get_possible_categories(self) -> list | None:
-        cat_response = self.get_response("https://opentdb.com/api_category.php")
+        cat_response = self.get_response(f"{self.base_url}api_category.php")
 
         if cat_response is None:
             print("Problem getting questions. Please try again later.")
@@ -72,7 +72,7 @@ class TriviaGame(Game):
         possible_categories: list[Category] =[]
 
         for key, value in all_categories.items():
-            response = self.get_response(f"https://opentdb.com/api_count.php?category={value}")
+            response = self.get_response(f"{self.base_url}api_count.php?category={value}")
 
             if response:
                 category_data = response.get("category_question_count", {})
