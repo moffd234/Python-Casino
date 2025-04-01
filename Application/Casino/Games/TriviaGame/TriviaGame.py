@@ -183,11 +183,14 @@ class TriviaGame(Game):
 
     def play_game(self, questions: [Question]) -> int:
         for i in range(len(questions)):
+            print(questions[i].question)
+            options = ' '.join(f"[{answer}]" for answer in questions[i].all_options)
+
             if len(questions[i].wrong_answers) == 1:  # ASSERT: Must be a true or false question
-                guess = str(self.console.get_boolean_input(questions[i].question))
+                guess = str(self.console.get_boolean_input(options))
 
             else:
-                guess = self.console.get_string_input(questions[i].question)
+                guess = self.console.get_string_input(options)
 
             self.check_answer(guess, questions[i], i + 1)
 
