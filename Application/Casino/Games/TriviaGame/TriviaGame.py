@@ -1,5 +1,3 @@
-from unicodedata import category
-
 import requests
 
 from Application.Casino.CasinoAccount import CasinoAccount
@@ -18,6 +16,16 @@ def get_response(url) -> None | dict:
         print(err)
         return None
     return response.json()
+
+
+def create_questions(q_response: dict) -> [Question]:
+    questions_list: [Question] = []
+    for question in q_response["results"]:
+        questions_list.append(Question(question=question["question"],
+                                  answer=question["correct_answer"],
+                                  wrong_answers=question["incorrect_answers"]))
+
+    return questions_list
 
 
 class TriviaGame(Game):
