@@ -77,6 +77,9 @@ class TriviaGame(Game):
                 self.player.add_winnings(winnings)
                 print(self.console.print_colored(f"You Won!!! Your winnings were {winnings}.\n"
                                                  f"This brings your account total to {self.player.balance}"))
+            else:
+                print(self.console.print_colored("Sorry you did not get enough questions correct. "
+                                                 "Better luck next time"))
 
     def get_question_type(self) -> str:
         question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
