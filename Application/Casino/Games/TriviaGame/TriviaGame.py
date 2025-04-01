@@ -175,7 +175,7 @@ class TriviaGame(Game):
         return valid_categories
 
     def check_answer(self, answer: str, question: Question, question_num) -> None:
-        if answer == question.answer:
+        if answer.lower().strip() == question.answer.lower().strip():
             self.score += 1
             print(f"Correct!! Your new score is {self.score}/{question_num}")
         else:
