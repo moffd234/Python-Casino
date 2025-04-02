@@ -95,3 +95,11 @@ class test_TriviaGame(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
+    def test_check_answer_mc_wrong(self):
+        self.game.score = 0
+        self.game.check_answer("c", self.test_question_mc, 1)
+
+        expected: int = 0
+        actual = self.game.score
+
+        self.assertEqual(expected, actual)
