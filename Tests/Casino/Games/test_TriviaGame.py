@@ -1,6 +1,7 @@
 import unittest
 
 from Application.Casino.AccountManager import AccountManager
+from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 
 
@@ -9,6 +10,9 @@ class test_TriviaGame(unittest.TestCase):
     def setUp(self):
         self.manager = AccountManager()
         self.game = TriviaGame(self.manager.get_account("Username", "Password"))
+        self.test_question_tf = Question("is this how to spell true 'true'?", "true", ["false"])
+        self.test_question_mc = Question("What is the first letter of the alphabet'?",
+                                         "a", ["b", "c", "d"])
 
     def test_get_winnings_total_hard_multiple(self):
         self.game.q_type = "multiple"
@@ -72,3 +76,22 @@ class test_TriviaGame(unittest.TestCase):
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
+
+    def test_check_answer_tf_true(self):
+        self.game.score = 0
+        self.game.check_answer("true", self.test_question_tf, 1)
+
+        expected: int = 1
+        actual = self.game.score
+
+        self.assertEqual(expected, actual)
+
+    def test_check_answer_mc_right(self):
+        self.game.score = 0
+        self.game.check_answer("a", self.test_question_mc, 1)
+
+        expected: int = 1
+        actual = self.game.score
+
+        self.assertEqual(expected, actual)
+
