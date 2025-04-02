@@ -1,4 +1,3 @@
-import logging
 from datetime import datetime, timedelta
 import json
 import os.path
@@ -52,6 +51,19 @@ def cache_loader() -> dict | None:
                 return cache["categories"]
 
     return None
+
+
+def parse_cached_categories(cache) -> list[Category]:
+    possible_categories: list[Category] = []
+    for category in cache:
+        possible_categories.append(Category(
+            name=category.get("name"),
+            id_num=category.get("id"),
+            easy_num=category.get("easy_num"),
+            med_num=category.get("med_num"),
+            hard_num=category.get("hard_num"))
+        )
+    return possible_categories
 
 
 class TriviaGame(Game):
@@ -127,7 +139,7 @@ class TriviaGame(Game):
 
         return difficulty
 
-    def get_category(self, valid_cats: [Category]) -> Category:
+    def get_category(self, valid_cats: list[Category]) -> Category:
         print(self.console.print_colored("Available Categories:"))
         for i in range(len(valid_cats)):
             print(self.console.print_colored(f"{i}. {valid_cats[i].name}"))
@@ -177,7 +189,7 @@ class TriviaGame(Game):
         category_cacher(possible_categories)
         return possible_categories
 
-    def get_valid_categories(self, difficulty: str) -> [Category]:
+    def get_valid_categories(self, difficulty: str) -> list[Category]:
         """
 
         Iterates through list of Categories and returns a list of only the categories that are valid
@@ -190,8 +202,8 @@ class TriviaGame(Game):
         we must iterate through all the possible categories and see if it has 50+ questions for a given difficulty at
         which point we can assume it has 10+ for both true/false and multiple choice
         """
-        categories: [Category] = self.get_possible_categories()
-        valid_categories: [Category] = []
+        categories: list[Category] = self.get_possible_categories()
+        valid_categories: list[Category] = []
 
         for cat in categories:
             if difficulty == "easy" and cat.easy_num >= 50:
