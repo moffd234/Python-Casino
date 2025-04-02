@@ -1,5 +1,5 @@
 {
-    "timestamp": "2025-04-01 19:12:52",
+    "timestamp": "2025-04-01 20:13:48",
     "categories": [
         {
             "name": "General Knowledge",
@@ -12,7 +12,7 @@
             "name": "Entertainment: Books",
             "id": 10,
             "easy_num": 33,
-            "med_num": 45,
+            "med_num": 46,
             "hard_num": 28
         },
         {
@@ -26,7 +26,7 @@
             "name": "Entertainment: Music",
             "id": 12,
             "easy_num": 113,
-            "med_num": 204,
+            "med_num": 205,
             "hard_num": 75
         },
         {
@@ -47,7 +47,7 @@
             "name": "Entertainment: Video Games",
             "id": 15,
             "easy_num": 354,
-            "med_num": 480,
+            "med_num": 481,
             "hard_num": 207
         },
         {
@@ -60,7 +60,7 @@
         {
             "name": "Science & Nature",
             "id": 17,
-            "easy_num": 66,
+            "easy_num": 67,
             "med_num": 109,
             "hard_num": 71
         },
