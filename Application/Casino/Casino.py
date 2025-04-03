@@ -2,6 +2,7 @@ from Application.Casino.AccountManager import AccountManager
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
+from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
@@ -114,7 +115,8 @@ class Casino:
                 game.run()
 
             elif answer == "tic-tac-toe" or answer == "tictactoe":
-                pass
+                game = TicTacToe(self.account)
+                game.run()
 
             elif answer == "coinflip" or answer == "coin flip":
                 game = CoinFlip(self.account)
