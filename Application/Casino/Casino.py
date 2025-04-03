@@ -44,7 +44,7 @@ class Casino:
             if account:
                 return account
             else:
-                print("Invalid login info")
+                print(self.console.print_colored("Invalid login info"), ANSI_COLORS.RED)
 
         print("Too many login attempts - returning to main screen\n\n\n")
         return None
@@ -60,7 +60,7 @@ class Casino:
                 return account
 
             else:
-                print("Account with that username already exists")
+                print(self.console.print_colored("Account with that username already exists"), ANSI_COLORS.RED)
 
     def handle_initial_action(self) -> CasinoAccount:
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
@@ -90,7 +90,10 @@ class Casino:
                 pass
 
             elif answer == "select-game" or answer == "select game" or answer == "select":
-                self.prompt_game()
+                if self.account.balance < 1.00:
+                    print(self.console.print_colored("You do not have enough money to play any games"), ANSI_COLORS.RED)
+                else:
+                    self.prompt_game()
 
     def prompt_game(self) -> None:
         while True:
