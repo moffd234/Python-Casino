@@ -4,7 +4,7 @@ from Application.Casino.Games.Game import Game
 class TicTacToe(Game):
     def __init__(self, player):
         super().__init__(player)
-        self.game_board = [[" " for _ in range(3)] for _ in range(3)]
+        self.game_board: list[list[str]] = [[" " for _ in range(3)] for _ in range(3)]
         self.turn = "x"
 
     def print_welcome_message(self) -> str:
@@ -19,3 +19,6 @@ class TicTacToe(Game):
             board_lines.append(" | ".join(row))
         board_display = "\n---------\n".join(board_lines)
         print(self.console.print_colored(board_display))
+
+    def is_cell_empty(self, row: int, col: int) -> bool:
+        return self.game_board[row][col] == " "
