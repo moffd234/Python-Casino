@@ -41,3 +41,13 @@ class TicTacToe(Game):
             col = self.console.get_integer_input("Enter column number (1-3)")
 
         return col
+
+    def handle_turn(self) -> None:
+        row = self.get_row()
+        col = self.get_col()
+
+        while not self.is_cell_empty(row - 1, col - 1):
+            print(self.console.print_colored("Cell already occupied", ANSI_COLORS.RED))
+            row = self.get_row()
+
+        self.game_board[row - 1][col - 1] = self.turn
