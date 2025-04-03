@@ -1,9 +1,5 @@
-from Application.Casino.AccountManager import AccountManager
-from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
+from Application.Casino.Casino import Casino
 
 if __name__ == '__main__':
-    # casino = Casino()
-    # casino.run()
-    manager = AccountManager()
-    game = TriviaGame(manager.get_account("Username", "Password"))
-    game.get_difficulty()
+    casino = Casino()
+    casino.run()

@@ -15,9 +15,11 @@ class Casino:
     def run(self) -> None:
         self.print_welcome()
 
-        account: CasinoAccount | None = self.handle_initial_action()
-        while not account:
-            account = self.handle_initial_action()
+        self.account = self.handle_initial_action()
+        while not self.account:
+            self.account = self.handle_initial_action()
+
+        self.prompt_manage_or_select()
 
     def print_welcome(self) -> str:
         return self.console.print_colored(r"""
@@ -88,13 +90,13 @@ class Casino:
                 pass
 
             elif answer == "select-game" or answer == "select game" or answer == "select":
-                pass
+                self.prompt_game()
 
     def prompt_game(self) -> None:
         while True:
             answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ SLOTS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]")
+                "\n\t[ SLOTS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
 
             # The following are placeholders until the games are made
             if answer == "slots":
