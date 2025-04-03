@@ -10,7 +10,11 @@ class CasinoAccount:
     def __init__(self, username: str, password: str, balance: float=0.00):
         self.username = username
         self.password = password
-        self._balance = balance
+
+        if balance != 0.00:
+            self.balance = balance
+        else:
+            self.balance = 50.00
 
     @property
     def balance(self) -> float:

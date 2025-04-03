@@ -11,7 +11,7 @@ class CasinoAccountTest(unittest.TestCase):
     def test_constructor_no_balance(self):
         self.assertEqual(self.account.username, "test_user")
         self.assertEqual(self.account.password, "test_password")
-        self.assertEqual(self.account.balance, 0.00)
+        self.assertEqual(self.account.balance, 50.00)
 
     def test_constructor_with_balance(self):
         account = CasinoAccount("test_account", "test_password", 25.85)

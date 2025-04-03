@@ -32,7 +32,7 @@ class test_Casino(unittest.TestCase):
 
         expected_username = "test_username"
         expected_password = "test_password"
-        expected_balance = 0.0
+        expected_balance = 50.0
 
         actual_username = account.username
         actual_password = account.password
@@ -56,7 +56,7 @@ class test_Casino(unittest.TestCase):
 
         expected_username = "test_username"
         expected_password = "test_password"
-        expected_balance = 0.0
+        expected_balance = 50.0
 
         actual_username = account.username
         actual_password = account.password

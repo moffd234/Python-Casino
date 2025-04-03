@@ -16,7 +16,7 @@ class AccountManagerTest(unittest.TestCase):
 
         expected_username = "username"
         expected_password = "password"
-        expected_balance = 0.0
+        expected_balance = 50.0
 
         actual_username = subject.username
         actual_password = subject.password
