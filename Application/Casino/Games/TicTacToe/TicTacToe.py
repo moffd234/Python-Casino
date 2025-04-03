@@ -1,4 +1,5 @@
 from Application.Casino.Games.Game import Game
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 class TicTacToe(Game):
@@ -22,3 +23,21 @@ class TicTacToe(Game):
 
     def is_cell_empty(self, row: int, col: int) -> bool:
         return self.game_board[row][col] == " "
+
+    def get_row(self) -> int:
+         row = self.console.get_integer_input("Enter row number (1-3)")
+
+         while row < 1 or row > 3:
+             print(self.console.print_colored("Row number must be between 1 and 3", ANSI_COLORS.RED))
+             row = self.console.get_integer_input("Enter row number (1-3)")
+
+         return row
+
+    def get_col(self) -> int:
+        col = self.console.get_integer_input("Enter column number (1-3)")
+
+        while col < 1 or col > 3 or not self.is_cell_empty(col - 1, 0):
+            print(self.console.print_colored("Column number must be between 1 and 3", ANSI_COLORS.RED))
+            col = self.console.get_integer_input("Enter column number (1-3)")
+
+        return col
