@@ -1,7 +1,9 @@
 import unittest
+from unittest.mock import MagicMock, patch
 
 from Application.Casino.AccountManager import AccountManager
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 class TestTicTacToe(unittest.TestCase):
@@ -9,6 +11,7 @@ class TestTicTacToe(unittest.TestCase):
     def setUp(self):
         manager = AccountManager()
         self.game = TicTacToe(manager.get_account("Username", "Password"))
+        self.game.console = MagicMock()
 
     def test_check_for_winner_horizontal(self):
         self.game.game_board = \
@@ -108,20 +111,32 @@ class TestTicTacToe(unittest.TestCase):
         actual: bool = self.game.is_cell_empty(1, 0)
         self.assertTrue(actual)
 
-    def test_print_welcome_message(self):
-        expected: str = r"""[31m
-         __          __  _                            _______      _______ _          _______             _______         
-         \ \        / / | |                          |__   __|    |__   __(_)        |__   __|           |__   __|        
-          \ \  /\  / /__| | ___ ___  _ __ ___   ___     | | ___      | |   _  ___ ______| | __ _  ___ ______| | ___   ___ 
-           \ \/  \/ / _ \ |/ __/ _ \| '_ ` _ \ / _ \    | |/ _ \     | |  | |/ __|______| |/ _` |/ __|______| |/ _ \ / _ \
-            \  /\  /  __/ | (_| (_) | | | | | |  __/    | | (_) |    | |  | | (__       | | (_| | (__       | | (_) |  __/
-             \/  \/ \___|_|\___\___/|_| |_| |_|\___|    |_|\___/     |_|  |_|\___|      |_|\__,_|\___|      |_|\___/ \___|
-                                                                                                                          
-            
-            Rules:
-                This is a non-gambling game so you will not win or lose money.
-                Two players take turns placing their symbol on the board.
-                The first player to place three of their symbols in a horizontal, vertical, or diagonal row wins.                                                                                                    
-        """
-        actual: str = self.game.print_welcome_message()
+    def test_get_row_first_try(self):
+        self.game.console.get_integer_input = MagicMock(return_value=1)
+
+        expected: int = 1
+        actual: int = self.game.get_row()
         self.assertEqual(expected, actual)
+
+    def test_get_row_second_try(self):
+        self.game.console.get_integer_input.side_effect = [0, 1]
+
+        expected: int = 1
+        expected_call_count: int = 2
+        actual = self.game.get_row()
+        actual_call_count: int = self.game.console.get_integer_input.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_call_count, actual_call_count)
+
+    def test_get_row_fifth_try(self):
+        self.game.console.get_integer_input.side_effect = [0, 5, 6, 7, 2]
+        self.game.console.print_colored("Row number must be between 1 and 3", ANSI_COLORS.RED)
+
+        expected: int = 2
+        expected_call_count: int = 5
+        actual = self.game.get_row()
+        actual_call_count: int = self.game.console.get_integer_input.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_call_count, actual_call_count)
