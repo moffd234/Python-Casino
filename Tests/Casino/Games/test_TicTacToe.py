@@ -107,3 +107,21 @@ class TestTicTacToe(unittest.TestCase):
 
         actual: bool = self.game.is_cell_empty(1, 0)
         self.assertTrue(actual)
+
+    def test_print_welcome_message(self):
+        expected: str = r"""[31m
+         __          __  _                            _______      _______ _          _______             _______         
+         \ \        / / | |                          |__   __|    |__   __(_)        |__   __|           |__   __|        
+          \ \  /\  / /__| | ___ ___  _ __ ___   ___     | | ___      | |   _  ___ ______| | __ _  ___ ______| | ___   ___ 
+           \ \/  \/ / _ \ |/ __/ _ \| '_ ` _ \ / _ \    | |/ _ \     | |  | |/ __|______| |/ _` |/ __|______| |/ _ \ / _ \
+            \  /\  /  __/ | (_| (_) | | | | | |  __/    | | (_) |    | |  | | (__       | | (_| | (__       | | (_) |  __/
+             \/  \/ \___|_|\___\___/|_| |_| |_|\___|    |_|\___/     |_|  |_|\___|      |_|\__,_|\___|      |_|\___/ \___|
+                                                                                                                          
+            
+            Rules:
+                This is a non-gambling game so you will not win or lose money.
+                Two players take turns placing their symbol on the board.
+                The first player to place three of their symbols in a horizontal, vertical, or diagonal row wins.                                                                                                    
+        """
+        actual: str = self.game.print_welcome_message()
+        self.assertEqual(expected, actual)
