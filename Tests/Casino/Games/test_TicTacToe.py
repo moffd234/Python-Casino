@@ -89,3 +89,21 @@ class TestTicTacToe(unittest.TestCase):
         expected: str = "x"
         actual: str = self.game.check_for_winner()
         self.assertEqual(expected, actual)
+
+    def test_is_cell_empty_false(self):
+        self.game.game_board = \
+            [["x", "x", "x"],
+             [" ", " ", " "],
+             [" ", " ", " "]]
+
+        actual: bool = self.game.is_cell_empty(0, 0)
+        self.assertFalse(actual)
+
+    def test_is_cell_empty_true(self):
+        self.game.game_board = \
+            [["x", "x", "x"],
+             [" ", " ", " "],
+             [" ", " ", " "]]
+
+        actual: bool = self.game.is_cell_empty(1, 0)
+        self.assertTrue(actual)
