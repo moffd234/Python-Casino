@@ -67,22 +67,22 @@ class TicTacToe(Game):
 
         self.game_board[row - 1][col - 1] = self.turn
 
-    def check_for_winner(self) -> bool:
+    def check_for_winner(self) -> str | None:
         for row in range(3):
             # Horizontal
             if self.game_board[row][0] == self.game_board[row][1] == self.game_board[row][2] != " ":
-                return True
+                return self.game_board[row][0]
 
             # Vertical
-            elif self.game_board[0][row] == self.game_board[1][row] == self.game_board[2][row] != " ":
-                return True
+            if self.game_board[0][row] == self.game_board[1][row] == self.game_board[2][row] != " ":
+                return self.game_board[0][row]
 
-            # Diagonal
-            elif self.game_board[0][0] == self.game_board[1][1] == self.game_board[2][2] != " ":
-                return True
+        # Diagonal
+        if self.game_board[0][0] == self.game_board[1][1] == self.game_board[2][2] != " ":
+            return self.game_board[0][0]
 
-            # Diagonal
-            elif self.game_board[0][2] == self.game_board[1][1] == self.game_board[2][0] != " ":
-                return True
+        # Diagonal
+        if self.game_board[0][2] == self.game_board[1][1] == self.game_board[2][0] != " ":
+            return self.game_board[0][2]
 
-        return False
+        return None
