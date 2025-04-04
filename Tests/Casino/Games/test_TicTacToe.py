@@ -39,3 +39,33 @@ class TestTicTacToe(unittest.TestCase):
         expected: str = "o"
         actual: str = self.game.check_for_winner()
         self.assertEqual(expected, actual)
+
+    def test_check_for_winner_vertical_first(self):
+        self.game.game_board = \
+            [["o", "o", "x"],
+             ["o", "x", "o"],
+             ["o", "x", "x"]]
+
+        expected: str = "o"
+        actual: str = self.game.check_for_winner()
+        self.assertEqual(expected, actual)
+
+    def test_check_for_winner_vertical_second(self):
+        self.game.game_board = \
+            [["o", "x", "x"],
+             ["x", "x", "o"],
+             ["o", "x", "x"]]
+
+        expected: str = "x"
+        actual: str = self.game.check_for_winner()
+        self.assertEqual(expected, actual)
+
+    def test_check_for_winner_vertical_last(self):
+        self.game.game_board = \
+            [["o", "x", "x"],
+             ["x", "o", "x"],
+             ["o", "x", "x"]]
+
+        expected: str = "x"
+        actual: str = self.game.check_for_winner()
+        self.assertEqual(expected, actual)
