@@ -9,7 +9,22 @@ class TicTacToe(Game):
         self.turn = "x"
 
     def print_welcome_message(self) -> str:
-        pass
+        print(self.console.print_colored(
+            r"""
+         __          __  _                            _______      _______ _          _______             _______         
+         \ \        / / | |                          |__   __|    |__   __(_)        |__   __|           |__   __|        
+          \ \  /\  / /__| | ___ ___  _ __ ___   ___     | | ___      | |   _  ___ ______| | __ _  ___ ______| | ___   ___ 
+           \ \/  \/ / _ \ |/ __/ _ \| '_ ` _ \ / _ \    | |/ _ \     | |  | |/ __|______| |/ _` |/ __|______| |/ _ \ / _ \
+            \  /\  /  __/ | (_| (_) | | | | | |  __/    | | (_) |    | |  | | (__       | | (_| | (__       | | (_) |  __/
+             \/  \/ \___|_|\___\___/|_| |_| |_|\___|    |_|\___/     |_|  |_|\___|      |_|\__,_|\___|      |_|\___/ \___|
+                                                                                                                          
+            
+            Rules:
+                This is a non-gambling game so you will not win or lose money.
+                Two players take turns placing their symbol on the board.
+                The first player to place three of their symbols in a horizontal, vertical, or diagonal row wins.                                                                                                    
+        """
+        ))
 
     def run(self):
         pass
