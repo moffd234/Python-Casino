@@ -131,11 +131,39 @@ class TestTicTacToe(unittest.TestCase):
 
     def test_get_row_fifth_try(self):
         self.game.console.get_integer_input.side_effect = [0, 5, 6, 7, 2]
-        self.game.console.print_colored("Row number must be between 1 and 3", ANSI_COLORS.RED)
 
         expected: int = 2
         expected_call_count: int = 5
         actual = self.game.get_row()
+        actual_call_count: int = self.game.console.get_integer_input.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_call_count, actual_call_count)
+
+    def test_get_col_first_try(self):
+        self.game.console.get_integer_input = MagicMock(return_value=1)
+
+        expected: int = 1
+        actual: int = self.game.get_col()
+        self.assertEqual(expected, actual)
+
+    def test_get_col_second_try(self):
+        self.game.console.get_integer_input.side_effect = [0, 1]
+
+        expected: int = 1
+        expected_call_count: int = 2
+        actual = self.game.get_col()
+        actual_call_count: int = self.game.console.get_integer_input.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_call_count, actual_call_count)
+
+    def test_get_col_fifth_try(self):
+        self.game.console.get_integer_input.side_effect = [0, 5, 6, 7, 2]
+
+        expected: int = 2
+        expected_call_count: int = 5
+        actual = self.game.get_col()
         actual_call_count: int = self.game.console.get_integer_input.call_count
 
         self.assertEqual(expected, actual)
