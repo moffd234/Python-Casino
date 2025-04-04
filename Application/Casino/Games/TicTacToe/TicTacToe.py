@@ -9,7 +9,7 @@ class TicTacToe(Game):
         self.turn = "x"
 
     def print_welcome_message(self) -> str:
-        print(self.console.print_colored(
+        return self.console.print_colored(
             r"""
          __          __  _                            _______      _______ _          _______             _______         
          \ \        / / | |                          |__   __|    |__   __(_)        |__   __|           |__   __|        
@@ -24,7 +24,7 @@ class TicTacToe(Game):
                 Two players take turns placing their symbol on the board.
                 The first player to place three of their symbols in a horizontal, vertical, or diagonal row wins.                                                                                                    
         """
-        ))
+        )
 
     def run(self):
         pass
@@ -66,3 +66,23 @@ class TicTacToe(Game):
             row = self.get_row()
 
         self.game_board[row - 1][col - 1] = self.turn
+
+    def check_for_winner(self) -> bool:
+        for row in range(3):
+            # Horizontal
+            if self.game_board[row][0] == self.game_board[row][1] == self.game_board[row][2] != " ":
+                return True
+
+            # Vertical
+            elif self.game_board[0][row] == self.game_board[1][row] == self.game_board[2][row] != " ":
+                return True
+
+            # Diagonal
+            elif self.game_board[0][0] == self.game_board[1][1] == self.game_board[2][2] != " ":
+                return True
+
+            # Diagonal
+            elif self.game_board[0][2] == self.game_board[1][1] == self.game_board[2][0] != " ":
+                return True
+
+        return False
