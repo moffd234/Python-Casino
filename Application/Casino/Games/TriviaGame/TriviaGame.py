@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from html import unescape
 import json
 import os.path
 
@@ -27,9 +28,10 @@ def get_response(url) -> None | dict:
 def create_questions(q_response: dict) -> [Question]:
     questions_list: [Question] = []
     for question in q_response["results"]:
-        questions_list.append(Question(question=question["question"],
-                                       answer=question["correct_answer"],
-                                       wrong_answers=question["incorrect_answers"]))
+        questions_list.append(Question(question=unescape(question["question"]),
+                                       answer=unescape(question["correct_answer"]),
+                                       wrong_answers=[unescape(answer) for answer in question["incorrect_answers"]]
+                                       ))
     return questions_list
 
 
