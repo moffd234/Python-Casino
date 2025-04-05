@@ -28,6 +28,15 @@ class TicTacToe(Game):
         )
 
 
+    def run(self):
+        print(self.print_welcome_message())
+
+        while self.get_continue_input():
+            winner: str | None = self.play_game()
+            print(self.console.print_colored(f"Winner is {winner}", ANSI_COLORS.GREEN))
+            self.print_board()
+
+
     def print_board(self) -> None:
         board_lines = []
         for row in self.game_board:
