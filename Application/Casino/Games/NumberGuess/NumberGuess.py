@@ -31,7 +31,7 @@ class NumberGuess(Game):
         while self.get_continue_input():
             num: int = random.randint(1, 10)  # From 1 to 10 [inclusive]
             wager: float = self.get_wager_amount()
-            self.player.subtract_losses(wager)
+            self.manager.subtract_and_save_account(self.player, wager)
             guess: int = self.get_guess()
             print(self.handle_guess(guess, num, wager))
 
@@ -45,7 +45,7 @@ class NumberGuess(Game):
 
     def handle_guess(self, guess: int, ran_num: int, wager: float) -> str:
         if guess == ran_num:
-            self.player.add_winnings(wager * 2)
+            self.manager.add_and_save_account(self.player, wager * 2)
             return f"You Won! The answer was {ran_num}"
 
         return f"You lost. The answer was {ran_num}"

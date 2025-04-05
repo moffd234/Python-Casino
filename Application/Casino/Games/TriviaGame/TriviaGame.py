@@ -104,7 +104,7 @@ class TriviaGame(Game):
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
-            self.player.subtract_losses(wager)
+            self.manager.subtract_and_save_account(self.player, wager)
 
             self.get_choices()
             url: str = (f"{self.base_url}api.php?amount=10&category={self.cat.id}"
@@ -116,7 +116,7 @@ class TriviaGame(Game):
 
             if self.score > 6:
                 winnings = self.get_winnings_total(wager)
-                self.player.add_winnings(winnings)
+                self.manager.add_and_save_account(self.player, winnings)
                 print(self.console.print_colored(f"You Won!!! Your winnings were {winnings}.\n"
                                                  f"This brings your account total to {self.player.balance}"))
             else:

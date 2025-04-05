@@ -40,7 +40,7 @@ class CoinFlip(Game):
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
-            self.player.subtract_losses(wager)
+            self.manager.subtract_and_save_account(self.player, wager)
 
             flip: str = handle_heads_tails()
             guess: str = self.get_guess()
@@ -58,7 +58,7 @@ class CoinFlip(Game):
 
     def handle_outcome(self, guess: str, flip: str, wager: float):
         if guess == flip:
-            self.player.add_winnings(wager * 1.25)
+            self.manager.add_and_save_account(self.player, wager * 1.25)
             return f"You Won! The coin was {flip}"
 
         else:
