@@ -62,3 +62,11 @@ class AccountManager:
             for account in self.accounts:
                 writer.writerow([account.username, account.password, account.balance])
         logging.debug("Saved all accounts to file.")
+
+    def add_and_save_account(self, account: CasinoAccount, wager: float) -> None:
+        account.add_winnings(wager)
+        self.save_accounts()
+
+    def subtract_and_save_account(self, account: CasinoAccount, wager: float) -> None:
+        account.subtract_losses(wager)
+        self.save_accounts()
