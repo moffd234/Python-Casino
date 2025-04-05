@@ -86,3 +86,14 @@ class TicTacToe(Game):
             return self.game_board[0][2]
 
         return None
+
+    def play_game(self) -> str | None:
+        winner: str | None = None
+
+        while winner is None:
+            self.print_board()
+            self.handle_turn()
+            winner = self.check_for_winner()
+
+            if winner:
+                return winner
