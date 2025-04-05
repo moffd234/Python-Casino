@@ -1,14 +1,16 @@
 from abc import ABC, abstractmethod
 
+from Application.Casino.AccountManager import AccountManager
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
 
 
 class Game(ABC):
-    def __init__(self, player: CasinoAccount):
+    def __init__(self, player: CasinoAccount, manager: AccountManager):
         self.player = player
         self.console = IOConsole()
+        self.manager = manager
 
     @abstractmethod
     def print_welcome_message(self) -> str:

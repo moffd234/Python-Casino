@@ -9,7 +9,7 @@ class TestTicTacToe(unittest.TestCase):
 
     def setUp(self):
         manager = AccountManager()
-        self.game = TicTacToe(manager.get_account("Username", "Password"))
+        self.game = TicTacToe(manager.get_account("Username", "Password"), manager)
         self.game.console = MagicMock()
 
     def test_check_for_winner_horizontal(self):

@@ -1,13 +1,14 @@
 import random
 
+from Application.Casino.AccountManager import AccountManager
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Casino.Games.Game import Game
 
 
 class NumberGuess(Game):
-    def __init__(self, player: CasinoAccount):
-        super().__init__(player)
+    def __init__(self, player: CasinoAccount, manager: AccountManager):
+        super().__init__(player, manager)
         self.console.color = ANSI_COLORS.CYAN.value
 
     def print_welcome_message(self) -> str:

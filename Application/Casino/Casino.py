@@ -107,19 +107,19 @@ class Casino:
                 pass
 
             elif answer == "numberguess":
-                game = NumberGuess(self.account)
+                game = NumberGuess(self.account, self.manager)
                 game.run()
 
             elif answer == "trivia":
-                game = TriviaGame(self.account)
+                game = TriviaGame(self.account, self.manager)
                 game.run()
 
             elif answer == "tic-tac-toe" or answer == "tictactoe":
-                game = TicTacToe(self.account)
+                game = TicTacToe(self.account, self.manager)
                 game.run()
 
             elif answer == "coinflip" or answer == "coin flip":
-                game = CoinFlip(self.account)
+                game = CoinFlip(self.account, self.manager)
                 game.run()
 
             self.manager.save_accounts() # Save accounts after every game

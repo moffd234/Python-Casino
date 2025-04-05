@@ -5,6 +5,7 @@ import os.path
 
 import requests
 
+from Application.Casino.AccountManager import AccountManager
 from Application.Casino.CasinoAccount import CasinoAccount
 from Application.Casino.Games.Game import Game
 from Application.Casino.Games.TriviaGame.Category import Category
@@ -70,8 +71,8 @@ def parse_cached_categories(cache) -> list[Category]:
 
 class TriviaGame(Game):
 
-    def __init__(self, player: CasinoAccount):
-        super().__init__(player)
+    def __init__(self, player: CasinoAccount, manager: AccountManager):
+        super().__init__(player, manager)
         self.q_type: str = ""
         self.difficulty: str = ""
         self.cat: Category | None = None

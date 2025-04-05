@@ -1,10 +1,11 @@
+from Application.Casino.AccountManager import AccountManager
 from Application.Casino.Games.Game import Game
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 class TicTacToe(Game):
-    def __init__(self, player):
-        super().__init__(player)
+    def __init__(self, player, manager: AccountManager):
+        super().__init__(player, manager)
         self.console.color = ANSI_COLORS.CYAN.value
         self.game_board: list[list[str]] = [[" " for _ in range(3)] for _ in range(3)]
         self.turn = "x"

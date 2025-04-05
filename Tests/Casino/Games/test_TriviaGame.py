@@ -9,7 +9,7 @@ class test_TriviaGame(unittest.TestCase):
 
     def setUp(self):
         self.manager = AccountManager()
-        self.game = TriviaGame(self.manager.get_account("Username", "Password"))
+        self.game = TriviaGame(self.manager.get_account("Username", "Password"), self.manager)
         self.test_question_tf = Question("is this how to spell true 'true'?", "true", ["false"])
         self.test_question_mc = Question("What is the first letter of the alphabet'?",
                                          "a", ["b", "c", "d"])
