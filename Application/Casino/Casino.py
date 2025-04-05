@@ -45,7 +45,7 @@ class Casino:
             if account:
                 return account
             else:
-                print(self.console.print_colored("Invalid login info"), ANSI_COLORS.RED)
+                print(self.console.print_colored("Invalid login info", ANSI_COLORS.RED))
 
         print("Too many login attempts - returning to main screen\n\n\n")
         return None

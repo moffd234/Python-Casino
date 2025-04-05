@@ -1,9 +1,8 @@
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from Application.Casino.AccountManager import AccountManager
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
-from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 class TestTicTacToe(unittest.TestCase):
