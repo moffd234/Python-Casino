@@ -1,4 +1,5 @@
 import csv
+import logging
 import os.path
 
 from Application.Casino.CasinoAccount import CasinoAccount
@@ -17,6 +18,7 @@ def write_new_account_to_csv(account: CasinoAccount) -> None:
         with open(FP, "w", newline='') as file:
             writer = csv.writer(file, lineterminator="\n")
             writer.writerow(account_details)
+    logging.debug("Wrote new account to file.")
 
 def read_from_csv() -> list[CasinoAccount]:
     accounts: list = []
@@ -25,6 +27,7 @@ def read_from_csv() -> list[CasinoAccount]:
         for line in csv_reader:
             new_account = CasinoAccount(line[0], line[1], float(line[2]))
             accounts.append(new_account)
+    logging.debug("Read all accounts from file.")
     return accounts
 
 
@@ -52,3 +55,10 @@ class AccountManager:
                 return account
 
         return None
+
+    def save_accounts(self) -> None:
+        with open(FP, "w", newline='') as file:
+            writer = csv.writer(file, lineterminator="\n")
+            for account in self.accounts:
+                writer.writerow([account.username, account.password, account.balance])
+        logging.debug("Saved all accounts to file.")
