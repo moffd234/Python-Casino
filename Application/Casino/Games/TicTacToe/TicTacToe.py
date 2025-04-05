@@ -5,6 +5,7 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 class TicTacToe(Game):
     def __init__(self, player):
         super().__init__(player)
+        self.console.color = ANSI_COLORS.CYAN.value
         self.game_board: list[list[str]] = [[" " for _ in range(3)] for _ in range(3)]
         self.turn = "x"
 
@@ -26,8 +27,6 @@ class TicTacToe(Game):
         """
         )
 
-    def run(self):
-        pass
 
     def print_board(self) -> None:
         board_lines = []
@@ -51,7 +50,7 @@ class TicTacToe(Game):
     def get_col(self) -> int:
         col = self.console.get_integer_input("Enter column number (1-3)")
 
-        while col < 1 or col > 3 or not self.is_cell_empty(col - 1, 0):
+        while col < 1 or col > 3:
             print(self.console.print_colored("Column number must be between 1 and 3", ANSI_COLORS.RED))
             col = self.console.get_integer_input("Enter column number (1-3)")
 
@@ -66,6 +65,7 @@ class TicTacToe(Game):
             row = self.get_row()
 
         self.game_board[row - 1][col - 1] = self.turn
+        self.turn = "o" if self.turn == "x" else "x"
 
     def check_for_winner(self) -> str | None:
         for row in range(3):
