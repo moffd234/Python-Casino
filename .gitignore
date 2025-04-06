@@ -155,6 +155,3 @@ dmypy.json
 cython_debug/
 
 .idea/
-
-accounts.csv
-Application/MainApplication.py
