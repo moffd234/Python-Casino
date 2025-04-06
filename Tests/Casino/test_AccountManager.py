@@ -55,8 +55,9 @@ class AccountManagerTest(unittest.TestCase):
 
         self.assertIsNone(actual)
 
+    @patch("os.path.exists", return_value=True)
     @patch("builtins.open", new_callable=mock_open, read_data="user1,pass1,500\nuser2,pass2,1000\n")
-    def test_read_from_csv(self, mock_file):
+    def test_read_from_csv(self, mock_file, mock_exists):
         manager = AccountManager()
         manager = AccountManager()
 
