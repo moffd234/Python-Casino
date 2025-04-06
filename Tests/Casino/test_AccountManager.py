@@ -56,10 +56,8 @@ class AccountManagerTest(unittest.TestCase):
         self.assertIsNone(actual)
 
     @patch("builtins.open", new_callable=mock_open, read_data="user1,pass1,500\nuser2,pass2,1000\n")
-    @patch("csv.reader")
-    def test_read_from_csv(self, mock_csv_reader, mock_file):
-        mock_csv_reader.return_value = [["user1", "pass1", 500], ["user2", "pass2", 1000]]
-
+    def test_read_from_csv(self, mock_file):
+        manager = AccountManager()
         manager = AccountManager()
 
         user_one = manager.accounts[0]
