@@ -88,10 +88,15 @@ class AccountManager:
                 writer.writerow([account.username, account.password, account.balance])
         logging.debug("Saved all accounts to file.")
 
-    def add_and_save_account(self, account: CasinoAccount, wager: float) -> None:
+    def add_and_save_account(self, account: CasinoAccount | UserAccount, wager: float) -> None:
         account.add_winnings(wager)
         self.save_accounts()
+        if SQL_TRANSITION:
+            self.session.commit()
 
-    def subtract_and_save_account(self, account: CasinoAccount, wager: float) -> None:
+    def subtract_and_save_account(self, account: CasinoAccount | UserAccount, wager: float) -> None:
         account.subtract_losses(wager)
         self.save_accounts()
+
+        if SQL_TRANSITION:
+            self.session.commit()
