@@ -1,6 +1,8 @@
 import csv
 import logging
 import os.path
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
 from Application.Casino.Accounts.UserAccount import UserAccount
@@ -46,7 +48,7 @@ class AccountManager:
 
     def create_account(self, username: str, password: str) -> CasinoAccount | UserAccount | None:
         if SQL_TRANSITION:
-            user = self.session.query(UserAccount).filter_by(username=username).first()
+            user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
             if user is None:
                 user = UserAccount(username, password, 50.0)
                 self.session.add(user)
@@ -64,7 +66,15 @@ class AccountManager:
         self.accounts.append(account)
         write_new_account_to_csv(account)
 
-    def get_account(self, username: str, password: str) -> CasinoAccount | None:
+    def get_account(self, username: str, password: str) -> CasinoAccount | UserAccount | None:
+        if SQL_TRANSITION:
+            user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
+
+            if user is not None and user.password == password:
+                return user
+            else:
+                return None
+
         for account in self.accounts:
             if account.username == username and account.password == password:
                 return account
