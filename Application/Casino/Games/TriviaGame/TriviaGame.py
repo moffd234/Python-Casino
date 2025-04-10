@@ -5,8 +5,8 @@ import os.path
 
 import requests
 
-from Application.Casino.AccountManager import AccountManager
-from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.AccountManager import AccountManager
+from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Games.Game import Game
 from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question

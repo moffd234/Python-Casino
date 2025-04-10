@@ -2,7 +2,7 @@ import csv
 import logging
 import os.path
 
-from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 FP = "./accounts.csv"
 

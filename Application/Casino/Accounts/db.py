@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from Casino.UserAccount import Base
+from Application.Casino.Accounts.UserAccount import Base
 
 engine = create_engine('sqlite:///casino.db', echo=False)
 

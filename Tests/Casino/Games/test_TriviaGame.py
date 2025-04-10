@@ -1,6 +1,6 @@
 import unittest
 
-from Application.Casino.AccountManager import AccountManager
+from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 

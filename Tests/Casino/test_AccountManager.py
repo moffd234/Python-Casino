@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import patch, mock_open
 
-from Application.Casino.AccountManager import AccountManager, write_new_account_to_csv
-from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.AccountManager import AccountManager, write_new_account_to_csv
+from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 
 class AccountManagerTest(unittest.TestCase):

@@ -1,5 +1,5 @@
-from Application.Casino.AccountManager import AccountManager
-from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.AccountManager import AccountManager
+from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe

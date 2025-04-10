@@ -1,6 +1,6 @@
 import unittest
 
-from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 
 class CasinoAccountTest(unittest.TestCase):

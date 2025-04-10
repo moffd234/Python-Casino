@@ -1,7 +1,7 @@
 import random
 
-from Application.Casino.AccountManager import AccountManager
-from Application.Casino.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.AccountManager import AccountManager
+from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Casino.Games.Game import Game
 

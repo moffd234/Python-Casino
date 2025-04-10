@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 
-from Application.Casino.AccountManager import AccountManager
+from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
 
 
