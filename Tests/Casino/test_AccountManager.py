@@ -7,7 +7,7 @@ from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 class AccountManagerTest(unittest.TestCase):
 
-    @patch("Application.Casino.AccountManager.read_from_csv", return_value=[])
+    @patch("Application.Casino.Accounts.AccountManager.read_from_csv", return_value=[])
     def setUp(self, mock_read_from_csv):
         self.manager: AccountManager = AccountManager()
 

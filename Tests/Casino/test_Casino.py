@@ -6,7 +6,7 @@ from Application.Casino.Casino import *
 
 class test_Casino(unittest.TestCase):
 
-    @patch("Application.Casino.AccountManager.read_from_csv", return_value=[])
+    @patch("Application.Casino.Accounts.AccountManager.read_from_csv", return_value=[])
     def setUp(self, mock_read_from_csv):
         self.casino = Casino()
 
@@ -24,7 +24,7 @@ class test_Casino(unittest.TestCase):
         actual: str = self.casino.print_welcome()
         self.assertEqual(expected.strip(), actual.strip())
 
-    @patch("Application.Casino.AccountManager.AccountManager.get_account",
+    @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
            return_value=CasinoAccount("test_username", "test_password", 0.0))
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_login(self, mock_inputs, mock_get_account):
@@ -42,13 +42,13 @@ class test_Casino(unittest.TestCase):
         self.assertEqual(expected_password, actual_password)
         self.assertEqual(expected_balance, actual_balance)
 
-    @patch("Application.Casino.AccountManager.AccountManager.get_account", return_value=None)
+    @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account", return_value=None)
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["wrong_user", "wrong_pass"] * 5)
     def test_handle_login_fail(self, mock_get_string_input, mock_get_account):
         account = self.casino.handle_login()
         self.assertIsNone(account)
 
-    @patch("Application.Casino.AccountManager.AccountManager.create_account",
+    @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
            return_value=CasinoAccount("test_username", "test_password", 0.0))
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_signup(self, mock_inputs, mock_get_account):
