@@ -5,8 +5,7 @@ Base = declarative_base()
 
 class UserAccount(Base):
     __tablename__ = 'user_account'
-    id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True, nullable=False)
+    username = Column(String, primary_key=True, nullable=False)
     password = Column(String, nullable=False)
     balance = Column(Float, default=0.0, nullable=False)
 
