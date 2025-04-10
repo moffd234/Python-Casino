@@ -1,7 +1,11 @@
 import csv
 import logging
 import os.path
+from sqlalchemy.orm import Session
 
+from Application.Casino.Accounts.UserAccount import UserAccount
+from Application.FeatureFlag import SQL_TRANSITION  # Feature flag for account transition to SQL
+from Application.Casino.Accounts.db import SessionLocal
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 FP = "./accounts.csv"
@@ -33,12 +37,23 @@ def read_from_csv() -> list[CasinoAccount]:
 
 class AccountManager:
     def __init__(self):
+        if SQL_TRANSITION:
+            self.session: Session = SessionLocal()
         if os.path.exists("./accounts.csv"):
             self.accounts: [CasinoAccount] = read_from_csv()
         else:
             self.accounts: [CasinoAccount] = []
 
-    def create_account(self, username: str, password: str) -> CasinoAccount | None:
+    def create_account(self, username: str, password: str) -> CasinoAccount | UserAccount | None:
+        if SQL_TRANSITION:
+            user = self.session.query(UserAccount).filter_by(username=username).first()
+            if user is None:
+                user = UserAccount(username, password, 50.0)
+                self.session.add(user)
+                self.session.commit()
+                logging.debug(f"Created new user account. With username: {username}")
+                return user
+
         for account in self.accounts:
             if account.username == username:
                 return None
