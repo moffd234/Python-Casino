@@ -2,6 +2,7 @@ import random
 
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Game import Game
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
@@ -17,7 +18,7 @@ def handle_heads_tails() -> str:
 
 class CoinFlip(Game):
 
-    def __init__(self, player: CasinoAccount, manager: AccountManager):
+    def __init__(self, player: CasinoAccount | UserAccount, manager: AccountManager):
         super().__init__(player, manager)
         self.console.color = ANSI_COLORS.BLUE.value
 

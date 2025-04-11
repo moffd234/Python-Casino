@@ -7,7 +7,7 @@ from Application.Casino.Games.Game import Game
 
 
 class NumberGuess(Game):
-    def __init__(self, player: CasinoAccount, manager: AccountManager):
+    def __init__(self, player: CasinoAccount | AccountManager, manager: AccountManager):
         super().__init__(player, manager)
         self.console.color = ANSI_COLORS.CYAN.value
 
