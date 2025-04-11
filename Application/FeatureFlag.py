@@ -1,1 +1,1 @@
-SQL_TRANSITION: bool=False
+SQL_TRANSITION: bool=True
