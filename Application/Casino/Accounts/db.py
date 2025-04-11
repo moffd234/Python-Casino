@@ -1,10 +1,20 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from Application.Casino.Accounts.UserAccount import Base
+from sqlalchemy.orm import sessionmaker, declarative_base, Session
 
-engine = create_engine('sqlite:///casino.db', echo=False)
+Base = declarative_base()
+SessionLocal = None
 
-SessionLocal = sessionmaker(bind=engine)
 
-def init_db():
-    Base.metadata.create_all(engine)
+def init_db(in_memory=False) -> Session:
+    global SessionLocal
+
+    if in_memory:
+        db_url = "sqlite:///:memory:"
+    else:
+        db_url = "sqlite:///casino.db"
+
+    engine = create_engine(db_url, echo=False, connect_args={"check_same_thread": False})
+    SessionLocal = sessionmaker(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    return SessionLocal()

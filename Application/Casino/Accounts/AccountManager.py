@@ -6,8 +6,8 @@ from typing import Optional
 from sqlalchemy.orm import Session
 
 from Application.Casino.Accounts.UserAccount import UserAccount
+from Application.Casino.Accounts.db import init_db
 from Application.FeatureFlag import SQL_TRANSITION  # Feature flag for account transition to SQL
-from Application.Casino.Accounts.db import SessionLocal
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 FP = "./accounts.csv"
@@ -38,9 +38,9 @@ def read_from_csv() -> list[CasinoAccount]:
 
 
 class AccountManager:
-    def __init__(self):
+    def __init__(self, session=None):
         if SQL_TRANSITION:
-            self.session: Session = SessionLocal()
+            self.session: Session = session or init_db()
         if os.path.exists("./accounts.csv"):
             self.accounts: [CasinoAccount] = read_from_csv()
         else:
