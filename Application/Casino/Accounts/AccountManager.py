@@ -49,12 +49,15 @@ class AccountManager:
     def create_account(self, username: str, password: str) -> CasinoAccount | UserAccount | None:
         if SQL_TRANSITION:
             user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
-            if user is None:
-                user = UserAccount(username, password, 50.0)
-                self.session.add(user)
-                self.session.commit()
-                logging.debug(f"Created new user account. With username: {username}")
-                return user
+
+            if user:
+                return None
+
+            user = UserAccount(username, password, 50.0)
+            self.session.add(user)
+            self.session.commit()
+            logging.debug(f"Created new user account. With username: {username}")
+            return user
 
         for account in self.accounts:
             if account.username == username:
