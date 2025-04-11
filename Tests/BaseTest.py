@@ -5,11 +5,11 @@ from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.db import init_db
 
 
-class BaseTset(unittest.TestCase):
+class BaseTest(unittest.TestCase):
 
     def setUp(self):
-        init_db()
-        self.manager = AccountManager()
+        self.session = init_db(in_memory=True)
+        self.manager = AccountManager(session=self.session)
 
 
     def tearDown(self):
