@@ -26,7 +26,6 @@ jobs:
 
       - name: Run database setup
         run: |
-          source .venv/bin/activate
           python -c "from Application.Casino.Accounts.db import init_db; init_db()"
 
       - name: Run tests
