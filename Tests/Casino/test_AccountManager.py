@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, MagicMock
 
 from Application.Casino.Accounts.AccountManager import AccountManager, write_new_account_to_csv
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
@@ -42,9 +42,16 @@ class AccountManagerTest(unittest.TestCase):
         mock_file.assert_called_once_with("./accounts.csv", "a", newline='')
         mock_csv_writer.return_value.writerow.assert_called_once_with(["test_user", "secure123", 500])
 
-    def test_get_account(self):
-        expected: UserAccount = UserAccount("test_username", "test_password", 50.0)
-        actual: UserAccount = self.manager.get_account("test_username", 'test_password')
+    @patch("Application.Casino.Accounts.AccountManager.SessionLocal")
+    def test_get_account(self, mock_session_local):
+        mock_session = MagicMock()
+        mock_session_local.return_value = mock_session
+
+        expected = UserAccount("test_username", "test_password", 50.0)
+        mock_session.query.return_value.filter_by.return_value.first.return_value = expected
+
+        manager = AccountManager()
+        actual = manager.get_account("test_username", "test_password")
 
         self.assertEqual(expected.username, actual.username)
         self.assertEqual(expected.password, actual.password)
