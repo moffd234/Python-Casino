@@ -1,8 +1,7 @@
 from sqlalchemy.dialects.postgresql import Any
-from sqlalchemy.orm import declarative_base
+from Application.Casino.Accounts.db import Base
 from sqlalchemy import Column, String, Float
 
-Base = declarative_base()
 
 class UserAccount(Base):
 
