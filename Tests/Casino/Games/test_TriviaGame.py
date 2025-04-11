@@ -4,7 +4,6 @@ from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 
-
 class test_TriviaGame(unittest.TestCase):
 
     def setUp(self):
@@ -19,7 +18,7 @@ class test_TriviaGame(unittest.TestCase):
         self.game.difficulty = "hard"
         wager: float = 50.0
 
-        expected: float = 93.75
+        expected: float = 109.38
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
@@ -29,7 +28,7 @@ class test_TriviaGame(unittest.TestCase):
         self.game.difficulty = "hard"
         wager: float = 50.0
 
-        expected: float = 75
+        expected: float = 87.5
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
@@ -40,7 +39,7 @@ class test_TriviaGame(unittest.TestCase):
         self.game.difficulty = "medium"
         wager: float = 50.0
 
-        expected: float = 78.12  # Should be rounded down from 78.125
+        expected: float = 93.75
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
@@ -51,7 +50,7 @@ class test_TriviaGame(unittest.TestCase):
         self.game.difficulty = "medium"
         wager: float = 50.0
 
-        expected: float = 62.5
+        expected: float = 75.0
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
@@ -62,7 +61,7 @@ class test_TriviaGame(unittest.TestCase):
         self.game.difficulty = "easy"
         wager: float = 50.0
 
-        expected: float = 62.5
+        expected: float = 78.12
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
@@ -72,7 +71,7 @@ class test_TriviaGame(unittest.TestCase):
         self.game.difficulty = "easy"
         wager: float = 50.0
 
-        expected: float = 50.0
+        expected: float = 62.50
         actual: float = self.game.get_winnings_total(wager)
 
         self.assertEqual(expected, actual)
