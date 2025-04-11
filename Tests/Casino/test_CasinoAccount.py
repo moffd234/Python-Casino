@@ -1,11 +1,13 @@
 import unittest
 
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
+from Tests.BaseTest import BaseTest
 
 
-class CasinoAccountTest(unittest.TestCase):
+class CasinoAccountTest(BaseTest):
 
     def setUp(self):
+        super().setUp()
         self.account = CasinoAccount("test_user", "test_password", 0.00)
 
     def test_constructor_no_balance(self):

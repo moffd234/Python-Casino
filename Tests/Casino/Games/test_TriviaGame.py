@@ -3,11 +3,13 @@ import unittest
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
+from Tests.BaseTest import BaseTest
 
-class test_TriviaGame(unittest.TestCase):
+
+class test_TriviaGame(BaseTest):
 
     def setUp(self):
-        self.manager = AccountManager()
+        super().setUp()
         self.game = TriviaGame(self.manager.get_account("Username", "Password"), self.manager)
         self.test_question_tf = Question("is this how to spell true 'true'?", "true", ["false"])
         self.test_question_mc = Question("What is the first letter of the alphabet'?",

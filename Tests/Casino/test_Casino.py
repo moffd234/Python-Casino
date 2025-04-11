@@ -2,12 +2,14 @@ import unittest
 from unittest.mock import patch
 
 from Application.Casino.Casino import *
+from Tests.BaseTest import BaseTest
 
 
-class test_Casino(unittest.TestCase):
+class test_Casino(BaseTest):
 
     @patch("Application.Casino.Accounts.AccountManager.read_from_csv", return_value=[])
     def setUp(self, mock_read_from_csv):
+        super().setUp()
         self.casino = Casino()
 
     def test_print_welcome(self):

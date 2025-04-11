@@ -1,15 +1,12 @@
-import unittest
 from unittest.mock import MagicMock
-
-from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
+from Tests.BaseTest import BaseTest
 
-
-class TestTicTacToe(unittest.TestCase):
+class TestTicTacToe(BaseTest):
 
     def setUp(self):
-        manager = AccountManager()
-        self.game = TicTacToe(manager.get_account("Username", "Password"), manager)
+        super().setUp()
+        self.game = TicTacToe(self.manager.get_account("Username", "Password"), self.manager)
         self.game.console = MagicMock()
 
     def test_check_for_winner_horizontal(self):

@@ -1,4 +1,4 @@
-import unittest
+from Tests.BaseTest import BaseTest
 from unittest.mock import patch, mock_open, MagicMock
 
 from Application.Casino.Accounts.AccountManager import AccountManager, write_new_account_to_csv
@@ -6,11 +6,11 @@ from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Accounts.UserAccount import UserAccount
 
 
-class AccountManagerTest(unittest.TestCase):
+class AccountManagerTest(BaseTest):
 
     @patch("Application.Casino.Accounts.AccountManager.read_from_csv", return_value=[])
     def setUp(self, mock_read_from_csv):
-        self.manager: AccountManager = AccountManager()
+        super().setUp()
 
     def test_create_account(self):
         subject = self.manager.create_account("username", "password")
@@ -28,8 +28,8 @@ class AccountManagerTest(unittest.TestCase):
         self.assertEqual(expected_balance, actual_balance)
 
     def test_create_account_username_exist(self):
-        self.manager.accounts.append(CasinoAccount("username", "password"))
-        subject = self.manager.create_account("username", "password")
+        self.manager.create_account("test_username", "test_password")
+        subject = self.manager.create_account("test_username", "test_password")
 
         self.assertIsNone(subject)
 
@@ -42,16 +42,10 @@ class AccountManagerTest(unittest.TestCase):
         mock_file.assert_called_once_with("./accounts.csv", "a", newline='')
         mock_csv_writer.return_value.writerow.assert_called_once_with(["test_user", "secure123", 500])
 
-    @patch("Application.Casino.Accounts.AccountManager.SessionLocal")
-    def test_get_account(self, mock_session_local):
-        mock_session = MagicMock()
-        mock_session_local.return_value = mock_session
-
+    def test_get_account(self):
+        self.manager.create_account("test_username", "test_password")
         expected = UserAccount("test_username", "test_password", 50.0)
-        mock_session.query.return_value.filter_by.return_value.first.return_value = expected
-
-        manager = AccountManager()
-        actual = manager.get_account("test_username", "test_password")
+        actual = self.manager.get_account("test_username", "test_password")
 
         self.assertEqual(expected.username, actual.username)
         self.assertEqual(expected.password, actual.password)
