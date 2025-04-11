@@ -3,6 +3,7 @@ from unittest.mock import patch, mock_open
 
 from Application.Casino.Accounts.AccountManager import AccountManager, write_new_account_to_csv
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.UserAccount import UserAccount
 
 
 class AccountManagerTest(unittest.TestCase):
@@ -42,12 +43,12 @@ class AccountManagerTest(unittest.TestCase):
         mock_csv_writer.return_value.writerow.assert_called_once_with(["test_user", "secure123", 500])
 
     def test_get_account(self):
-        expected: CasinoAccount = CasinoAccount("test_user", "secure123")
+        expected: UserAccount = UserAccount("test_username", "test_password", 50.0)
+        actual: UserAccount = self.manager.get_account("test_username", 'test_password')
 
-        self.manager.accounts.append(expected)
-        actual: CasinoAccount = self.manager.get_account("test_user", "secure123")
-
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected.username, actual.username)
+        self.assertEqual(expected.password, actual.password)
+        self.assertEqual(expected.balance, actual.balance)
 
     def test_get_account_none(self):
 
