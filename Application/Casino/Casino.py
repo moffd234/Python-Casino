@@ -121,5 +121,3 @@ class Casino:
             elif answer == "coinflip" or answer == "coin flip":
                 game = CoinFlip(self.account, self.manager)
                 game.run()
-
-            self.manager.save_accounts() # Save accounts after every game
