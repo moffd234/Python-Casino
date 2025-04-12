@@ -25,10 +25,10 @@ class test_Casino(BaseTest):
         self.assertEqual(expected.strip(), actual.strip())
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
-           return_value=CasinoAccount("test_username", "test_password", 0.0))
+           return_value=UserAccount("test_username", "test_password", 50.0))
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_login(self, mock_inputs, mock_get_account):
-        account: CasinoAccount = self.casino.handle_login()
+        account: UserAccount = self.casino.handle_login()
 
         expected_username = "test_username"
         expected_password = "test_password"
@@ -49,10 +49,10 @@ class test_Casino(BaseTest):
         self.assertIsNone(account)
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
-           return_value=CasinoAccount("test_username", "test_password", 0.0))
+           return_value=UserAccount("test_username", "test_password", 50.0))
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_signup(self, mock_inputs, mock_get_account):
-        account: CasinoAccount = self.casino.handle_signup()
+        account: UserAccount = self.casino.handle_signup()
 
         expected_username = "test_username"
         expected_password = "test_password"

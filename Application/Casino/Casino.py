@@ -1,5 +1,4 @@
 from Application.Casino.Accounts.AccountManager import AccountManager
-from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
@@ -12,7 +11,7 @@ class Casino:
     def __init__(self):
         self.console = IOConsole(ANSI_COLORS.BLUE)
         self.manager = AccountManager()
-        self.account: CasinoAccount | None = None
+        self.account:  UserAccount | None = None
 
     def run(self) -> None:
         self.print_welcome()
@@ -35,13 +34,13 @@ class Casino:
             888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888
             """)
 
-    def handle_login(self) -> CasinoAccount | None:
+    def handle_login(self) -> UserAccount | None:
         for i in range(0, 5):
 
             username: str = self.console.get_string_input("Enter your username", return_in_lower=False)
             password: str = self.console.get_string_input("Enter your password", return_in_lower=False)
 
-            account: CasinoAccount | None = self.manager.get_account(username=username, password=password)
+            account: UserAccount | None = self.manager.get_account(username=username, password=password)
 
             if account:
                 return account
@@ -63,7 +62,7 @@ class Casino:
             else:
                 print(self.console.print_colored("Account with that username already exists"), ANSI_COLORS.RED)
 
-    def handle_initial_action(self) -> CasinoAccount | UserAccount:
+    def handle_initial_action(self) -> UserAccount:
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
                 "\n\t[ signup ], [ login ]")
@@ -71,7 +70,7 @@ class Casino:
         while True:
 
             if answer == "login":
-                account: CasinoAccount | None = self.handle_login()
+                account: UserAccount | None = self.handle_login()
                 return account
 
             elif answer == "signup":

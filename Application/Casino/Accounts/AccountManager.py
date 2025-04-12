@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
-from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 
 
 class AccountManager:
@@ -31,10 +30,10 @@ class AccountManager:
 
         return None
 
-    def add_and_save_account(self, account: CasinoAccount | UserAccount, wager: float) -> None:
+    def add_and_save_account(self, account: UserAccount, wager: float) -> None:
         account.add_winnings(wager)
         self.session.commit()
 
-    def subtract_and_save_account(self, account: CasinoAccount | UserAccount, wager: float) -> None:
+    def subtract_and_save_account(self, account: UserAccount, wager: float) -> None:
         account.subtract_losses(wager)
         self.session.commit()

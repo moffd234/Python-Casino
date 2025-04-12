@@ -1,8 +1,4 @@
 from Tests.BaseTest import BaseTest
-from unittest.mock import patch, mock_open, MagicMock
-
-from Application.Casino.Accounts.AccountManager import AccountManager
-from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Accounts.UserAccount import UserAccount
 
 
@@ -43,6 +39,6 @@ class AccountManagerTest(BaseTest):
 
     def test_get_account_none(self):
 
-        actual: CasinoAccount = self.manager.get_account("this_name_won't_be_used", "secure123")
+        actual: UserAccount = self.manager.get_account("this_name_won't_be_used", "secure123")
 
         self.assertIsNone(actual)

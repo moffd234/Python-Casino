@@ -1,7 +1,6 @@
 from random import randint
 
 from Application.Casino.Accounts.AccountManager import AccountManager
-from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Game import Game
 
@@ -22,7 +21,7 @@ class RPS(Game):
     def run(self):
         pass
 
-    def __init__(self, player: CasinoAccount | UserAccount, manager: AccountManager):
+    def __init__(self, player: UserAccount, manager: AccountManager):
         super().__init__(player, manager)
 
 
