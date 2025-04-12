@@ -1,4 +1,3 @@
-import unittest
 from unittest.mock import patch
 
 from Application.Casino.Casino import *
@@ -7,8 +6,7 @@ from Tests.BaseTest import BaseTest
 
 class test_Casino(BaseTest):
 
-    @patch("Application.Casino.Accounts.AccountManager.read_from_csv", return_value=[])
-    def setUp(self, mock_read_from_csv):
+    def setUp(self):
         super().setUp()
         self.casino = Casino()
 
