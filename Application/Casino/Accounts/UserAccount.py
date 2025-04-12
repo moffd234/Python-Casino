@@ -5,7 +5,7 @@ from sqlalchemy import Column, String, Float
 
 class UserAccount(Base):
 
-    def __init__(self, username, password, balance, **kw: Any):
+    def __init__(self, username: str, password: str, balance: float, **kw: Any):
         super().__init__(**kw)
         self.username: str = username
         self.password: str = password
