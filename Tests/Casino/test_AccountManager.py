@@ -1,15 +1,14 @@
 from Tests.BaseTest import BaseTest
 from unittest.mock import patch, mock_open, MagicMock
 
-from Application.Casino.Accounts.AccountManager import AccountManager, write_new_account_to_csv
+from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
 from Application.Casino.Accounts.UserAccount import UserAccount
 
 
 class AccountManagerTest(BaseTest):
 
-    @patch("Application.Casino.Accounts.AccountManager.read_from_csv", return_value=[])
-    def setUp(self, mock_read_from_csv):
+    def setUp(self):
         super().setUp()
 
     def test_create_account(self):
@@ -33,15 +32,6 @@ class AccountManagerTest(BaseTest):
 
         self.assertIsNone(subject)
 
-    @patch("builtins.open", new_callable=mock_open)
-    @patch("csv.writer")
-    def test_write_new_account_to_csv(self, mock_csv_writer, mock_file):
-        test_account = CasinoAccount("test_user", "secure123", 500)
-        write_new_account_to_csv(test_account)
-
-        mock_file.assert_called_once_with("./accounts.csv", "a", newline='')
-        mock_csv_writer.return_value.writerow.assert_called_once_with(["test_user", "secure123", 500])
-
     def test_get_account(self):
         self.manager.create_account("test_username", "test_password")
         expected = UserAccount("test_username", "test_password", 50.0)
@@ -56,20 +46,3 @@ class AccountManagerTest(BaseTest):
         actual: CasinoAccount = self.manager.get_account("this_name_won't_be_used", "secure123")
 
         self.assertIsNone(actual)
-
-    @patch("os.path.exists", return_value=True)
-    @patch("builtins.open", new_callable=mock_open, read_data="user1,pass1,500\nuser2,pass2,1000\n")
-    def test_read_from_csv(self, mock_file, mock_exists):
-        manager = AccountManager()
-        manager = AccountManager()
-
-        user_one = manager.accounts[0]
-        user_two = manager.accounts[1]
-
-        self.assertEqual(len(manager.accounts), 2)
-        self.assertEqual(user_one.username, "user1")
-        self.assertEqual(user_two.username, "user2")
-        self.assertEqual(user_one.password, "pass1")
-        self.assertEqual(user_two.password, "pass2")
-        self.assertEqual(user_one.balance, 500)
-        self.assertEqual(user_two.balance, 1000)
