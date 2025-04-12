@@ -1,5 +1,6 @@
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.CasinoAccount import CasinoAccount
+from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
@@ -50,20 +51,19 @@ class Casino:
         print("Too many login attempts - returning to main screen\n\n\n")
         return None
 
-    def handle_signup(self) -> CasinoAccount:
+    def handle_signup(self) -> UserAccount:
 
         while True:
             username: str = self.console.get_string_input("Create your username", return_in_lower=False)
             password: str = self.console.get_string_input("Create your password", return_in_lower=False)
-            account: CasinoAccount = self.manager.create_account(username=username, password=password)
+            account: UserAccount = self.manager.create_account(username=username, password=password)
             if account:
-                self.manager.register_account(account)
                 return account
 
             else:
                 print(self.console.print_colored("Account with that username already exists"), ANSI_COLORS.RED)
 
-    def handle_initial_action(self) -> CasinoAccount:
+    def handle_initial_action(self) -> CasinoAccount | UserAccount:
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
                 "\n\t[ signup ], [ login ]")
@@ -75,7 +75,7 @@ class Casino:
                 return account
 
             elif answer == "signup":
-                account: CasinoAccount = self.handle_signup()
+                account: UserAccount = self.handle_signup()
                 return account
 
             else:
