@@ -1,1 +1,0 @@
-SQL_TRANSITION: bool=True
