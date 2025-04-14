@@ -105,6 +105,7 @@ class Casino:
             # The following are placeholders until the games are made
             if answer == "rps":
                 game = RPS(self.account, self.manager)
+                game.run()
 
             elif answer == "numberguess":
                 game = NumberGuess(self.account, self.manager)
@@ -121,3 +122,6 @@ class Casino:
             elif answer == "coinflip" or answer == "coin flip":
                 game = CoinFlip(self.account, self.manager)
                 game.run()
+
+            elif answer == "back":
+                return None
