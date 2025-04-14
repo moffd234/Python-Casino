@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
 from Tests.BaseTest import BaseTest
@@ -9,6 +9,7 @@ class test_Casino(BaseTest):
     def setUp(self):
         super().setUp()
         self.casino = Casino()
+        self.casino.account = self.manager.create_account("username", "password")
 
     def test_print_welcome(self):
         expected: str = r"""[34m
@@ -64,4 +65,64 @@ class test_Casino(BaseTest):
 
         self.assertEqual(expected_username, actual_username)
         self.assertEqual(expected_password, actual_password)
+        self.assertEqual(expected_balance, actual_balance)
+
+    @patch("builtins.print")
+    @patch("builtins.input", return_value="50")
+    def test_handle_add_funds(self, mock_input, mock_print):
+        expected_balance: float = self.casino.account.balance + 50
+        self.casino.add_funds()
+
+        actual_balance: float = self.casino.account.balance
+
+        mock_print.assert_called_once_with(f"{ANSI_COLORS.GREEN.value}You have added $50.0 to your funds!"
+                                           f" New Balance is {self.casino.account.balance}")
+        self.assertEqual(expected_balance, actual_balance)
+
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=["-1", "50"])
+    def test_handle_add_funds_negative(self, mock_input, mock_print):
+        expected_balance: float = self.casino.account.balance + 50
+        self.casino.add_funds()
+
+        actual_balance: float = self.casino.account.balance
+
+        mock_print.assert_has_calls([
+            call(self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED)),
+            call(
+                f"{ANSI_COLORS.GREEN.value}You have added $50.0 to your funds! New Balance is {self.casino.account.balance}")
+        ])
+
+        self.assertEqual(expected_balance, actual_balance)
+
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=[".001", "50"])
+    def test_handle_add_funds_low_decimal(self, mock_input, mock_print):
+        expected_balance: float = self.casino.account.balance + 50
+        self.casino.add_funds()
+
+        actual_balance: float = self.casino.account.balance
+
+        mock_print.assert_has_calls([
+            call(self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED)),
+            call(
+                f"{ANSI_COLORS.GREEN.value}You have added $50.0 to your funds! New Balance is {self.casino.account.balance}")
+        ])
+
+        self.assertEqual(expected_balance, actual_balance)
+
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=["1000", "75"])
+    def test_handle_add_funds_1000(self, mock_input, mock_print):
+        expected_balance: float = self.casino.account.balance + 75
+        self.casino.add_funds()
+
+        actual_balance: float = self.casino.account.balance
+
+        mock_print.assert_has_calls([
+            call(self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED)),
+            call(
+                f"{ANSI_COLORS.GREEN.value}You have added $75.0 to your funds! New Balance is {self.casino.account.balance}")
+        ])
+
         self.assertEqual(expected_balance, actual_balance)
