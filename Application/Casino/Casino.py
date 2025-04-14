@@ -137,3 +137,14 @@ class Casino:
                 return None
 
             print(self.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
+
+    def reset_password(self) -> None:
+        for _ in range(5):
+            answer = self.console.get_string_input("Enter old password: ")
+            if answer == self.account.password:
+                new_password = self.console.get_string_input("Enter new password: ")
+                self.manager.update_password(self.account, new_password)
+                return
+            else:
+                print(self.console.print_colored("Passwords do not match", ANSI_COLORS.RED))
+        print(self.console.print_colored("Too many attempts try again later", ANSI_COLORS.RED))
