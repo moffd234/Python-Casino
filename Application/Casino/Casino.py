@@ -2,6 +2,7 @@ from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
+from Application.Casino.Games.RockPaperScissors.RPS import RPS
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
@@ -99,11 +100,11 @@ class Casino:
         while True:
             answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ SLOTS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
+                "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
 
             # The following are placeholders until the games are made
-            if answer == "slots":
-                pass
+            if answer == "rps":
+                game = RPS(self.account, self.manager)
 
             elif answer == "numberguess":
                 game = NumberGuess(self.account, self.manager)
