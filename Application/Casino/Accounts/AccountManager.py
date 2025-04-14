@@ -37,3 +37,7 @@ class AccountManager:
     def subtract_and_save_account(self, account: UserAccount, wager: float) -> None:
         account.subtract_losses(wager)
         self.session.commit()
+
+    def update_password(self, account: UserAccount, new_password: str) -> None:
+        account.password = new_password
+        self.session.commit()
