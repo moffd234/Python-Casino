@@ -156,3 +156,41 @@ class test_Casino(BaseTest):
             call(self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
         ])
         self.assertEqual(expected_password, actual_password)
+
+    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch("builtins.input", return_value="add")
+    def test_handle_manage_selection_add(self, mock_input, mock_add_funds):
+        self.casino.handle_manage_selection()
+        mock_add_funds.assert_called_once()
+
+    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch("builtins.input", return_value="add-funds")
+    def test_handle_manage_selection_add_dash_funds(self, mock_input, mock_add_funds):
+        self.casino.handle_manage_selection()
+        mock_add_funds.assert_called_once()
+
+    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch("builtins.input", return_value="add funds")
+    def test_handle_manage_selection_add_funds(self, mock_input, mock_add_funds):
+        self.casino.handle_manage_selection()
+        mock_add_funds.assert_called_once()
+
+    @patch("Application.Casino.Casino.Casino.reset_password")
+    @patch("builtins.input", return_value="reset")
+    def test_handle_manage_selection_reset(self, mock_input, mock_reset):
+        self.casino.handle_manage_selection()
+        mock_reset.assert_called_once()
+
+    @patch("Application.Casino.Casino.Casino.reset_password")
+    @patch("builtins.input", return_value="reset password")
+    def test_handle_manage_selection_reset_password(self, mock_input, mock_reset):
+        self.casino.handle_manage_selection()
+        mock_reset.assert_called_once()
+
+    @patch("Application.Casino.Casino.Casino.reset_password")
+    @patch("builtins.input", return_value="reset-password")
+    def test_handle_manage_selection_reset_dash_password(self, mock_input, mock_reset):
+        self.casino.handle_manage_selection()
+        mock_reset.assert_called_once()
+
+
