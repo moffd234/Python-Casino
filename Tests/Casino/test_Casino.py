@@ -207,3 +207,12 @@ class test_Casino(BaseTest):
     def test_handle_manage_selection_go_dash_back(self, mock_input):
         result: None = self.casino.handle_manage_selection()
         self.assertIsNone(result)
+
+    @patch("builtins.print")
+    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch("builtins.input", side_effect=["invalid_input", "add"])
+    def test_handle_manage_selection_invalid_input(self,mock_input, mock_add, mock_print):
+        self.casino.handle_manage_selection()
+        mock_print.assert_called_once_with(
+            self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
+        mock_add.assert_called_once()
