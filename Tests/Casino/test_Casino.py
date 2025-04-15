@@ -193,4 +193,17 @@ class test_Casino(BaseTest):
         self.casino.handle_manage_selection()
         mock_reset.assert_called_once()
 
+    @patch("builtins.input", return_value="back")
+    def test_handle_manage_selection_back(self, mock_input):
+        result: None = self.casino.handle_manage_selection()
+        self.assertIsNone(result)
 
+    @patch("builtins.input", return_value="go back")
+    def test_handle_manage_selection_go_back(self, mock_input):
+        result: None = self.casino.handle_manage_selection()
+        self.assertIsNone(result)
+
+    @patch("builtins.input", return_value="go-back")
+    def test_handle_manage_selection_go_dash_back(self, mock_input):
+        result: None = self.casino.handle_manage_selection()
+        self.assertIsNone(result)

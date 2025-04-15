@@ -164,7 +164,7 @@ class Casino:
                 self.reset_password()
                 return None
 
-            elif answer == "back":
+            elif answer == "go-back" or answer == "go back" or answer == "back":
                 return None
 
             else:
