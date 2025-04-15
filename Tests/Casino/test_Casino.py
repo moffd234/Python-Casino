@@ -107,3 +107,38 @@ class test_Casino(BaseTest):
 
         mock_print.assert_called_once_with(self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
         self.assertEqual(expected_password, actual_password)
+
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=["wrong_password"] * 5)
+    def test_reset_password_failed_times(self, mock_input, mock_print):
+        expected_password: str = self.casino.account.password
+        self.casino.reset_password()
+
+        actual_password = self.casino.account.password
+
+        mock_print.assert_has_calls([
+            # 5 incorrect password messages and 1 lockout message
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Too many attempts try again later", ANSI_COLORS.RED))
+        ])
+        self.assertEqual(expected_password, actual_password)
+
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=["wrong_password", "wrong_password", "password", "new_password"])
+    def test_reset_password_failed_then_works(self, mock_input, mock_print):
+        self.casino.reset_password()
+
+        expected_password: str = "new_password"
+        actual_password = self.casino.account.password
+
+        mock_print.assert_has_calls([
+            # 5 incorrect password messages and 1 lockout message
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Passwords do not match", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
+        ])
+        self.assertEqual(expected_password, actual_password)
