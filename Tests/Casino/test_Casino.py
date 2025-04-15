@@ -96,3 +96,14 @@ class test_Casino(BaseTest):
                 f"{ANSI_COLORS.GREEN.value}You have added $50.0 to your funds! New Balance is {self.casino.account.balance}")
         ])
         self.assertEqual(expected_balance, actual_balance)
+
+    @patch("builtins.print")
+    @patch("builtins.input", side_effect=["password", "new_password"])
+    def test_reset_password(self, mock_input, mock_print):
+        self.casino.reset_password()
+
+        expected_password = "new_password"
+        actual_password = self.casino.account.password
+
+        mock_print.assert_called_once_with(self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
+        self.assertEqual(expected_password, actual_password)
