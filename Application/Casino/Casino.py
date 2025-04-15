@@ -88,7 +88,7 @@ class Casino:
                 "\n\t[ manage-account ], [ select-game ]")
 
             if answer == "manage-account" or answer == "manage account" or answer == "manage":
-                pass
+                self.handle_manage_selection()
 
             elif answer == "select-game" or answer == "select game" or answer == "select":
                 if self.account.balance < 1.00:
@@ -140,7 +140,7 @@ class Casino:
 
     def reset_password(self) -> None:
         for _ in range(5):
-            answer = self.console.get_string_input("Enter old password: ")
+            answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
             if answer == self.account.password:
                 new_password = self.console.get_string_input("Enter new password: ")
                 self.manager.update_password(self.account, new_password)
@@ -149,3 +149,23 @@ class Casino:
             else:
                 print(self.console.print_colored("Passwords do not match", ANSI_COLORS.RED))
         print(self.console.print_colored("Too many attempts try again later", ANSI_COLORS.RED))
+
+    def handle_manage_selection(self) -> None:
+        while True:
+            answer: str = self.console.get_string_input(f"You have ${self.account.balance}" +
+                                                        "\nFrom here, you can select any of the following options:" +
+                                                        "\n\t[ add-funds ], [reset-password], [ go-back ]")
+
+            if answer == "add-funds" or answer == "add" or answer == "add funds":
+                self.add_funds()
+                return None
+
+            elif answer == "reset-password" or answer == "reset" or answer == "reset password":
+                self.reset_password()
+                return None
+
+            elif answer == "back":
+                return None
+
+            else:
+                print(self.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
