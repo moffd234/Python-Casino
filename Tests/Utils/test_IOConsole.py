@@ -12,7 +12,7 @@ class IO_Console_Tests(unittest.TestCase):
 
     def test_constructor_no_color(self):
         subject = IOConsole()
-        self.assertEqual(subject.color, ANSI_COLORS.RED.value)
+        self.assertEqual(subject.color, ANSI_COLORS.GREEN.value)
 
     def test_constructor_blue(self):
         subject = IOConsole(color=ANSI_COLORS.BLUE)
