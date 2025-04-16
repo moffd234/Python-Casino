@@ -46,7 +46,7 @@ class Casino:
             if account:
                 return account
             else:
-                print(self.console.print_colored("Invalid login info", ANSI_COLORS.RED))
+                self.console.print_error("Invalid username or password")
 
         print("Too many login attempts - returning to main screen\n\n\n")
         return None
@@ -61,7 +61,7 @@ class Casino:
                 return account
 
             else:
-                print(self.console.print_colored("Account with that username already exists"), ANSI_COLORS.RED)
+                self.console.print_error("Account with that username already exists")
 
     def handle_initial_action(self) -> UserAccount:
         answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
@@ -92,7 +92,7 @@ class Casino:
 
             elif answer == "select-game" or answer == "select game" or answer == "select":
                 if self.account.balance < 1.00:
-                    print(self.console.print_colored("You do not have enough money to play any games"), ANSI_COLORS.RED)
+                    self.console.print_error("You do not have enough money to play any games")
                 else:
                     self.prompt_game()
 
@@ -136,7 +136,7 @@ class Casino:
                                                  f"New Balance is {self.account.balance}", ANSI_COLORS.GREEN))
                 return None
 
-            print(self.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
+            self.console.print_error("Invalid input. Please try again")
 
     def reset_password(self) -> None:
         for _ in range(5):
@@ -147,8 +147,8 @@ class Casino:
                 print(self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
                 return
             else:
-                print(self.console.print_colored("Passwords do not match", ANSI_COLORS.RED))
-        print(self.console.print_colored("Too many attempts try again later", ANSI_COLORS.RED))
+                self.console.print_error("You do not have enough money to play any games")
+        self.console.print_error("Too many invalid attempts. Please try again")
 
     def handle_manage_selection(self) -> None:
         while True:
@@ -168,4 +168,4 @@ class Casino:
                 return None
 
             else:
-                print(self.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
+                self.console.print_error("Invalid input. Please try again")
