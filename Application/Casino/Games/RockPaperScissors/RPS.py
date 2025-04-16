@@ -33,7 +33,12 @@ def handle_winner(comp_turn: str, user_turn: str) -> str:
 
 class RPS(Game):
     def print_welcome_message(self) -> str:
-        pass
+        return r"""
+        Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      88""Yb 88""Yb .dP"Y8 
+         Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     88__dP 88__dP `Ybo." 
+          YbdPYbdP   88""   88  .o Yb      Yb   dP 88YbdP88 88""         88   Yb   dP     88"Yb  88""''   `Y8b 
+           YP  YP    888888 88ood8  YboodP  YbodP  88 YY 88 888888       88    YbodP      88  Yb 88     8bodP'
+        """
 
     def run(self):
         pass
