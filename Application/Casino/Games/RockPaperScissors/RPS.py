@@ -16,7 +16,7 @@ def get_comp_turn() -> str:
 
 def handle_winner(comp_turn: str, user_turn: str) -> str:
     if comp_turn == user_turn:
-        return f"Draw! {user_turn} ties {comp_turn}!"
+        return f"Draw! {user_turn.title()} ties {comp_turn}!"
 
     winners: dict = {
         "rock": "scissors",
