@@ -7,8 +7,8 @@ class TestRPS(BaseTest):
 
     def setUp(self):
         super().setUp()
-        account: UserAccount = self.manager.create_account("username", "password")
-        self.game = RPS(account, self.manager)
+        self.account: UserAccount = self.manager.create_account("username", "password")
+        self.game = RPS(self.account, self.manager)
 
     def test_print_welcome(self):
         expected: str = r"""
@@ -26,55 +26,91 @@ class TestRPS(BaseTest):
         self.assertEqual(expected, actual)
 
     def test_handle_winner_cpu_paper(self):
-        expected = "You lost! Rock loses to paper!"
-        actual = self.game.handle_winner("paper", "rock", 10)
+        expected_output = "You lost! Rock loses to paper!"
+        expected_balance = self.account.balance
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("paper", "rock", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_cpu_scissors(self):
-        expected = "You lost! Paper loses to scissors!"
-        actual = self.game.handle_winner("scissors", "paper", 10)
+        expected_output = "You lost! Paper loses to scissors!"
+        expected_balance = self.account.balance
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("scissors", "paper", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_cpu_rock(self):
-        expected = "You lost! Scissors loses to rock!"
-        actual = self.game.handle_winner("rock", "scissors", 10)
+        expected_output = "You lost! Scissors loses to rock!"
+        expected_balance = self.account.balance
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("rock", "scissors", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_user_scissors(self):
-        expected = "You won! Scissors beats paper!"
-        actual = self.game.handle_winner("paper", "scissors", 10)
+        expected_output = "You won! Scissors beats paper!"
+        expected_balance = round(self.account.balance + (10 * 1.25), 2)
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("paper", "scissors", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_user_paper(self):
-        expected = "You won! Paper beats rock!"
-        actual = self.game.handle_winner("rock", "paper", 10)
+        expected_output = "You won! Paper beats rock!"
+        expected_balance = round(self.account.balance + (10 * 1.25), 2)
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("rock", "paper", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_user_rock(self):
-        expected = "You won! Rock beats scissors!"
-        actual = self.game.handle_winner("scissors", "rock", 10)
+        expected_output = "You won! Rock beats scissors!"
+        expected_balance = round(self.account.balance + (10 * 1.25), 2)
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("scissors", "rock", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_draw_rock(self):
-        expected = "Draw! Rock ties rock!"
-        actual = self.game.handle_winner("rock", "rock", 10)
+        expected_output = "Draw! Rock ties rock!"
+        expected_balance = self.account.balance
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("rock", "rock", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_draw_paper(self):
-        expected = "Draw! Paper ties paper!"
-        actual = self.game.handle_winner("paper", "paper", 10)
+        expected_output = "Draw! Paper ties paper!"
+        expected_balance = self.account.balance
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("paper", "paper", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_winner_draw_scissors(self):
-        expected = "Draw! Scissors ties scissors!"
-        actual = self.game.handle_winner("scissors", "scissors", 10)
+        expected_output = "Draw! Scissors ties scissors!"
+        expected_balance = self.account.balance
 
-        self.assertEqual(expected, actual)
+        actual_output = self.game.handle_winner("scissors", "scissors", 10)
+        actual_balance = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
