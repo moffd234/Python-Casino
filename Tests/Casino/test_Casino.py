@@ -4,7 +4,7 @@ from Application.Casino.Casino import *
 from Tests.BaseTest import BaseTest
 
 
-class test_Casino(BaseTest):
+class TestCasino(BaseTest):
 
     def setUp(self):
         super().setUp()

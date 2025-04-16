@@ -5,7 +5,7 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
 
 
-class IO_Console_Tests(unittest.TestCase):
+class TestIOConsole(unittest.TestCase):
 
     def setUp(self):
         self.console = IOConsole()

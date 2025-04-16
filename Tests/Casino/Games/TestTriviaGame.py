@@ -1,12 +1,9 @@
-import unittest
-
-from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 from Tests.BaseTest import BaseTest
 
 
-class test_TriviaGame(BaseTest):
+class TestTriviaGame(BaseTest):
 
     def setUp(self):
         super().setUp()

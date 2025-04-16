@@ -4,7 +4,7 @@ from Tests.BaseTest import BaseTest
 from Application.Casino.Accounts.UserAccount import UserAccount
 
 
-class AccountManagerTest(BaseTest):
+class TestAccountManager(BaseTest):
 
     def setUp(self):
         super().setUp()
