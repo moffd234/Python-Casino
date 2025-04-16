@@ -66,3 +66,6 @@ class IOConsole:
             color = color.value
 
         return color + prompt
+
+    def print_error(self, prompt: str) -> None:
+        print(self.print_colored(prompt, ANSI_COLORS.RED))
