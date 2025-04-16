@@ -74,3 +74,8 @@ class IO_Console_Tests(unittest.TestCase):
     def test_get_float_input_with_custom_color(self, mock_input):
         result = self.console.get_float_input("Some prompt: ", ANSI_COLORS.BLUE)
         self.assertEqual(result, 100.63)
+
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_error(self, mock_print_colored):
+        self.console.print_error("Some Prompt")
+        mock_print_colored.assert_called_once_with("Some Prompt", ANSI_COLORS.RED)
