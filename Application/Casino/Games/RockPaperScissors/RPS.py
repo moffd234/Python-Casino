@@ -7,11 +7,11 @@ from Application.Casino.Games.Game import Game
 def get_comp_turn() -> str:
     ran_num = randint(0, 2)
     if ran_num == 0:
-        return "Paper"
+        return "paper"
     elif ran_num == 1:
-        return "Scissors"
+        return "scissors"
     else:
-        return "Rock"
+        return "rock"
 
 
 def handle_winner(comp_turn: str, user_turn: str) -> str:
@@ -19,9 +19,9 @@ def handle_winner(comp_turn: str, user_turn: str) -> str:
         return f"Draw! {user_turn} ties {comp_turn}!"
 
     winners: dict = {
-        "Rock": "Scissors",
-        "Paper": "Rock",
-        "Scissors": "Paper"
+        "rock": "scissors",
+        "paper": "rock",
+        "scissors": "paper"
     }
 
     if winners[user_turn] == winners[comp_turn]:
@@ -45,7 +45,7 @@ class RPS(Game):
     def get_user_turn(self) -> str:
         turn: str = self.console.get_string_input("Enter your turn: (Rock, Paper, Scissors)")
 
-        while turn != "Rock" and turn != "Paper" and turn != "Scissors":
+        while turn != "rock" and turn != "paper" and turn != "scissors":
             turn: str = self.console.get_string_input("Enter your turn: (Rock, Paper, Scissors)")
 
         return turn
