@@ -14,23 +14,6 @@ def get_comp_turn() -> str:
         return "rock"
 
 
-def handle_winner(comp_turn: str, user_turn: str) -> str:
-    if comp_turn == user_turn:
-        return f"Draw! {user_turn.title()} ties {comp_turn}!"
-
-    winners: dict = {
-        "rock": "scissors",
-        "paper": "rock",
-        "scissors": "paper"
-    }
-
-    if winners[user_turn] == comp_turn:
-        return f"You won! {user_turn.title()} beats {comp_turn}!"
-
-    # ASSERT: CPU has winning move
-    return f"You lost! {user_turn.title()} loses to {comp_turn}!"
-
-
 class RPS(Game):
     def print_welcome_message(self) -> str:
         return r"""
@@ -59,3 +42,19 @@ class RPS(Game):
 
         return turn
 
+    def handle_winner(self, comp_turn: str, user_turn: str, wager: float) -> str:
+        if comp_turn == user_turn:
+            return f"Draw! {user_turn.title()} ties {comp_turn}!"
+
+        winners: dict = {
+            "rock": "scissors",
+            "paper": "rock",
+            "scissors": "paper"
+        }
+
+        if winners[user_turn] == comp_turn:
+            self.manager.add_and_save_account(self.player, wager)
+            return f"You won! {user_turn.title()} beats {comp_turn}!"
+
+        # ASSERT: CPU has winning move
+        return f"You lost! {user_turn.title()} loses to {comp_turn}!"

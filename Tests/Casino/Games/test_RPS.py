@@ -1,5 +1,5 @@
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.RockPaperScissors.RPS import RPS, handle_winner
+from Application.Casino.Games.RockPaperScissors.RPS import RPS
 from Tests.BaseTest import BaseTest
 
 
@@ -27,54 +27,54 @@ class TestRPS(BaseTest):
 
     def test_handle_winner_cpu_paper(self):
         expected = "You lost! Rock loses to paper!"
-        actual = handle_winner("paper", "rock")
+        actual = self.game.handle_winner("paper", "rock", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_cpu_scissors(self):
         expected = "You lost! Paper loses to scissors!"
-        actual = handle_winner("scissors", "paper")
+        actual = self.game.handle_winner("scissors", "paper", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_cpu_rock(self):
         expected = "You lost! Scissors loses to rock!"
-        actual = handle_winner("rock", "scissors")
+        actual = self.game.handle_winner("rock", "scissors", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_user_scissors(self):
         expected = "You won! Scissors beats paper!"
-        actual = handle_winner("paper", "scissors")
+        actual = self.game.handle_winner("paper", "scissors", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_user_paper(self):
         expected = "You won! Paper beats rock!"
-        actual = handle_winner("rock", "paper")
+        actual = self.game.handle_winner("rock", "paper", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_user_rock(self):
         expected = "You won! Rock beats scissors!"
-        actual = handle_winner("scissors", "rock")
+        actual = self.game.handle_winner("scissors", "rock", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_draw_rock(self):
         expected = "Draw! Rock ties rock!"
-        actual = handle_winner("rock", "rock")
+        actual = self.game.handle_winner("rock", "rock", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_draw_paper(self):
         expected = "Draw! Paper ties paper!"
-        actual = handle_winner("paper", "paper")
+        actual = self.game.handle_winner("paper", "paper", 10)
 
         self.assertEqual(expected, actual)
 
     def test_handle_winner_draw_scissors(self):
         expected = "Draw! Scissors ties scissors!"
-        actual = handle_winner("scissors", "scissors")
+        actual = self.game.handle_winner("scissors", "scissors", 10)
 
         self.assertEqual(expected, actual)
