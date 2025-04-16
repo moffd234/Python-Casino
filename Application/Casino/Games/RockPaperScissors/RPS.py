@@ -38,6 +38,10 @@ class RPS(Game):
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     88__dP 88__dP `Ybo." 
           YbdPYbdP   88""   88  .o Yb      Yb   dP 88YbdP88 88""         88   Yb   dP     88"Yb  88""''   `Y8b 
            YP  YP    888888 88ood8  YboodP  YbodP  88 YY 88 888888       88    YbodP      88  Yb 88     8bodP'
+           
+           Rules:
+                - Normal Rock Paper Scissors rules (rock beats scissors, scissors beats paper, paper beats rock)
+                - Payout is 1.25x the wager amount
         """
 
     def run(self):
