@@ -147,7 +147,7 @@ class Casino:
                 print(self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
                 return
             else:
-                self.console.print_error("You do not have enough money to play any games")
+                self.console.print_error("Passwords do not match")
         self.console.print_error("Too many invalid attempts. Please try again")
 
     def handle_manage_selection(self) -> None:
