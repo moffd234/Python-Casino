@@ -24,11 +24,11 @@ def handle_winner(comp_turn: str, user_turn: str) -> str:
         "scissors": "paper"
     }
 
-    if winners[user_turn] == winners[comp_turn]:
-        return f"You won! {user_turn} beats {comp_turn}!"
+    if winners[user_turn] == comp_turn:
+        return f"You won! {user_turn.title()} beats {comp_turn}!"
 
     # ASSERT: CPU has winning move
-    return f"You lost! {user_turn} loses to {comp_turn}!"
+    return f"You lost! {user_turn.title()} loses to {comp_turn}!"
 
 
 class RPS(Game):
