@@ -53,7 +53,9 @@ class RPS(Game):
         }
 
         if winners[user_turn] == comp_turn:
-            self.manager.add_and_save_account(self.player, wager)
+            winnings: float = round(wager * 1.25, 2)
+
+            self.manager.add_and_save_account(self.player, winnings)
             return f"You won! {user_turn.title()} beats {comp_turn}!"
 
         # ASSERT: CPU has winning move
