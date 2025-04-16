@@ -28,7 +28,14 @@ class RPS(Game):
         """
 
     def run(self):
-        pass
+        print(self.console.print_colored(self.print_welcome_message()))
+
+        while self.get_continue_input():
+            wager: float = self.get_wager_amount()
+            user_turn = self.get_user_turn()
+            computer_turn = get_comp_turn()
+
+            print(self.handle_winner(computer_turn, user_turn, wager))
 
     def __init__(self, player: UserAccount, manager: AccountManager):
         super().__init__(player, manager)
