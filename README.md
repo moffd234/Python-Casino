@@ -1,46 +1,54 @@
-# Command Line Casino
+# 🎰 Command Line Casino
 
-## Overview
+## 📝 Overview
 
-Welcome to the Command Line Casino! This Python3 program offers a simulated casino experience directly from your terminal. You can create an account, manage your funds, and play various gambling and non-gambling games.
+Welcome to **Command Line Casino**, a terminal-based Python application that simulates a virtual casino experience. Users can create accounts, manage funds, and enjoy a variety of games—all from the command line.
 
-## Features
+---
 
-- **Account Management**
-  - Create a new account
-  - Login and logout
-  - View account balance
-  - Deposit and withdraw funds
+## 🚀 Features
 
-- **Gambling Games**
-  - Slot Machine
-  - Blackjack
-  - Number Guess
+### 🎮 Games  
+**Available Games**
+- 🧠 Number Guess — Guess the number and win!
+- ❓ Trivia Game — Test your general knowledge.
+- ❌⭕ Tic-Tac-Toe — Classic 3x3 strategy showdown.
+- 🪙 Coin Flip — Choose heads or tails, test your luck!
+- ✊🖐✌ Rock-Paper-Scissors *(coming soon!)*
+- 🎰 Slot Machine *(coming soon!)*
+- 🃏 Blackjack *(coming soon!)*
 
-- **Non-Gambling Games**
-  - Tic-Tac-Toe
-  - Rock-Paper-Scissors
-  - Trivia Game
+### 🧾 Account Management
+- Create, login, and delete accounts  
+- Check balances  
+- Add funds  
+- Reset password  
 
-## Usage
+---
 
-1. **Create an Account**: Follow the prompts to create a new account.
-2. **Login**: Log in with your username and password.
-3. **Deposit Funds**: Add funds to your account.
-4. **Select a Game**: Choose from a variety of gambling and non-gambling games.
-5. **Play**: Enjoy the games and manage your funds accordingly.
-6. **Logout**: Safely log out of your account when done.
+## 🧪 Technologies Used
 
-## Games Description
+- 🐍 **Python 3** — Core language used to build the app  
+- 🗃️ **SQLite** — Lightweight database for storing account info  
+- 🧪 **unittest & unittest.mock** — Python testing frameworks for unit testing  
+- 📁 **CSV** — Used to read/write account data for lightweight persistence  
+- 🎨 **Custom Console Wrapper** — For stylized colored input/output in the terminal  
+- 🧩 **OOP Design** — Modular structure for accounts, games, and utilities  
+- ⚙️ **GitHub Actions** — Automates testing and workflows for CI/CD  
+- 📋 **GitHub Projects (Kanban)** — Organizes tasks and development roadmap using a Kanban board 
+---
 
-### Gambling Games
+## 🛠️ Installation
 
-- **Slot Machine**: Spin the reels and try your luck to win big.
-- **Blackjack**: Beat the dealer by getting as close to 21 without going over.
-- **Number Guess**: Guess the randomly generated number within a certain range to win.
+```bash
+# Clone the repository
+git clone https://github.com/your-username/Python-Casino.git
+cd Python-Casino
 
-### Non-Gambling Games
+# Set up a virtual environment (optional but recommended)
+python3 -m venv .venv
+source .venv/bin/activate
 
-- **Tic-Tac-Toe**: Play a classic game of tic-tac-toe against the computer.
-- **Rock-Paper-Scissors**: Challenge the computer in a game of rock-paper-scissors.
-- **Trivia Game**: Answer a series of trivia questions across various categories and test your knowledge.
+# Install dependencies
+pip install -r requirements.txt
+```
