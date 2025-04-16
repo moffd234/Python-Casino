@@ -67,5 +67,10 @@ class IOConsole:
 
         return color + prompt
 
-    def print_error(self, prompt: str) -> None:
-        print(self.print_colored(prompt, ANSI_COLORS.RED))
+    def print_error(self, error_message: str) -> None:
+        """
+        Takes an error message and prints it in ANSI_COLORS.RED.
+        :param error_message: A string value that will be printed as the error message
+        :return: None
+        """
+        print(self.print_colored(error_message, ANSI_COLORS.RED))
