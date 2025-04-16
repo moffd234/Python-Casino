@@ -53,7 +53,7 @@ class TicTacToe(Game):
          row = self.console.get_integer_input("Enter row number (1-3)")
 
          while row < 1 or row > 3:
-             print(self.console.print_colored("Row number must be between 1 and 3", ANSI_COLORS.RED))
+             self.console.print_error("Row number must be between 1 and 3")
              row = self.console.get_integer_input("Enter row number (1-3)")
 
          return row
@@ -62,7 +62,7 @@ class TicTacToe(Game):
         col = self.console.get_integer_input("Enter column number (1-3)")
 
         while col < 1 or col > 3:
-            print(self.console.print_colored("Column number must be between 1 and 3", ANSI_COLORS.RED))
+            self.console.print_error("Column number must be between 1 and 3")
             col = self.console.get_integer_input("Enter column number (1-3)")
 
         return col
@@ -72,7 +72,7 @@ class TicTacToe(Game):
         col = self.get_col()
 
         while not self.is_cell_empty(row - 1, col - 1):
-            print(self.console.print_colored("Cell already occupied", ANSI_COLORS.RED))
+            self.console.print_error("Cell already occupied")
             row = self.get_row()
 
         self.game_board[row - 1][col - 1] = self.turn

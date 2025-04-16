@@ -128,7 +128,7 @@ class TriviaGame(Game):
                                                            "(for multiple choice enter mc "
                                                            "for true or false enter tf): ")
         while question_type != "mc" and question_type != "tf":
-            print(self.console.print_colored("Invalid input. Please enter either 'mc' or 'tf'", ANSI_COLORS.RED))
+            self.console.print_error("Invalid input. Please enter either 'mc' or 'tf'")
             question_type = self.console.get_string_input("Enter the type of questions you want to play ")
 
         return "boolean" if question_type == "tf" else "multiple"
@@ -136,8 +136,7 @@ class TriviaGame(Game):
     def get_difficulty(self) -> str:
         difficulty: str = self.console.get_string_input("Enter the difficulty you want to play (easy, medium, hard): ")
         while difficulty != "easy" and difficulty != "medium" and difficulty != "hard":
-            print(self.console.print_colored("Invalid input. Please enter either 'easy', 'medium', or 'hard'",
-                                             ANSI_COLORS.RED))
+            self.console.print_error("Invalid input. Please enter either 'easy', 'medium', or 'hard'")
             difficulty = self.console.get_string_input("Enter the difficulty you want to play ")
 
         return difficulty
@@ -154,7 +153,7 @@ class TriviaGame(Game):
             choice = self.console.get_integer_input("Enter category number")
 
             if choice < 0 or choice >= len(valid_cats):
-                print(self.console.print_colored("Invalid category number", ANSI_COLORS.RED))
+                self.console.print_error("Invalid category number")
 
         return valid_cats[choice]
 

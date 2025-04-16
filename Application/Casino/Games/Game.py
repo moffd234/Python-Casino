@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
 
 
@@ -24,8 +23,7 @@ class Game(ABC):
         amount: float = self.console.get_float_input("Enter a wager amount")
 
         while amount > self.player.balance or amount < 1.00:
-            print(self.console.print_colored(f"Wager amount must be between $1.00 - ${self.player.balance}",
-                                             ANSI_COLORS.RED))
+            self.console.print_error(f"Wager amount must be between $1.00 - ${self.player.balance}")
             amount = self.console.get_float_input("Enter a wager amount")
 
         return amount

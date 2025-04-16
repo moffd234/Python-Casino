@@ -2,7 +2,7 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 class IOConsole:
-    def __init__(self, color:ANSI_COLORS=ANSI_COLORS.RED):
+    def __init__(self, color:ANSI_COLORS=ANSI_COLORS.GREEN):
         if not isinstance(color, ANSI_COLORS):
             raise TypeError("color must be an instance of ANSI_COLORS")
         self.color:str = color.value
@@ -29,7 +29,7 @@ class IOConsole:
             try:
                 return int(string_response)
             except ValueError:
-                print(self.print_colored(f"{string_response} is not a valid integer.", ANSI_COLORS.RED))
+                self.print_error(f"{string_response} is not a valid integer.")
 
     def get_float_input(self, prompt: str, color: ANSI_COLORS=None) -> float:
         while True:
@@ -37,7 +37,7 @@ class IOConsole:
             try:
                 return float(string_response)
             except ValueError:
-                print(self.print_colored(f"{string_response} is not a valid float.", ANSI_COLORS.RED))
+                self.print_error(f"{string_response} is not a valid float.")
 
     def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None) -> bool:
         while True:
@@ -49,8 +49,7 @@ class IOConsole:
             elif string_response in ["no", "n", "false", "0"]:
                 return False
             else:
-                print(self.print_colored(f"{string_response} is not a valid boolean. Please enter yes or no."
-                                         , ANSI_COLORS.RED))
+                self.print_error(f"{string_response} is not a valid boolean. Please enter yes or no.")
 
     def check_for_exit(self, user_input: str) -> bool:
         if user_input.lower() == "exit":
