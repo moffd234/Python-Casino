@@ -1,5 +1,7 @@
+from unittest.mock import patch
+
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.RockPaperScissors.RPS import RPS
+from Application.Casino.Games.RockPaperScissors.RPS import RPS, get_comp_turn
 from Tests.BaseTest import BaseTest
 
 
@@ -23,6 +25,33 @@ class TestRPS(BaseTest):
         """
 
         actual: str = self.game.print_welcome_message()
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=0)
+    def test_get_comp_turn_paper(self, mock_random):
+        expected: str = "paper"
+        actual: str = get_comp_turn()
+
+        mock_random.assert_called_once()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=1)
+    def test_get_comp_turn_scissors(self, mock_random):
+        expected: str = "scissors"
+        actual: str = get_comp_turn()
+
+        mock_random.assert_called_once()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=2)
+    def test_get_comp_turn_rock(self, mock_random):
+        expected: str = "rock"
+        actual: str = get_comp_turn()
+
+        mock_random.assert_called_once()
+
         self.assertEqual(expected, actual)
 
     def test_handle_winner_cpu_paper(self):
