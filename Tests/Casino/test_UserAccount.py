@@ -46,3 +46,8 @@ class TestUserAccount(BaseTest):
     def test_add_winnings_negative(self):
         with self.assertRaises(ValueError):
             self.account.add_winnings(-10)
+
+    def test_repr(self):
+        expected: str = "Username: test_username Balance: 50"
+        actual: str = self.account.__repr__()
+        self.assertEqual(expected, actual)
