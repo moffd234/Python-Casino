@@ -82,6 +82,14 @@ class IOConsole:
         print(self.print_colored(error_message, ANSI_COLORS.RED))
 
     def get_monetary_input(self, prompt, color: ANSI_COLORS=None) -> float:
+        """
+        Prompts the user to enter a monetary amount and validates the input.
+        The user will be re-prompted until a valid positive number with no more than two decimal places is entered.
+
+        :param prompt: A string value that will be printed as the prompt
+        :param color: A color from ANSI_COLORS which will be used as the printed color
+        :return: A valid monetary input float
+        """
         money_input: float = self.get_float_input(prompt, color)
 
         while count_decimals(money_input) > 2 or money_input < 0:
