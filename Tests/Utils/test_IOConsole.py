@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
-from Application.Utils.IOConsole import IOConsole
+from Application.Utils.IOConsole import IOConsole, count_decimals
 
 
 class TestIOConsole(unittest.TestCase):
@@ -79,3 +79,27 @@ class TestIOConsole(unittest.TestCase):
     def test_print_error(self, mock_print_colored):
         self.console.print_error("Some Prompt")
         mock_print_colored.assert_called_once_with("Some Prompt", ANSI_COLORS.RED)
+
+    def test_count_decimals_0(self):
+        expected: int = 0
+        actual: int = count_decimals(123)
+
+        self.assertEqual(expected, actual)
+
+    def test_count_decimals_2(self):
+        expected: int = 2
+        actual: int = count_decimals(1.23)
+
+        self.assertEqual(expected, actual)
+
+    def test_count_decimals_5(self):
+        expected: int = 5
+        actual: int = count_decimals(1.23456)
+
+        self.assertEqual(expected, actual)
+
+    def test_count_decimals_end_in_0(self):
+        expected: int = 1
+        actual: int = count_decimals(1.1000000000000)
+
+        self.assertEqual(expected, actual)
