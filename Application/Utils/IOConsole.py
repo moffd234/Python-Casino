@@ -80,3 +80,12 @@ class IOConsole:
         :return: None
         """
         print(self.print_colored(error_message, ANSI_COLORS.RED))
+
+    def get_monetary_input(self, prompt, color: ANSI_COLORS=None) -> float:
+        money_input: float = self.get_float_input(prompt, color)
+
+        while count_decimals(money_input) > 2 or money_input < 0:
+            self.print_error("Please enter a valid amount (A positive number with no more than 2 decimal places).")
+            money_input = self.get_float_input(prompt, color)
+
+        return money_input
