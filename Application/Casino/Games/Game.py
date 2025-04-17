@@ -21,6 +21,7 @@ class Game(ABC):
 
     def get_wager_amount(self) -> float:
         amount: float = self.console.get_monetary_input("Enter a wager amount")
+        self.manager.subtract_and_save_account(self.player, amount)
         return amount
 
     def get_continue_input(self) -> bool:
