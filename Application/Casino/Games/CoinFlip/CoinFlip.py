@@ -40,7 +40,6 @@ class CoinFlip(Game):
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
-            self.manager.subtract_and_save_account(self.player, wager)
 
             flip: str = handle_heads_tails()
             guess: str = self.get_guess()

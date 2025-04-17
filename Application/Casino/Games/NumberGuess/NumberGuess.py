@@ -31,7 +31,6 @@ class NumberGuess(Game):
         while self.get_continue_input():
             num: int = random.randint(1, 10)  # From 1 to 10 [inclusive]
             wager: float = self.get_wager_amount()
-            self.manager.subtract_and_save_account(self.player, wager)
             guess: int = self.get_guess()
             print(self.handle_guess(guess, num, wager))
 

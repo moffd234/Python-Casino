@@ -104,7 +104,6 @@ class TriviaGame(Game):
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
-            self.manager.subtract_and_save_account(self.player, wager)
 
             self.get_choices()
             url: str = (f"{self.base_url}api.php?amount=10&category={self.cat.id}"
