@@ -1,6 +1,13 @@
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
+def count_decimals(num: float) -> int:
+    str_num = str(num)
+    if '.' not in str_num:
+        return 0
+    return len(str_num.split('.')[1])
+
+
 class IOConsole:
     def __init__(self, color:ANSI_COLORS=ANSI_COLORS.GREEN):
         if not isinstance(color, ANSI_COLORS):
