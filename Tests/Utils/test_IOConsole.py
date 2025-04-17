@@ -131,7 +131,7 @@ class TestIOConsole(unittest.TestCase):
             call("Some Prompt", ANSI_COLORS.BLUE)
         ])
         mock_print.assert_called_once_with(
-            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+            "Please enter a valid amount (A positive number >= 1.00 with no more than 2 decimal places).")
 
         self.assertEqual(expected, actual)
 
@@ -146,7 +146,7 @@ class TestIOConsole(unittest.TestCase):
             call("Some Prompt", None)
         ])
         mock_print.assert_called_once_with(
-            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+            "Please enter a valid amount (A positive number >= 1.00 with no more than 2 decimal places).")
 
         self.assertEqual(expected, actual)
 
@@ -161,14 +161,14 @@ class TestIOConsole(unittest.TestCase):
             call("Some Prompt", ANSI_COLORS.BLUE)
         ])
         mock_print.assert_called_once_with(
-            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+            "Please enter a valid amount (A positive number >= 1.00 with no more than 2 decimal places).")
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[0, 123.4])
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[0, 123])
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     def test_get_monetary_input_zero_no_color(self, mock_print, mock_input):
-        expected: float = 123.4
+        expected: float = 123
         actual: float = self.console.get_monetary_input("Some Prompt")
 
         mock_input.assert_has_calls([
@@ -176,7 +176,7 @@ class TestIOConsole(unittest.TestCase):
             call("Some Prompt", None)
         ])
         mock_print.assert_called_once_with(
-            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+            "Please enter a valid amount (A positive number >= 1.00 with no more than 2 decimal places).")
 
         self.assertEqual(expected, actual)
 

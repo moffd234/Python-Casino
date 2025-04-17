@@ -84,7 +84,7 @@ class IOConsole:
     def get_monetary_input(self, prompt, color: ANSI_COLORS=None) -> float:
         """
         Prompts the user to enter a monetary amount and validates the input.
-        The user will be re-prompted until a valid positive number with no more than two decimal places is entered.
+        The user will be re-prompted until a valid positive number  >= 1.00 with no more than two decimal places is entered.
 
         :param prompt: A string value that will be printed as the prompt
         :param color: A color from ANSI_COLORS which will be used as the printed color
@@ -92,8 +92,9 @@ class IOConsole:
         """
         money_input: float = self.get_float_input(prompt, color)
 
-        while count_decimals(money_input) > 2 or money_input <= 0:
-            self.print_error("Please enter a valid amount (A positive number with no more than 2 decimal places).")
+        while count_decimals(money_input) > 2 or money_input < 1.00:
+            self.print_error("Please enter a valid amount "
+                             "(A positive number >= 1.00 with no more than 2 decimal places).")
             money_input = self.get_float_input(prompt, color)
 
         return money_input
