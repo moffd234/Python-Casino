@@ -171,3 +171,13 @@ class TestRPS(BaseTest):
         actual: str = self.game.get_user_turn()
 
         self.assertEqual(expected, actual)
+
+    @patch("builtins.input", side_effect=["ss", "scissors"])
+    def test_get_user_turn_incorrect_value(self, mock_input):
+        expected: str = "scissors"
+        actual: str = self.game.get_user_turn()
+        expected_call_count: int = 2
+        actual_call_count: int = mock_input.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_call_count, actual_call_count)
