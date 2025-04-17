@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, call
 
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole, count_decimals
@@ -103,3 +103,80 @@ class TestIOConsole(unittest.TestCase):
         actual: int = count_decimals(1.1000000000000)
 
         self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", return_value=1.11)
+    def test_get_monetary_input_valid_with_color(self, mock_input):
+        expected: float = 1.11
+        actual: float = self.console.get_monetary_input("Some Prompt", ANSI_COLORS.BLUE)
+
+        mock_input.assert_called_once_with("Some Prompt", ANSI_COLORS.BLUE)
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", return_value=1.11)
+    def test_get_monetary_input_valid_no_color(self, mock_input):
+        expected: float = 1.11
+        actual: float = self.console.get_monetary_input("Some Prompt")
+
+        mock_input.assert_called_once_with("Some Prompt", None)
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[1.2345, 123.4])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_monetary_input_invalid_decimal_with_color(self, mock_print, mock_input):
+        expected: float = 123.4
+        actual: float = self.console.get_monetary_input("Some Prompt", ANSI_COLORS.BLUE)
+
+        mock_input.assert_has_calls([
+            call("Some Prompt", ANSI_COLORS.BLUE),
+            call("Some Prompt", ANSI_COLORS.BLUE)
+        ])
+        mock_print.assert_called_once_with(
+            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[1.2345, 123.4])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_monetary_input_invalid_decimal_no_color(self, mock_print, mock_input):
+        expected: float = 123.4
+        actual: float = self.console.get_monetary_input("Some Prompt")
+
+        mock_input.assert_has_calls([
+            call("Some Prompt", None),
+            call("Some Prompt", None)
+        ])
+        mock_print.assert_called_once_with(
+            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[0, 123.4])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_monetary_input_zero_with_color(self, mock_print, mock_input):
+        expected: float = 123.4
+        actual: float = self.console.get_monetary_input("Some Prompt", ANSI_COLORS.BLUE)
+
+        mock_input.assert_has_calls([
+            call("Some Prompt", ANSI_COLORS.BLUE),
+            call("Some Prompt", ANSI_COLORS.BLUE)
+        ])
+        mock_print.assert_called_once_with(
+            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[0, 123.4])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_monetary_input_zero_no_color(self, mock_print, mock_input):
+        expected: float = 123.4
+        actual: float = self.console.get_monetary_input("Some Prompt")
+
+        mock_input.assert_has_calls([
+            call("Some Prompt", None),
+            call("Some Prompt", None)
+        ])
+        mock_print.assert_called_once_with(
+            "Please enter a valid amount (A positive number with no more than 2 decimal places).")
+
+        self.assertEqual(expected, actual)
+
