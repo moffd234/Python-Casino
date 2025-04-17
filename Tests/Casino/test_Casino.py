@@ -77,13 +77,8 @@ class TestCasino(BaseTest):
         self.add_funds_and_assert(mock_print)
 
     @patch("builtins.print")
-    @patch("builtins.input", side_effect=[".001", "50"])
+    @patch("builtins.input", side_effect=[".99", "50"])
     def test_handle_add_funds_low_decimal(self, mock_input, mock_print):
-        self.add_funds_and_assert(mock_print)
-
-    @patch("builtins.print")
-    @patch("builtins.input", side_effect=["1000", "50"])
-    def test_handle_add_funds_1000(self, mock_input, mock_print):
         self.add_funds_and_assert(mock_print)
 
     def add_funds_and_assert(self, mock_print):
@@ -91,7 +86,9 @@ class TestCasino(BaseTest):
         self.casino.add_funds()
         actual_balance: float = self.casino.account.balance
         mock_print.assert_has_calls([
-            call(self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED)),
+            call(self.casino.console.print_colored("Please enter a valid amount "
+                                                   "(A positive number >= 1.00 with no more than 2 decimal places).",
+                                                   ANSI_COLORS.RED)),
             call(
                 f"{ANSI_COLORS.GREEN.value}You have added $50.0 to your funds! New Balance is {self.casino.account.balance}")
         ])

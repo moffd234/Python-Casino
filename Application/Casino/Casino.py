@@ -127,16 +127,11 @@ class Casino:
                 return None
 
     def add_funds(self) -> None:
-        while True:
-            answer: float = self.console.get_float_input("Enter the amount of money you want to add to your funds"
-                                                  " (Up to $100 but no less than $.01)")
-            if .01 < answer < 100:
-                self.manager.add_and_save_account(self.account, answer)
-                print(self.console.print_colored(f"You have added ${answer} to your funds! "
-                                                 f"New Balance is {self.account.balance}", ANSI_COLORS.GREEN))
-                return None
-
-            self.console.print_error("Invalid input. Please try again")
+        answer: float = self.console.get_monetary_input("Enter the amount of money you want to add to your funds"
+                                              " (no less than $1.00)")
+        self.manager.add_and_save_account(self.account, answer)
+        print(self.console.print_colored(f"You have added ${answer} to your funds! "
+                                         f"New Balance is {self.account.balance}", ANSI_COLORS.GREEN))
 
     def reset_password(self) -> None:
         for _ in range(5):
