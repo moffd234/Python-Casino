@@ -35,3 +35,14 @@ class TestUserAccount(BaseTest):
 
         actual: str = ve.exception.args[0]
         self.assertEqual(expected, actual)
+
+    def test_add_winnings(self):
+        expected: float = self.account.balance + 10
+        self.account.add_winnings(10)
+        actual: float = self.account.balance
+
+        self.assertEqual(expected, actual)
+
+    def test_add_winnings_negative(self):
+        with self.assertRaises(ValueError):
+            self.account.add_winnings(-10)
