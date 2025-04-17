@@ -20,12 +20,7 @@ class Game(ABC):
         pass
 
     def get_wager_amount(self) -> float:
-        amount: float = self.console.get_float_input("Enter a wager amount")
-
-        while amount > self.player.balance or amount < 1.00:
-            self.console.print_error(f"Wager amount must be between $1.00 - ${self.player.balance}")
-            amount = self.console.get_float_input("Enter a wager amount")
-
+        amount: float = self.console.get_monetary_input("Enter a wager amount")
         return amount
 
     def get_continue_input(self) -> bool:
