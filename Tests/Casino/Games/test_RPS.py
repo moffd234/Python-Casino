@@ -143,3 +143,31 @@ class TestRPS(BaseTest):
 
         self.assertEqual(expected_output, actual_output)
         self.assertEqual(expected_balance, actual_balance)
+
+    @patch("builtins.input", return_value="rock")
+    def test_get_user_turn_rock(self, mocked_input):
+        expected: str = "rock"
+        actual: str = self.game.get_user_turn()
+
+        self.assertEqual(expected, actual)
+
+    @patch("builtins.input", return_value="ROCK")
+    def test_get_user_turn_rock_capitalized(self, mocked_input):
+        expected: str = "rock"
+        actual: str = self.game.get_user_turn()
+
+        self.assertEqual(expected, actual)
+
+    @patch("builtins.input", return_value="paper")
+    def test_get_user_turn_paper(self, mocked_input):
+        expected: str = "paper"
+        actual: str = self.game.get_user_turn()
+
+        self.assertEqual(expected, actual)
+
+    @patch("builtins.input", return_value="scissors")
+    def test_get_user_turn_scissors(self, mocked_input):
+        expected: str = "scissors"
+        actual: str = self.game.get_user_turn()
+
+        self.assertEqual(expected, actual)
