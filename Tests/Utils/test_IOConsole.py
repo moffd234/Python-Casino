@@ -84,6 +84,15 @@ class TestIOConsole(unittest.TestCase):
         result = self.console.get_float_input("Some prompt: ", ANSI_COLORS.BLUE)
         self.assertEqual(result, 100.63)
 
+    @patch("builtins.input", side_effect=["####", "10.0"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_float_input_value_error(self, mock_print, mock_input):
+        expected: float = 10.0
+        actual: float = self.console.get_float_input("Some prompt: ")
+
+        mock_print.assert_called_once_with("#### is not a valid float.")
+        self.assertEqual(actual, expected)
+
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     def test_print_error(self, mock_print_colored):
         self.console.print_error("Some Prompt")
