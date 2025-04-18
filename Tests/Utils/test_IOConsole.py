@@ -198,3 +198,70 @@ class TestIOConsole(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
+    @patch("builtins.input", return_value="y")
+    def test_boolean_y(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="yes")
+    def test_boolean_yes(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="true")
+    def test_boolean_true(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="1")
+    def test_boolean_one(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="TRUE")
+    def test_boolean_true_cap(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="n")
+    def test_boolean_n(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="no")
+    def test_boolean_no(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="false")
+    def test_boolean_false(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="0")
+    def test_boolean_zero(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="FALSE")
+    def test_boolean_false_cap(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", side_effect=["NotValidInput", "False"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_boolean_invalid(self, mock_print, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
