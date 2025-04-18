@@ -65,6 +65,15 @@ class TestIOConsole(unittest.TestCase):
         result = self.console.get_integer_input("Some prompt: ", ANSI_COLORS.BLUE)
         self.assertEqual(result, 100)
 
+    @patch("builtins.input", side_effect=["####", "10"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_integer_input_value_error(self, mock_print, mock_input):
+        expected: int = 10
+        actual: int = self.console.get_integer_input("Some prompt: ")
+
+        mock_print.assert_called_once_with("#### is not a valid integer.")
+        self.assertEqual(actual, expected)
+
     @patch("builtins.input", return_value="42.23")
     def test_get_float_input_valid(self, mock_input):
         result = self.console.get_float_input("Some prompt: ")
@@ -74,6 +83,15 @@ class TestIOConsole(unittest.TestCase):
     def test_get_float_input_with_custom_color(self, mock_input):
         result = self.console.get_float_input("Some prompt: ", ANSI_COLORS.BLUE)
         self.assertEqual(result, 100.63)
+
+    @patch("builtins.input", side_effect=["####", "10.0"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_float_input_value_error(self, mock_print, mock_input):
+        expected: float = 10.0
+        actual: float = self.console.get_float_input("Some prompt: ")
+
+        mock_print.assert_called_once_with("#### is not a valid float.")
+        self.assertEqual(actual, expected)
 
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     def test_print_error(self, mock_print_colored):
@@ -179,4 +197,71 @@ class TestIOConsole(unittest.TestCase):
             "Please enter a valid amount (A positive number >= 1.00 with no more than 2 decimal places).")
 
         self.assertEqual(expected, actual)
+
+    @patch("builtins.input", return_value="y")
+    def test_boolean_y(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="yes")
+    def test_boolean_yes(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="true")
+    def test_boolean_true(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="1")
+    def test_boolean_one(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="TRUE")
+    def test_boolean_true_cap(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertTrue(actual)
+
+    @patch("builtins.input", return_value="n")
+    def test_boolean_n(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="no")
+    def test_boolean_no(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="false")
+    def test_boolean_false(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="0")
+    def test_boolean_zero(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", return_value="FALSE")
+    def test_boolean_false_cap(self, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
+
+    @patch("builtins.input", side_effect=["NotValidInput", "False"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_boolean_invalid(self, mock_print, mock_input):
+        actual: bool = self.console.get_boolean_input("Some Prompt")
+
+        self.assertFalse(actual)
 
