@@ -25,3 +25,23 @@ class TestNumberGuess(BaseTest):
         """
         actual: str = self.game.print_welcome_message()
         self.assertEqual(expected, actual)
+
+    def test_handle_guess_right(self):
+        expected_output: str = "You Won! The answer was 5"
+        expected_balance: float = self.player.balance + 20
+
+        actual_output: str = self.game.handle_guess(5, 5, 10)
+        actual_balance: float = self.player.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
+
+    def test_handle_guess_wrong(self):
+        expected_output: str = "You lost. The answer was 5"
+        expected_balance: float = self.player.balance
+
+        actual_output: str = self.game.handle_guess(6, 5, 10)
+        actual_balance: float = self.player.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
