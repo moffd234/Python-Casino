@@ -8,11 +8,8 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 def handle_heads_tails() -> str:
     flip_num: int = random.randint(0, 1)
+    return "tails" if flip_num == 0 else "heads"
 
-    if flip_num == 0:
-        return "tails"
-    else:
-        return "heads"
 class CoinFlip(Game):
 
     def __init__(self, player: UserAccount, manager: AccountManager):
