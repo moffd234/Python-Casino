@@ -38,7 +38,7 @@ class NumberGuess(Game):
         guess: int = self.console.get_integer_input("Enter your guess from 1 - 10 (inclusive)")
 
         while guess < 1 or guess > 10:
-            self.console.error("Number should be from 1 - 10 (inclusive)")
+            self.console.print_error("Number should be from 1 - 10 (inclusive)")
             guess = self.console.get_integer_input("Enter your guess from 1 - 10")
 
         return guess
