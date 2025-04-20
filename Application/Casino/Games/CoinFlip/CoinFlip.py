@@ -45,7 +45,7 @@ class CoinFlip(Game):
         guess: str = self.console.get_string_input("Enter your guess: (heads or tails)")
 
         while guess != "heads" and guess != "tails":
-            print(self.console.print_colored("Guess must be 'heads' or 'tails'", ANSI_COLORS.RED), )
+            self.console.print_error("Guess must be 'heads' or 'tails'")
             guess = self.console.get_string_input("Enter your guess: (heads or tails)")
 
         return guess
