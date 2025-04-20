@@ -14,7 +14,7 @@ Welcome to **Command Line Casino**, a terminal-based Python application that sim
 - ❓ Trivia Game — Test your general knowledge.
 - ❌⭕ Tic-Tac-Toe — Classic 3x3 strategy showdown.
 - 🪙 Coin Flip — Choose heads or tails, test your luck!
-- ✊🖐✌ Rock-Paper-Scissors *(coming soon!)*
+- ✊🖐✌ Rock-Paper-Scissors
 - 🎰 Slot Machine *(coming soon!)*
 - 🃏 Blackjack *(coming soon!)*
 
