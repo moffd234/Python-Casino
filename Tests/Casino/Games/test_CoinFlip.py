@@ -43,3 +43,31 @@ class TestCoinFlip(BaseTest):
         actual: str = handle_heads_tails()
 
         self.assertEqual(expected, actual)
+
+    @patch("builtins.input", return_value="tails")
+    def test_get_guess_tails(self, mock_input):
+        expected: str = "tails"
+        actual: str = self.game.get_guess()
+
+        self.assertEqual(expected, actual)
+
+    @patch("builtins.input", return_value="heads")
+    def test_get_guess_heads(self, mock_input):
+        expected: str = "heads"
+        actual: str = self.game.get_guess()
+
+        self.assertEqual(expected, actual)
+
+    @patch("builtins.input", side_effect=["invalid_input","tails"])
+    def test_get_guess_invalid_tails(self, mock_input):
+        expected: str = "tails"
+        actual: str = self.game.get_guess()
+
+        self.assertEqual(expected, actual)
+
+    @patch("builtins.input", side_effect=["invalid_input", "heads"])
+    def test_get_guess_invalid_heads(self, mock_input):
+        expected: str = "heads"
+        actual: str = self.game.get_guess()
+
+        self.assertEqual(expected, actual)
