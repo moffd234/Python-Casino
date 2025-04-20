@@ -1,5 +1,7 @@
+from unittest.mock import patch
+
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
+from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip, handle_heads_tails
 from Tests.BaseTest import BaseTest
 
 
@@ -25,5 +27,19 @@ class TestCoinFlip(BaseTest):
         """
 
         actual: str = self.game.print_welcome_message()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.CoinFlip.CoinFlip.random.randint", return_value=0)
+    def test_handle_heads_tails_zero(self, mock_randint):
+        expected: str = "tails"
+        actual: str = handle_heads_tails()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.CoinFlip.CoinFlip.random.randint", return_value=1)
+    def test_handle_heads_tails_one(self, mock_randint):
+        expected: str = "heads"
+        actual: str = handle_heads_tails()
 
         self.assertEqual(expected, actual)
