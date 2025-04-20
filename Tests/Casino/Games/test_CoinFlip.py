@@ -71,3 +71,43 @@ class TestCoinFlip(BaseTest):
         actual: str = self.game.get_guess()
 
         self.assertEqual(expected, actual)
+
+    def test_handle_outcome_win_tails(self):
+        expected_output: str = "You Won! The coin was tails"
+        expected_balance: float = self.account.balance + (10 * 1.25)
+
+        actual_output: str = self.game.handle_outcome("tails", "tails", 10)
+        actual_balance: float = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
+
+    def test_handle_outcome_win_heads(self):
+        expected_output: str = "You Won! The coin was heads"
+        expected_balance: float = self.account.balance + (10 * 1.25)
+
+        actual_output: str = self.game.handle_outcome("heads", "heads", 10)
+        actual_balance: float = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
+
+    def test_handle_outcome_loss_tails_guess(self):
+        expected_output: str = "You Loss! The coin was heads"
+        expected_balance: float = self.account.balance
+
+        actual_output: str = self.game.handle_outcome("tails", "heads", 10)
+        actual_balance: float = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
+
+    def test_handle_outcome_loss_heads_guess(self):
+        expected_output: str = "You Loss! The coin was tails"
+        expected_balance: float = self.account.balance
+
+        actual_output: str = self.game.handle_outcome("heads", "tails", 10)
+        actual_balance: float = self.account.balance
+
+        self.assertEqual(expected_output, actual_output)
+        self.assertEqual(expected_balance, actual_balance)
