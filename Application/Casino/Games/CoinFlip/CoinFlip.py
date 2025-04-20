@@ -13,8 +13,6 @@ def handle_heads_tails() -> str:
         return "tails"
     else:
         return "heads"
-
-
 class CoinFlip(Game):
 
     def __init__(self, player: UserAccount, manager: AccountManager):
