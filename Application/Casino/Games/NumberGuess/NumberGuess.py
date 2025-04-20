@@ -38,8 +38,9 @@ class NumberGuess(Game):
         guess: int = self.console.get_integer_input("Enter your guess from 1 - 10 (inclusive)")
 
         while guess < 1 or guess > 10:
-            print(self.console.print_colored("Number should be from 1 - 10 (inclusive)", ANSI_COLORS.RED))
+            self.console.error("Number should be from 1 - 10 (inclusive)")
             guess = self.console.get_integer_input("Enter your guess from 1 - 10")
+
         return guess
 
     def handle_guess(self, guess: int, ran_num: int, wager: float) -> str:
