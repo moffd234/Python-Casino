@@ -1,3 +1,4 @@
+from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 from Tests.BaseTest import BaseTest
@@ -7,7 +8,8 @@ class TestTriviaGame(BaseTest):
 
     def setUp(self):
         super().setUp()
-        self.game = TriviaGame(self.manager.get_account("Username", "Password"), self.manager)
+        self.account: UserAccount = UserAccount("test_username", "test_password", 50.0)
+        self.game = TriviaGame(self.account, self.manager)
         self.test_question_tf = Question("is this how to spell true 'true'?", "true", ["false"])
         self.test_question_mc = Question("What is the first letter of the alphabet'?",
                                          "a", ["b", "c", "d"])
