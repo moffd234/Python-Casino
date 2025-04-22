@@ -209,6 +209,94 @@ class TestTriviaGame(BaseTest):
         ]
         self.assert_create_questions(expected_list, response)
 
+    def test_create_questions_tf(self):
+        response = {'response_code': 0, 'results': [
+            {'category': 'Entertainment: Film', 'correct_answer': 'False', 'difficulty': 'easy',
+             'incorrect_answers': ['True'],
+             'question': 'Brandon Routh plays the titular character in the movie &quot;John Wick&quot;.',
+             'type': 'boolean'}, {'category': 'Entertainment: Film', 'correct_answer': 'True', 'difficulty': 'easy',
+                                  'incorrect_answers': ['False'],
+                                  'question': 'Samuel L. Jackson had the words, &#039;Bad Motherf*cker&#039; in-scripted on his lightsaber during the filming of Star Wars.',
+                                  'type': 'boolean'},
+            {'category': 'Entertainment: Film', 'correct_answer': 'True', 'difficulty': 'easy',
+             'incorrect_answers': ['False'],
+             'question': 'In the original Star Wars trilogy, David Prowse was the actor who physically portrayed Darth Vader.',
+             'type': 'boolean'}, {'category': 'Entertainment: Film', 'correct_answer': 'False', 'difficulty': 'easy',
+                                  'incorrect_answers': ['True'],
+                                  'question': 'Leonardo DiCaprio won an Oscar for Best Actor in 2004&#039;s &quot;The Aviator&quot;.',
+                                  'type': 'boolean'},
+            {'category': 'Entertainment: Film', 'correct_answer': 'False', 'difficulty': 'easy',
+             'incorrect_answers': ['True'],
+             'question': 'Shaquille O&#039;Neal appeared in the 1997 film &quot;Space Jam&quot;.', 'type': 'boolean'},
+            {'category': 'Entertainment: Film', 'correct_answer': 'True', 'difficulty': 'easy',
+             'incorrect_answers': ['False'],
+             'question': 'In the original script of &quot;The Matrix&quot;, the machines used humans as additional computing power instead of batteries.',
+             'type': 'boolean'}, {'category': 'Entertainment: Film', 'correct_answer': 'False', 'difficulty': 'easy',
+                                  'incorrect_answers': ['True'],
+                                  'question': 'Han Solo&#039;s co-pilot and best friend, &quot;Chewbacca&quot;, is an Ewok.',
+                                  'type': 'boolean'},
+            {'category': 'Entertainment: Film', 'correct_answer': 'True', 'difficulty': 'easy',
+             'incorrect_answers': ['False'], 'question': 'Actor Tommy Chong served prison time.', 'type': 'boolean'},
+            {'category': 'Entertainment: Film', 'correct_answer': 'False', 'difficulty': 'easy',
+             'incorrect_answers': ['True'],
+             'question': 'The 2010 film &quot;The Social Network&quot; is a biographical drama film about MySpace founder Tom Anderson.',
+             'type': 'boolean'}, {'category': 'Entertainment: Film', 'correct_answer': 'True', 'difficulty': 'easy',
+                                  'incorrect_answers': ['False'],
+                                  'question': 'The movie &quot;The Nightmare before Christmas&quot; was all done with physical objects.',
+                                  'type': 'boolean'}]}
+        expected_list: list[Question] = [Question(
+            question='Brandon Routh plays the titular character in the movie "John Wick".',
+            answer='False',
+            wrong_answers=['True']
+        ),
+            Question(
+                question="Samuel L. Jackson had the words, 'Bad Motherf*cker' in-scripted on his lightsaber during the filming of Star Wars.",
+                answer='True',
+                wrong_answers=['False']
+            ),
+            Question(
+                question='In the original Star Wars trilogy, David Prowse was the actor who physically portrayed Darth Vader.',
+                answer='True',
+                wrong_answers=['False']
+            ),
+            Question(
+                question='Leonardo DiCaprio won an Oscar for Best Actor in 2004\'s "The Aviator".',
+                answer='False',
+                wrong_answers=['True']
+            ),
+            Question(
+                question='Shaquille O\'Neal appeared in the 1997 film "Space Jam".',
+                answer='False',
+                wrong_answers=['True']
+            ),
+            Question(
+                question='In the original script of "The Matrix", the machines used humans as additional computing power instead of batteries.',
+                answer='True',
+                wrong_answers=['False']
+            ),
+            Question(
+                question='Han Solo\'s co-pilot and best friend, "Chewbacca", is an Ewok.',
+                answer='False',
+                wrong_answers=['True']
+            ),
+            Question(
+                question='Actor Tommy Chong served prison time.',
+                answer='True',
+                wrong_answers=['False']
+            ),
+            Question(
+                question='The 2010 film "The Social Network" is a biographical drama film about MySpace founder Tom Anderson.',
+                answer='False',
+                wrong_answers=['True']
+            ),
+            Question(
+                question='The movie "The Nightmare before Christmas" was all done with physical objects.',
+                answer='True',
+                wrong_answers=['False']
+            )
+        ]
+        self.assert_create_questions(expected_list, response)
+
     def assert_create_questions(self, expected_list, response):
         expected_length: int = len(expected_list)
         actual_list: list[Question] = create_questions(response)
