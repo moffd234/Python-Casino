@@ -74,6 +74,7 @@ class TicTacToe(Game):
         while not self.is_cell_empty(row - 1, col - 1):
             self.console.print_error("Cell already occupied")
             row = self.get_row()
+            col = self.get_col()
 
         self.game_board[row - 1][col - 1] = self.turn
         self.turn = "o" if self.turn == "x" else "x"
