@@ -44,7 +44,7 @@ def cache_loader() -> dict | None:
     return None
 
 
-def parse_cached_categories(cache) -> list[Category]:
+def parse_cached_categories(cache: dict | None) -> list[Category]:
     possible_categories: list[Category] = []
     for category in cache:
         possible_categories.append(Category(
@@ -152,7 +152,7 @@ class TriviaGame(Game):
         self.cat: Category = self.get_category(valid_cats)
 
     def get_possible_categories(self) -> list | None:
-        cached_categories = cache_loader()
+        cached_categories: dict | None = cache_loader()
 
         if cached_categories:
             return parse_cached_categories(cached_categories)
