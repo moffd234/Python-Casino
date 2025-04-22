@@ -233,6 +233,34 @@ class TestTicTacToe(BaseTest):
 
         self.assert_handle_turn(expected_turn, expected_board)
 
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", side_effect=[1, 2])
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", side_effect=[1, 1])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_handle_turn_invalid_o_turn(self, mock_print, mock_col, mock_row):
+        self.game.turn = 'o'
+        self.game.game_board = [["x", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+
+        with patch.object(self.game.console, "print_error") as mock_print:
+            expected_turn: str = 'x'
+            expected_board: list[list[str]] = [["x", " ", " "], ["o", " ", " "], [" ", " ", " "]]
+
+            self.assert_handle_turn(expected_turn, expected_board)
+            mock_print.assert_called_once_with("Cell already occupied")
+
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", side_effect=[1, 2])
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", side_effect=[1, 1])
+    def test_handle_turn_invalid_x_turn(self, mock_col, mock_row):
+        self.game.turn = 'x'
+        self.game.game_board = [["o", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+
+        with patch.object(self.game.console, "print_error") as mock_print:
+            expected_turn: str = 'o'
+            expected_board: list[list[str]] = [["o", " ", " "], ["x", " ", " "], [" ", " ", " "]]
+
+            self.assert_handle_turn(expected_turn, expected_board)
+            mock_print.assert_called_once_with("Cell already occupied")
+
+
     def assert_handle_turn(self, expected_turn, expected_board):
         self.game.handle_turn()
         actual_turn: str = self.game.turn
