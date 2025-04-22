@@ -5,7 +5,7 @@ from unittest.mock import patch, mock_open
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question
-from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher
+from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader
 from Tests.BaseTest import BaseTest
 
 
@@ -356,3 +356,8 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(actual, expected)
 
         mock_file().write.assert_called()
+
+    @patch("os.path.exists", return_value=False)
+    def test_cache_loader_no_file(self, mock_path_exists):
+        expected: None = cache_loader()
+        self.assertIsNone(expected)
