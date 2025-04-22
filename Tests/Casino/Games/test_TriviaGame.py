@@ -6,7 +6,7 @@ from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader, \
-    CACHE_FILE_PATH
+    CACHE_FILE_PATH, parse_cached_categories
 from Tests.BaseTest import BaseTest
 
 
@@ -343,7 +343,7 @@ class TestTriviaGame(BaseTest):
             Category(id_num=30, name='Science: Gadgets', easy_num=15, med_num=10, hard_num=6),
             Category(id_num=31, name='Entertainment: Japanese Anime & Manga', easy_num=62, med_num=84, hard_num=47),
             Category(id_num=32, name='Entertainment: Cartoon & Animations', easy_num=35, med_num=44, hard_num=21)]
-        expected= {
+        expected = {
             "timestamp": "2025-04-11 12:00:00",
             "categories": [cat.__dict__ for cat in possible_categories]
         }
@@ -382,3 +382,68 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(result, [{"id": 1, "name": "Test"}])
         mock_file.assert_called_with(CACHE_FILE_PATH, mode='r')
+
+    def test_parse_cached_categories(self):
+        cached_categories = [
+            {'easy_num': 155, 'hard_num': 62, 'id': 9, 'med_num': 135, 'name': 'General Knowledge'},
+            {'easy_num': 34, 'hard_num': 28, 'id': 10, 'med_num': 46, 'name': 'Entertainment: Books'},
+            {'easy_num': 96, 'hard_num': 49, 'id': 11, 'med_num': 128, 'name': 'Entertainment: Film'},
+            {'easy_num': 115, 'hard_num': 78, 'id': 12, 'med_num': 212, 'name': 'Entertainment: Music'},
+            {'easy_num': 10, 'hard_num': 11, 'id': 13, 'med_num': 14, 'name': 'Entertainment: Musicals & Theatres'},
+            {'easy_num': 72, 'hard_num': 30, 'id': 14, 'med_num': 85, 'name': 'Entertainment: Television'},
+            {'easy_num': 365, 'hard_num': 212, 'id': 15, 'med_num': 497, 'name': 'Entertainment: Video Games'},
+            {'easy_num': 24, 'hard_num': 25, 'id': 16, 'med_num': 22, 'name': 'Entertainment: Board Games'},
+            {'easy_num': 68, 'hard_num': 73, 'id': 17, 'med_num': 110, 'name': 'Science & Nature'},
+            {'easy_num': 54, 'hard_num': 40, 'id': 18, 'med_num': 76, 'name': 'Science: Computers'},
+            {'easy_num': 16, 'hard_num': 18, 'id': 19, 'med_num': 26, 'name': 'Science: Mathematics'},
+            {'easy_num': 22, 'hard_num': 14, 'id': 20, 'med_num': 29, 'name': 'Mythology'},
+            {'easy_num': 53, 'hard_num': 24, 'id': 21, 'med_num': 68, 'name': 'Sports'},
+            {'easy_num': 82, 'hard_num': 56, 'id': 22, 'med_num': 144, 'name': 'Geography'},
+            {'easy_num': 78, 'hard_num': 86, 'id': 23, 'med_num': 177, 'name': 'History'},
+            {'easy_num': 19, 'hard_num': 17, 'id': 24, 'med_num': 29, 'name': 'Politics'},
+            {'easy_num': 17, 'hard_num': 11, 'id': 25, 'med_num': 13, 'name': 'Art'},
+            {'easy_num': 13, 'hard_num': 8, 'id': 26, 'med_num': 33, 'name': 'Celebrities'},
+            {'easy_num': 29, 'hard_num': 18, 'id': 27, 'med_num': 36, 'name': 'Animals'},
+            {'easy_num': 22, 'hard_num': 20, 'id': 28, 'med_num': 34, 'name': 'Vehicles'},
+            {'easy_num': 16, 'hard_num': 19, 'id': 29, 'med_num': 39, 'name': 'Entertainment: Comics'},
+            {'easy_num': 15, 'hard_num': 6, 'id': 30, 'med_num': 10, 'name': 'Science: Gadgets'},
+            {'easy_num': 62, 'hard_num': 47, 'id': 31, 'med_num': 84, 'name': 'Entertainment: Japanese Anime & Manga'},
+            {'easy_num': 35, 'hard_num': 21, 'id': 32, 'med_num': 44, 'name': 'Entertainment: Cartoon & Animations'}]
+        expected_list: list[Category] = [
+            Category(id_num=9, name='General Knowledge', easy_num=155, med_num=135, hard_num=62),
+            Category(id_num=10, name='Entertainment: Books', easy_num=34, med_num=46, hard_num=28),
+            Category(id_num=11, name='Entertainment: Film', easy_num=96, med_num=128, hard_num=49),
+            Category(id_num=12, name='Entertainment: Music', easy_num=115, med_num=212, hard_num=78),
+            Category(id_num=13, name='Entertainment: Musicals & Theatres', easy_num=10, med_num=14, hard_num=11),
+            Category(id_num=14, name='Entertainment: Television', easy_num=72, med_num=85, hard_num=30),
+            Category(id_num=15, name='Entertainment: Video Games', easy_num=365, med_num=497, hard_num=212),
+            Category(id_num=16, name='Entertainment: Board Games', easy_num=24, med_num=22, hard_num=25),
+            Category(id_num=17, name='Science & Nature', easy_num=68, med_num=110, hard_num=73),
+            Category(id_num=18, name='Science: Computers', easy_num=54, med_num=76, hard_num=40),
+            Category(id_num=19, name='Science: Mathematics', easy_num=16, med_num=26, hard_num=18),
+            Category(id_num=20, name='Mythology', easy_num=22, med_num=29, hard_num=14),
+            Category(id_num=21, name='Sports', easy_num=53, med_num=68, hard_num=24),
+            Category(id_num=22, name='Geography', easy_num=82, med_num=144, hard_num=56),
+            Category(id_num=23, name='History', easy_num=78, med_num=177, hard_num=86),
+            Category(id_num=24, name='Politics', easy_num=19, med_num=29, hard_num=17),
+            Category(id_num=25, name='Art', easy_num=17, med_num=13, hard_num=11),
+            Category(id_num=26, name='Celebrities', easy_num=13, med_num=33, hard_num=8),
+            Category(id_num=27, name='Animals', easy_num=29, med_num=36, hard_num=18),
+            Category(id_num=28, name='Vehicles', easy_num=22, med_num=34, hard_num=20),
+            Category(id_num=29, name='Entertainment: Comics', easy_num=16, med_num=39, hard_num=19),
+            Category(id_num=30, name='Science: Gadgets', easy_num=15, med_num=10, hard_num=6),
+            Category(id_num=31, name='Entertainment: Japanese Anime & Manga', easy_num=62, med_num=84, hard_num=47),
+            Category(id_num=32, name='Entertainment: Cartoon & Animations', easy_num=35, med_num=44, hard_num=21),
+        ]
+        expected_length: int = len(expected_list)
+        actual_list: list[Category] = parse_cached_categories(cached_categories)
+        actual_length: int = len(actual_list)
+
+        for i in range(expected_length):
+            self.assertEqual(expected_list[i].id, actual_list[i].id)
+            self.assertEqual(expected_list[i].name, actual_list[i].name)
+            self.assertEqual(expected_list[i].easy_num, actual_list[i].easy_num)
+            self.assertEqual(expected_list[i].med_num, actual_list[i].med_num)
+            self.assertEqual(expected_list[i].hard_num, actual_list[i].hard_num)
+
+        self.assertEqual(expected_length, actual_length)
