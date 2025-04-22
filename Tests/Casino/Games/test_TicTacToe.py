@@ -222,12 +222,7 @@ class TestTicTacToe(BaseTest):
         expected_turn: str = 'o'
         expected_board: list[list[str]] = [["x", " ", " "],[" ", " ", " "],[" ", " ", " "]]
 
-        self.game.handle_turn()
-        actual_turn: str = self.game.turn
-        actual_board: list[list[str]] = self.game.game_board
-
-        self.assertEqual(expected_turn, actual_turn)
-        self.assertEqual(expected_board, actual_board)
+        self.assert_handle_turn(expected_turn, expected_board)
 
     @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", return_value=2)
     @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", return_value=1)
@@ -236,6 +231,9 @@ class TestTicTacToe(BaseTest):
         expected_turn: str = 'x'
         expected_board: list[list[str]] = [[" ", " ", " "], ["o", " ", " "], [" ", " ", " "]]
 
+        self.assert_handle_turn(expected_turn, expected_board)
+
+    def assert_handle_turn(self, expected_turn, expected_board):
         self.game.handle_turn()
         actual_turn: str = self.game.turn
         actual_board: list[list[str]] = self.game.game_board
