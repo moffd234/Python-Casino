@@ -108,3 +108,4 @@ class TicTacToe(Game):
 
             if winner:
                 return winner
+        return None
