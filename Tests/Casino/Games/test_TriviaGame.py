@@ -5,7 +5,8 @@ from unittest.mock import patch, mock_open
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question
-from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader
+from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader, \
+    CACHE_FILE_PATH
 from Tests.BaseTest import BaseTest
 
 
@@ -361,3 +362,23 @@ class TestTriviaGame(BaseTest):
     def test_cache_loader_no_file(self, mock_path_exists):
         expected: None = cache_loader()
         self.assertIsNone(expected)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.datetime")
+    @patch("json.load")
+    @patch("builtins.open", new_callable=mock_open)
+    @patch("os.path.exists", return_value=True)
+    def test_cache_loader_valid(self, mock_path_exists, mock_file, mock_json_load, mock_datetime):
+        current_time = datetime(2025, 4, 11, 12, 0, 0)
+
+        mock_datetime.now.return_value = current_time
+        mock_datetime.strptime = datetime.strptime
+
+        mock_json_load.return_value = {
+            "timestamp": "2025-04-11 10:00:00",
+            "categories": [{"id": 1, "name": "Test"}]
+        }
+
+        result: dict = cache_loader()
+
+        self.assertEqual(result, [{"id": 1, "name": "Test"}])
+        mock_file.assert_called_with(CACHE_FILE_PATH, mode='r')
