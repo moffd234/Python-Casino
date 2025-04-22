@@ -183,3 +183,24 @@ class TestTicTacToe(BaseTest):
 
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
+
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_board_empty(self, mock_print):
+        expected: str = ("  |   |  "
+                        "\n---------\n"
+                        "  |   |  "
+                        "\n---------\n"
+                        "  |   |  ")
+        self.game.print_board()
+        mock_print.assert_called_once_with(expected)
+
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_board_full(self, mock_print):
+        self.game.game_board = [["x", "o", "x"],["o", "x", "o"],["x", "o", "x"]]
+        expected: str = ("x | o | x"
+                         "\n---------\n"
+                         "o | x | o"
+                         "\n---------\n"
+                         "x | o | x")
+        self.game.print_board()
+        mock_print.assert_called_once_with(expected)
