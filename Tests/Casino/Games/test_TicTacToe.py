@@ -214,3 +214,31 @@ class TestTicTacToe(BaseTest):
                          "x | o | x")
         self.game.print_board()
         mock_print.assert_called_once_with(expected)
+
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", return_value=1)
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", return_value=1)
+    def test_handle_turn_valid_x_turn(self, mock_col, mock_row):
+        self.game.turn = 'x'
+        expected_turn: str = 'o'
+        expected_board: list[list[str]] = [["x", " ", " "],[" ", " ", " "],[" ", " ", " "]]
+
+        self.game.handle_turn()
+        actual_turn: str = self.game.turn
+        actual_board: list[list[str]] = self.game.game_board
+
+        self.assertEqual(expected_turn, actual_turn)
+        self.assertEqual(expected_board, actual_board)
+
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", return_value=2)
+    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", return_value=1)
+    def test_handle_turn_valid_o_turn(self, mock_col, mock_row):
+        self.game.turn = 'o'
+        expected_turn: str = 'x'
+        expected_board: list[list[str]] = [[" ", " ", " "], ["o", " ", " "], [" ", " ", " "]]
+
+        self.game.handle_turn()
+        actual_turn: str = self.game.turn
+        actual_board: list[list[str]] = self.game.game_board
+
+        self.assertEqual(expected_turn, actual_turn)
+        self.assertEqual(expected_board, actual_board)
