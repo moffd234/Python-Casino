@@ -14,8 +14,8 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 CACHE_FILE_PATH = "category_cache.txt"
 
-def create_questions(q_response: dict) -> [Question]:
-    questions_list: [Question] = []
+def create_questions(q_response: dict) -> list[Question]:
+    questions_list: list[Question] = []
     for question in q_response["results"]:
         questions_list.append(Question(question=unescape(question["question"]),
                                        answer=unescape(question["correct_answer"]),
@@ -98,7 +98,7 @@ class TriviaGame(Game):
                         f"&difficulty={self.difficulty}&type={self.q_type}")
             response = self.get_response(url)
 
-            questions: dict = create_questions(response)
+            questions: list[Question] = create_questions(response)
             self.play_game(questions)
 
             if self.score > 6:
@@ -218,7 +218,7 @@ class TriviaGame(Game):
         else:
             print(f"Wrong. Current score is {self.score}/{question_num}")
 
-    def play_game(self, questions: [Question]) -> int:
+    def play_game(self, questions: list[Question]) -> int:
         for i in range(len(questions)):
             print(questions[i].question)
             options = ' '.join(f"[{answer}]" for answer in questions[i].all_options)
