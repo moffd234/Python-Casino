@@ -207,8 +207,10 @@ class TestTriviaGame(BaseTest):
                 wrong_answers=["Armin Arlelt", "Mikasa Ackermann", "Eren Jaeger"]
             )
         ]
-        expected_length: int = len(expected_list)
+        self.assert_create_questions(expected_list, response)
 
+    def assert_create_questions(self, expected_list, response):
+        expected_length: int = len(expected_list)
         actual_list: list[Question] = create_questions(response)
         actual_length: int = len(actual_list)
 
@@ -216,5 +218,4 @@ class TestTriviaGame(BaseTest):
             self.assertEqual(expected_list[i].question, actual_list[i].question)
             self.assertEqual(expected_list[i].answer, actual_list[i].answer)
             self.assertEqual(expected_list[i].wrong_answers, actual_list[i].wrong_answers)
-
-        self.assertEqual(expected_length, actual_length)
+            self.assertEqual(expected_length, actual_length)
