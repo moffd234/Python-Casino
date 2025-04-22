@@ -14,18 +14,6 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 CACHE_FILE_PATH = "category_cache.txt"
 
-
-def get_response(url) -> None | dict:
-    response = requests.get(url)
-    try:
-        response.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        print("Problem getting questions. Please try again later.")
-        print(err)
-        return None
-    return response.json()
-
-
 def create_questions(q_response: dict) -> [Question]:
     questions_list: [Question] = []
     for question in q_response["results"]:
@@ -108,7 +96,7 @@ class TriviaGame(Game):
             self.get_choices()
             url: str = (f"{self.base_url}api.php?amount=10&category={self.cat.id}"
                         f"&difficulty={self.difficulty}&type={self.q_type}")
-            response = get_response(url)
+            response = self.get_response(url)
 
             questions: dict = create_questions(response)
             self.play_game(questions)
@@ -170,7 +158,7 @@ class TriviaGame(Game):
             return parse_cached_categories(cached_categories)
 
         print(self.console.print_colored("loading.........\n\n\n"))
-        cat_response = get_response(f"{self.base_url}api_category.php")
+        cat_response = self.get_response(f"{self.base_url}api_category.php")
 
         if cat_response is None:
             print("Problem getting questions. Please try again later.")
@@ -180,7 +168,7 @@ class TriviaGame(Game):
         possible_categories: list[Category] = []
 
         for key, value in all_categories.items():
-            response = get_response(f"{self.base_url}api_count.php?category={value}")
+            response = self.get_response(f"{self.base_url}api_count.php?category={value}")
 
             if response:
                 category_data = response.get("category_question_count", {})
@@ -249,3 +237,12 @@ class TriviaGame(Game):
         multipliers = {"easy": 1.25, "medium": 1.5, "hard": 1.75, "boolean": 1, "multiple": 1.25}
         multiplier = multipliers[self.difficulty] * multipliers[self.q_type]
         return round(wager * multiplier, 2)
+
+    def get_response(self, url: str) -> None | dict:
+        response = requests.get(url)
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            self.console.print_error("Problem getting questions. Please try again later.")
+            return None
+        return response.json()
