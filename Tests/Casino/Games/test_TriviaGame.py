@@ -1,6 +1,6 @@
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Question import Question
-from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
+from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions
 from Tests.BaseTest import BaseTest
 
 
@@ -56,7 +56,6 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected, actual)
 
     def test_get_winnings_total_medium_multiple(self):
-
         self.game.q_type = "multiple"
         self.game.difficulty = "medium"
         wager: float = 50.0
@@ -67,7 +66,6 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected, actual)
 
     def test_get_winnings_total_medium_tf(self):
-
         self.game.q_type = "boolean"
         self.game.difficulty = "medium"
         wager: float = 50.0
@@ -78,7 +76,6 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected, actual)
 
     def test_get_winnings_total_easy_multiple(self):
-
         self.game.q_type = "multiple"
         self.game.difficulty = "easy"
         wager: float = 50.0
@@ -124,3 +121,100 @@ class TestTriviaGame(BaseTest):
         actual = self.game.score
 
         self.assertEqual(expected, actual)
+
+    def test_create_questions_mc(self):
+        response = {'response_code': 0, 'results': [
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'The Porygon Line',
+             'difficulty': 'easy', 'incorrect_answers': ['The Pikachu Line', 'The Elekid Line', 'The Magby Line'],
+             'question': 'Which Pok&eacute;mon and it&#039;s evolutions were banned from appearing in a main role after the Episode 38 Incident?',
+             'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Caterpie',
+             'difficulty': 'easy', 'incorrect_answers': ['Charmander', 'Pikachu', 'Pidgey'],
+             'question': 'What was Ash Ketchum&#039;s second Pokemon?', 'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'God', 'difficulty': 'easy',
+             'incorrect_answers': ['Alien', 'Time Traveler', 'Esper'],
+             'question': 'In &quot;The Melancholy of Haruhi Suzumiya&quot; series, the SOS Brigade club leader is unknowingly treated as a(n) __ by her peers.',
+             'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Manaphy', 'difficulty': 'easy',
+             'incorrect_answers': ['Ash', 'May', 'Phantom'],
+             'question': 'In the 9th Pokemon movie, who is the Prince of the Sea?', 'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Sen (Thousand)',
+             'difficulty': 'easy', 'incorrect_answers': ['Hyaku (Hundred)', 'Ichiman (Ten thousand)', 'Juu (Ten)'],
+             'question': 'What name is the main character Chihiro given in the 2001 movie &quot;Spirited Away&quot;?',
+             'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Elizabeth Midford',
+             'difficulty': 'easy',
+             'incorrect_answers': ['Rachel Phantomhive', 'Alexis Leon Midford', 'Angelina Dalles'],
+             'question': 'In the anime Black Butler, who is betrothed to be married to Ciel Phantomhive?',
+             'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Gainax', 'difficulty': 'easy',
+             'incorrect_answers': ['Kyoto Animation', 'Pierrot', 'A-1 Pictures'],
+             'question': 'What animation studio produced &quot;Gurren Lagann&quot;?', 'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': '8+', 'difficulty': 'easy',
+             'incorrect_answers': ['6+', '4+', '5+'],
+             'question': 'How many &quot;JoJos&quot; that are protagonists are there in the series &quot;Jojo&#039;s Bizarre Adventure&quot;?',
+             'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Kaname Chidori',
+             'difficulty': 'easy', 'incorrect_answers': ['Teletha Testarossa', 'Melissa Mao', 'Kyoko Tokiwa'],
+             'question': 'Who is the main heroine of the anime, Full Metal Panic!', 'type': 'multiple'},
+            {'category': 'Entertainment: Japanese Anime &amp; Manga', 'correct_answer': 'Reiner Braun',
+             'difficulty': 'easy', 'incorrect_answers': ['Armin Arlelt', 'Mikasa Ackermann', 'Eren Jaeger'],
+             'question': 'Who is the armored titan in &quot;Attack On Titan&quot;?', 'type': 'multiple'}]}
+        expected_list: list[Question] = [Question(
+            question="Which Pokémon and it's evolutions were banned from appearing in a main role after the Episode 38 Incident?",
+            answer="The Porygon Line",
+            wrong_answers=["The Pikachu Line", "The Elekid Line", "The Magby Line"]),
+            Question(
+                question="What was Ash Ketchum's second Pokemon?",
+                answer="Caterpie",
+                wrong_answers=["Charmander", "Pikachu", "Pidgey"]),
+            Question(
+                question='In "The Melancholy of Haruhi Suzumiya" series, the SOS Brigade club leader is unknowingly treated as a(n) __ by her peers.',
+                answer="God",
+                wrong_answers=["Alien", "Time Traveler", "Esper"]),
+            Question(
+                question="In the 9th Pokemon movie, who is the Prince of the Sea?",
+                answer="Manaphy",
+                wrong_answers=["Ash", "May", "Phantom"]),
+            Question(
+                question='What name is the main character Chihiro given in the 2001 movie "Spirited Away"?',
+                answer="Sen (Thousand)",
+                wrong_answers=["Hyaku (Hundred)", "Ichiman (Ten thousand)", "Juu (Ten)"]
+            ),
+            Question(
+                question="In the anime Black Butler, who is betrothed to be married to Ciel Phantomhive?",
+                answer="Elizabeth Midford",
+                wrong_answers=["Rachel Phantomhive", "Alexis Leon Midford", "Angelina Dalles"]
+            ),
+            Question(
+                question='What animation studio produced "Gurren Lagann"?',
+                answer="Gainax",
+                wrong_answers=["Kyoto Animation", "Pierrot", "A-1 Pictures"]
+            ),
+            Question(
+                question='How many "JoJos" that are protagonists are there in the series "Jojo\'s Bizarre Adventure"?',
+                answer="8+",
+                wrong_answers=["6+", "4+", "5+"]
+            ),
+            Question(
+                question="Who is the main heroine of the anime, Full Metal Panic!",
+                answer="Kaname Chidori",
+                wrong_answers=["Teletha Testarossa", "Melissa Mao", "Kyoko Tokiwa"]
+            ),
+            Question(
+                question='Who is the armored titan in "Attack On Titan"?',
+                answer="Reiner Braun",
+                wrong_answers=["Armin Arlelt", "Mikasa Ackermann", "Eren Jaeger"]
+            )
+        ]
+        expected_length: int = len(expected_list)
+
+        actual_list: list[Question] = create_questions(response)
+        actual_length: int = len(actual_list)
+
+        for i in range(len(expected_list)):
+            self.assertEqual(expected_list[i].question, actual_list[i].question)
+            self.assertEqual(expected_list[i].answer, actual_list[i].answer)
+            self.assertEqual(expected_list[i].wrong_answers, actual_list[i].wrong_answers)
+
+        self.assertEqual(expected_length, actual_length)
