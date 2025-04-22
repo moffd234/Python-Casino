@@ -108,6 +108,16 @@ class TestTicTacToe(BaseTest):
         actual: str = self.game.check_for_winner()
         self.assertEqual(expected, actual)
 
+    def test_check_for_winner_none(self):
+        self.game.game_board = \
+            [["x", "o", "x"],
+             ["o", "x", "o"],
+             ["o", "x", "o"]]
+
+        expected: None = None
+        actual: None = self.game.check_for_winner()
+        self.assertEqual(expected, actual)
+
     def test_is_cell_empty_false(self):
         self.game.game_board = \
             [["x", "x", "x"],
