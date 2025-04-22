@@ -242,7 +242,7 @@ class TriviaGame(Game):
         response = requests.get(url)
         try:
             response.raise_for_status()
-        except requests.exceptions.HTTPError as err:
+        except requests.exceptions.HTTPError:
             self.console.print_error("Problem getting questions. Please try again later.")
             return None
         return response.json()
