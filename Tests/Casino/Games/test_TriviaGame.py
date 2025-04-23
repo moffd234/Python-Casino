@@ -575,7 +575,7 @@ class TestTriviaGame(BaseTest):
         expected: Category = self.valid_cats[0]
         actual: Category = self.game.get_category(self.valid_cats)
 
-        self.assert_get_category(expected, actual)
+        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
 
     @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
@@ -584,12 +584,34 @@ class TestTriviaGame(BaseTest):
         expected: Category = self.valid_cats[len(self.valid_cats) - 1]
         actual: Category = self.game.get_category(self.valid_cats)
 
-        self.assert_get_category(expected, actual)
-
+        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
 
     @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    def assert_get_category(self, mock_print_colored, mock_print, expected, actual):
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[100, 0])
+    def test_get_category_invalid_0(self, mock_input, mock_print_error, mock_print_colored, mock_print):
+        expected: Category = self.valid_cats[0]
+        actual: Category = self.game.get_category(self.valid_cats)
+
+        mock_print_error.assert_called_once_with("Invalid category number")
+
+        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
+
+    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[100, 10])
+    def test_get_category_invalid_upper_bound(self, mock_input, mock_print_error, mock_print_colored, mock_print):
+        expected: Category = self.valid_cats[len(self.valid_cats) - 1]
+        actual: Category = self.game.get_category(self.valid_cats)
+
+        mock_print_error.assert_called_once_with("Invalid category number")
+
+        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
+
+
+    def assert_get_category(self, expected, actual, mock_print_colored, mock_print):
         expected_print_count: int = len(self.valid_cats) + 2  # Additional print for get_integer and blank print
         actual_print_count: int = mock_print.call_count
 
