@@ -554,3 +554,83 @@ class TestTriviaGame(BaseTest):
         ])
 
         self.assertEqual(expected, actual)
+
+    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=0)
+    def test_get_category_valid(self, mock_input, mock_print_colored, mock_print):
+        valid_cats: list[Category] = [
+            Category(id_num=9, name='General Knowledge', easy_num=155, med_num=135, hard_num=62),
+            Category(id_num=11, name='Entertainment: Film', easy_num=96, med_num=128, hard_num=49),
+            Category(id_num=12, name='Entertainment: Music', easy_num=115, med_num=212, hard_num=78),
+            Category(id_num=14, name='Entertainment: Television', easy_num=72, med_num=85, hard_num=30),
+            Category(id_num=15, name='Entertainment: Video Games', easy_num=365, med_num=497, hard_num=212),
+            Category(id_num=17, name='Science & Nature', easy_num=68, med_num=110, hard_num=73),
+            Category(id_num=18, name='Science: Computers', easy_num=54, med_num=76, hard_num=40),
+            Category(id_num=21, name='Sports', easy_num=53, med_num=68, hard_num=24),
+            Category(id_num=22, name='Geography', easy_num=82, med_num=144, hard_num=56),
+            Category(id_num=23, name='History', easy_num=78, med_num=177, hard_num=86),
+            Category(id_num=31, name='Entertainment: Japanese Anime & Manga', easy_num=62, med_num=84, hard_num=47),
+        ]
+        expected: Category = valid_cats[0]
+        actual: Category = self.game.get_category(valid_cats)
+
+        expected_print_count: int = len(valid_cats) + 2 # Additional print for get_integer and blank print
+        actual_print_count: int = mock_print.call_count
+
+        mock_print_colored.assert_has_calls([
+            call("0. General Knowledge"),
+            call("1. Entertainment: Film"),
+            call('2. Entertainment: Music'),
+            call('3. Entertainment: Television'),
+            call('4. Entertainment: Video Games'),
+            call('5. Science & Nature'),
+            call('6. Science: Computers'),
+            call('7. Sports'),
+            call('8. Geography'),
+            call('9. History'),
+            call('10. Entertainment: Japanese Anime & Manga')
+        ])
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_print_count, actual_print_count)
+
+    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=10)
+    def test_get_category_valid_upper_bound(self, mock_input, mock_print_colored, mock_print):
+        valid_cats: list[Category] = [
+            Category(id_num=9, name='General Knowledge', easy_num=155, med_num=135, hard_num=62),
+            Category(id_num=11, name='Entertainment: Film', easy_num=96, med_num=128, hard_num=49),
+            Category(id_num=12, name='Entertainment: Music', easy_num=115, med_num=212, hard_num=78),
+            Category(id_num=14, name='Entertainment: Television', easy_num=72, med_num=85, hard_num=30),
+            Category(id_num=15, name='Entertainment: Video Games', easy_num=365, med_num=497, hard_num=212),
+            Category(id_num=17, name='Science & Nature', easy_num=68, med_num=110, hard_num=73),
+            Category(id_num=18, name='Science: Computers', easy_num=54, med_num=76, hard_num=40),
+            Category(id_num=21, name='Sports', easy_num=53, med_num=68, hard_num=24),
+            Category(id_num=22, name='Geography', easy_num=82, med_num=144, hard_num=56),
+            Category(id_num=23, name='History', easy_num=78, med_num=177, hard_num=86),
+            Category(id_num=31, name='Entertainment: Japanese Anime & Manga', easy_num=62, med_num=84, hard_num=47),
+        ]
+        expected: Category = valid_cats[len(valid_cats) - 1]
+        actual: Category = self.game.get_category(valid_cats)
+
+        expected_print_count: int = len(valid_cats) + 2  # Additional print for get_integer and blank print
+        actual_print_count: int = mock_print.call_count
+
+        mock_print_colored.assert_has_calls([
+            call("0. General Knowledge"),
+            call("1. Entertainment: Film"),
+            call('2. Entertainment: Music'),
+            call('3. Entertainment: Television'),
+            call('4. Entertainment: Video Games'),
+            call('5. Science & Nature'),
+            call('6. Science: Computers'),
+            call('7. Sports'),
+            call('8. Geography'),
+            call('9. History'),
+            call('10. Entertainment: Japanese Anime & Manga')
+        ])
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_print_count, actual_print_count)
