@@ -44,7 +44,7 @@ def cache_loader() -> dict | None:
     return None
 
 
-def parse_cached_categories(cache: dict | None) -> list[Category]:
+def parse_cached_categories(cache) -> list[Category]:
     possible_categories: list[Category] = []
     for category in cache:
         possible_categories.append(Category(

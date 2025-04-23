@@ -447,3 +447,17 @@ class TestTriviaGame(BaseTest):
             self.assertEqual(expected_list[i].hard_num, actual_list[i].hard_num)
 
         self.assertEqual(expected_length, actual_length)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="mc")
+    def test_get_question_type_valid_mc(self, mock_input):
+        expected: str = "multiple"
+        actual: str = self.game.get_question_type()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="tf")
+    def test_get_question_type_valid_tf(self, mock_input):
+        expected: str = "boolean"
+        actual: str = self.game.get_question_type()
+
+        self.assertEqual(expected, actual)
