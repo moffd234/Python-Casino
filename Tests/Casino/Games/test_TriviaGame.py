@@ -491,3 +491,24 @@ class TestTriviaGame(BaseTest):
             call("Enter the type of questions you want to play ")
         ])
         self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="easy")
+    def test_get_difficulty_easy(self, mock_input):
+        expected: str = "easy"
+        actual: str = self.game.get_difficulty()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="medium")
+    def test_get_difficulty_med(self, mock_input):
+        expected: str = "medium"
+        actual: str = self.game.get_difficulty()
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="hard")
+    def test_get_difficulty_hard(self, mock_input):
+        expected: str = "hard"
+        actual: str = self.game.get_difficulty()
+
+        self.assertEqual(expected, actual)
