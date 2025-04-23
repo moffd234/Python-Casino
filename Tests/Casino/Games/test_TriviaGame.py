@@ -512,3 +512,45 @@ class TestTriviaGame(BaseTest):
         actual: str = self.game.get_difficulty()
 
         self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "easy"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_difficulty_invalid_easy(self, mock_print, mock_input):
+        expected: str = "easy"
+        actual: str = self.game.get_difficulty()
+
+        mock_print.assert_called_once_with("Invalid input. Please enter either 'easy', 'medium', or 'hard'")
+        mock_input.assert_has_calls([
+            call("Enter the difficulty you want to play (easy, medium, hard): "),
+            call("Enter the difficulty you want to play ")
+        ])
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "medium"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_difficulty_invalid_medium(self, mock_print, mock_input):
+        expected: str = "medium"
+        actual: str = self.game.get_difficulty()
+
+        mock_print.assert_called_once_with("Invalid input. Please enter either 'easy', 'medium', or 'hard'")
+        mock_input.assert_has_calls([
+            call("Enter the difficulty you want to play (easy, medium, hard): "),
+            call("Enter the difficulty you want to play ")
+        ])
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "hard"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_difficulty_invalid_hard(self, mock_print, mock_input):
+        expected: str = "hard"
+        actual: str = self.game.get_difficulty()
+
+        mock_print.assert_called_once_with("Invalid input. Please enter either 'easy', 'medium', or 'hard'")
+        mock_input.assert_has_calls([
+            call("Enter the difficulty you want to play (easy, medium, hard): "),
+            call("Enter the difficulty you want to play ")
+        ])
+
+        self.assertEqual(expected, actual)
