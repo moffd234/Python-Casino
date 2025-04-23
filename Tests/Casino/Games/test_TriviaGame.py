@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, call
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Category import Category
@@ -460,4 +460,34 @@ class TestTriviaGame(BaseTest):
         expected: str = "boolean"
         actual: str = self.game.get_question_type()
 
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid input", "mc"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_question_type_invalid_mc(self, mock_print, mock_input):
+        expected: str = "multiple"
+        actual: str = self.game.get_question_type()
+
+        mock_print.assert_called_once_with("Invalid input. Please enter either 'mc' or 'tf'")
+        mock_input.assert_has_calls([
+            call("Enter the type of questions you want to play "
+                 "(for multiple choice enter mc "
+                 "for true or false enter tf): "),
+            call("Enter the type of questions you want to play ")
+        ])
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid input", "tf"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_question_type_invalid_tf(self, mock_print, mock_input):
+        expected: str = "boolean"
+        actual: str = self.game.get_question_type()
+
+        mock_print.assert_called_once_with("Invalid input. Please enter either 'mc' or 'tf'")
+        mock_input.assert_has_calls([
+            call("Enter the type of questions you want to play "
+                 "(for multiple choice enter mc "
+                 "for true or false enter tf): "),
+            call("Enter the type of questions you want to play ")
+        ])
         self.assertEqual(expected, actual)
