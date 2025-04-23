@@ -575,25 +575,7 @@ class TestTriviaGame(BaseTest):
         expected: Category = self.valid_cats[0]
         actual: Category = self.game.get_category(self.valid_cats)
 
-        expected_print_count: int = len(self.valid_cats) + 2 # Additional print for get_integer and blank print
-        actual_print_count: int = mock_print.call_count
-
-        mock_print_colored.assert_has_calls([
-            call("0. General Knowledge"),
-            call("1. Entertainment: Film"),
-            call('2. Entertainment: Music'),
-            call('3. Entertainment: Television'),
-            call('4. Entertainment: Video Games'),
-            call('5. Science & Nature'),
-            call('6. Science: Computers'),
-            call('7. Sports'),
-            call('8. Geography'),
-            call('9. History'),
-            call('10. Entertainment: Japanese Anime & Manga')
-        ])
-
-        self.assertEqual(expected, actual)
-        self.assertEqual(expected_print_count, actual_print_count)
+        self.assert_get_category(expected, actual)
 
     @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
@@ -602,6 +584,12 @@ class TestTriviaGame(BaseTest):
         expected: Category = self.valid_cats[len(self.valid_cats) - 1]
         actual: Category = self.game.get_category(self.valid_cats)
 
+        self.assert_get_category(expected, actual)
+
+
+    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def assert_get_category(self, mock_print_colored, mock_print, expected, actual):
         expected_print_count: int = len(self.valid_cats) + 2  # Additional print for get_integer and blank print
         actual_print_count: int = mock_print.call_count
 
