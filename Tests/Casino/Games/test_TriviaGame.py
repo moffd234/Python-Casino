@@ -610,7 +610,6 @@ class TestTriviaGame(BaseTest):
 
         self.assert_get_category(expected, actual, mock_print_colored, mock_print)
 
-
     def assert_get_category(self, expected, actual, mock_print_colored, mock_print):
         expected_print_count: int = len(self.valid_cats) + 2  # Additional print for get_integer and blank print
         actual_print_count: int = mock_print.call_count
@@ -657,3 +656,34 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected_cat.easy_num, actual_cat.easy_num)
         self.assertEqual(expected_cat.med_num, actual_cat.med_num)
         self.assertEqual(expected_cat.hard_num, actual_cat.hard_num)
+
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader")
+    def test_get_possible_categories_cached(self, mock_loader):
+        mock_loader.return_value = [{"name": "General Knowledge", "id": 9, "easy_num": 152,"med_num": 135, "hard_num": 62}]
+
+        expected: list[Category] = [Category("General Knowledge", 9, 152, 135, 62)]
+        expected_len: int = len(expected)
+        actual: list[Category] = self.game.get_possible_categories()
+        actual_len: int = len(actual)
+
+        self.assertEqual(expected_len, actual_len)
+        self.assertEqual(expected[0].name, actual[0].name)
+        self.assertEqual(expected[0].id, actual[0].id)
+        self.assertEqual(expected[0].easy_num, actual[0].easy_num)
+        self.assertEqual(expected[0].med_num, actual[0].med_num)
+        self.assertEqual(expected[0].hard_num, actual[0].hard_num)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader", return_value=None)
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_response", return_value=None)
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_possible_categories_no_response(self, mock_print_error, mock_print_colored, mock_response,
+                                                 mock_loader):
+        outcome: None = self.game.get_possible_categories()
+
+        mock_print_colored.assert_called_with("loading.........\n\n\n")
+        mock_response.assert_called_with(f"{self.game.base_url}api_category.php")
+        mock_print_error.assert_called_with("Problem getting questions. Please try again later.")
+
+        self.assertIsNone(outcome)
