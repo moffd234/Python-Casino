@@ -631,3 +631,29 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
         self.assertEqual(expected_print_count, actual_print_count)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_question_type", return_value="tf")
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_difficulty", return_value="easy")
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_category",
+           return_value=Category(id_num=9, name='General Knowledge', easy_num=155, med_num=135, hard_num=62))
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_valid_categories")
+    def test_get_choices(self, mock_valid_cats, mock_cat, mock_diff, mock_type):
+        expected_type: str = "tf"
+        expected_diff: str = "easy"
+        expected_cat: Category = Category(id_num=9, name='General Knowledge', easy_num=155, med_num=135, hard_num=62)
+
+        self.game.get_choices()
+
+        actual_type: str = self.game.q_type
+        actual_diff: str = self.game.difficulty
+        actual_cat: Category = self.game.cat
+
+        mock_valid_cats.assert_called_once_with(expected_diff)
+
+        self.assertEqual(expected_type, actual_type)
+        self.assertEqual(expected_diff, actual_diff)
+        self.assertEqual(expected_cat.id, actual_cat.id)
+        self.assertEqual(expected_cat.name, actual_cat.name)
+        self.assertEqual(expected_cat.easy_num, actual_cat.easy_num)
+        self.assertEqual(expected_cat.med_num, actual_cat.med_num)
+        self.assertEqual(expected_cat.hard_num, actual_cat.hard_num)
