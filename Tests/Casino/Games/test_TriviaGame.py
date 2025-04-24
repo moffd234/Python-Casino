@@ -768,3 +768,41 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    def test_get_valid_categories_easy_no_valid(self, mock_get_possible_cats):
+        mock_get_possible_cats.return_value = [
+            Category("General Knowledge", 9, 1, 1, 12),
+            Category("Entertainment: Books", 10, 34, 1, 29),
+            Category("Entertainment: Film", 11, 19, 29, 19)
+        ]
+
+        expected: list[Category] = []
+        actual: list[Category] = self.game.get_valid_categories("easy")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    def test_get_valid_categories_medium_no_valid(self, mock_get_possible_cats):
+        mock_get_possible_cats.return_value = [
+            Category("General Knowledge", 9, 161, 1, 12),
+            Category("Entertainment: Books", 10, 34, 1, 29),
+            Category("Entertainment: Film", 11, 19, 29, 19)
+        ]
+
+        expected: list[Category] = []
+        actual: list[Category] = self.game.get_valid_categories("medium")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    def test_get_valid_categories_hard_no_valid(self, mock_get_possible_cats):
+        mock_get_possible_cats.return_value = [
+            Category("General Knowledge", 9, 161, 142, 12),
+            Category("Entertainment: Books", 10, 34, 148, 29),
+            Category("Entertainment: Film", 11, 19, 29, 19)
+        ]
+
+        expected: list[Category] = []
+        actual: list[Category] = self.game.get_valid_categories("hard")
+
+        self.assertEqual(expected, actual)
