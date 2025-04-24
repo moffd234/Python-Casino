@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
-from unittest.mock import patch, mock_open, call
+from unittest.mock import patch, mock_open, call, Mock
+
+from requests import HTTPError
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.TriviaGame.Category import Category
@@ -8,6 +10,8 @@ from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader, \
     CACHE_FILE_PATH, parse_cached_categories
 from Tests.BaseTest import BaseTest
+import requests
+
 
 
 class TestTriviaGame(BaseTest):
@@ -806,3 +810,28 @@ class TestTriviaGame(BaseTest):
         actual: list[Category] = self.game.get_valid_categories("hard")
 
         self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.requests.get")
+    def test_get_response_success(self, mock_get):
+        mock_response = Mock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {"results": []}
+        mock_get.return_value = mock_response
+
+        result = self.game.get_response("https://test_url.com")
+
+        self.assertEqual(result, {"results": []})
+        mock_response.raise_for_status.assert_called_once()
+        mock_response.json.assert_called_once()
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.requests.get")
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_get_response_http_error(self, mock_print, mock_get):
+        mock_response = Mock()
+        mock_response.raise_for_status.side_effect = HTTPError("Test HTTP Error")
+        mock_get.return_value = mock_response
+
+        result = self.game.get_response("https://test_url.com")
+
+        mock_print.assert_called_once_with("Problem getting questions. Please try again later.")
+        self.assertIsNone(result)
