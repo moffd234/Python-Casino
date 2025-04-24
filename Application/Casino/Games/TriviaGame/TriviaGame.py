@@ -161,7 +161,7 @@ class TriviaGame(Game):
         cat_response = self.get_response(f"{self.base_url}api_category.php")
 
         if cat_response is None:
-            print("Problem getting questions. Please try again later.")
+            self.console.print_error("Problem getting questions. Please try again later.")
             return None
 
         all_categories = {category["name"]: category["id"] for category in cat_response["trivia_categories"]}
