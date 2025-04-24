@@ -16,8 +16,5 @@ class BaseTest(unittest.TestCase):
         if hasattr(self.manager, 'session'):
             self.manager.session.close()
 
-        if os.path.exists("accounts.csv"):
-            os.remove("accounts.csv")
-
         if os.path.exists("casino.db"):
             os.remove("casino.db")
