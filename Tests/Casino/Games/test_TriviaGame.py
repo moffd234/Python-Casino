@@ -728,3 +728,43 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected.easy_num, actual.easy_num)
         self.assertEqual(expected.med_num, actual.med_num)
         self.assertEqual(expected.hard_num, actual.hard_num)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    def test_get_valid_categories_easy(self, mock_get_possible_cats):
+        mock_get_possible_cats.return_value = [
+            Category("General Knowledge", 9, 161, 142, 62),
+            Category("Entertainment: Books", 10, 34, 48, 29),
+            Category("Entertainment: Film", 11, 99, 129, 49)
+        ]
+
+        expected: list[Category] = [mock_get_possible_cats.return_value[0], mock_get_possible_cats.return_value[2]]
+        actual: list[Category] = self.game.get_valid_categories("easy")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    def test_get_valid_categories_medium(self, mock_get_possible_cats):
+        mock_get_possible_cats.return_value = [
+            Category("General Knowledge", 9, 161, 142, 62),
+            Category("Entertainment: Books", 10, 34, 148, 29),
+            Category("Entertainment: Film", 11, 99, 29, 49)
+        ]
+
+        expected: list[Category] = [mock_get_possible_cats.return_value[0], mock_get_possible_cats.return_value[1]]
+        actual: list[Category] = self.game.get_valid_categories("medium")
+
+        self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    def test_get_valid_categories_hard(self, mock_get_possible_cats):
+        mock_get_possible_cats.return_value = [
+            Category("General Knowledge", 9, 161, 142, 12),
+            Category("Entertainment: Books", 10, 34, 148, 29),
+            Category("Entertainment: Film", 11, 99, 29, 59)
+        ]
+
+        expected: list[Category] = [mock_get_possible_cats.return_value[2]]
+        actual: list[Category] = self.game.get_valid_categories("hard")
+
+        self.assertEqual(expected, actual)
+
