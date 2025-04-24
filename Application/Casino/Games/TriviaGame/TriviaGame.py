@@ -164,7 +164,7 @@ class TriviaGame(Game):
             self.console.print_error("Problem getting questions. Please try again later.")
             return None
 
-        all_categories = {category["name"]: category["id"] for category in cat_response["trivia_categories"]}
+        all_categories: dict = {category["name"]: category["id"] for category in cat_response["trivia_categories"]}
         possible_categories: list[Category] = []
 
         for key, value in all_categories.items():

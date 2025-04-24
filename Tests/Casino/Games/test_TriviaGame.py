@@ -657,10 +657,10 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected_cat.med_num, actual_cat.med_num)
         self.assertEqual(expected_cat.hard_num, actual_cat.hard_num)
 
-
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader")
     def test_get_possible_categories_cached(self, mock_loader):
-        mock_loader.return_value = [{"name": "General Knowledge", "id": 9, "easy_num": 152,"med_num": 135, "hard_num": 62}]
+        mock_loader.return_value = [
+            {"name": "General Knowledge", "id": 9, "easy_num": 152, "med_num": 135, "hard_num": 62}]
 
         expected: list[Category] = [Category("General Knowledge", 9, 152, 135, 62)]
         expected_len: int = len(expected)
@@ -687,3 +687,10 @@ class TestTriviaGame(BaseTest):
         mock_print_error.assert_called_with("Problem getting questions. Please try again later.")
 
         self.assertIsNone(outcome)
+
+    def assert_category_info(self, expected, actual):
+        self.assertEqual(expected.name, actual.name)
+        self.assertEqual(expected.id, actual.id)
+        self.assertEqual(expected.easy_num, actual.easy_num)
+        self.assertEqual(expected.med_num, actual.med_num)
+        self.assertEqual(expected.hard_num, actual.hard_num)
