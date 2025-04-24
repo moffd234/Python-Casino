@@ -651,11 +651,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected_type, actual_type)
         self.assertEqual(expected_diff, actual_diff)
-        self.assertEqual(expected_cat.id, actual_cat.id)
-        self.assertEqual(expected_cat.name, actual_cat.name)
-        self.assertEqual(expected_cat.easy_num, actual_cat.easy_num)
-        self.assertEqual(expected_cat.med_num, actual_cat.med_num)
-        self.assertEqual(expected_cat.hard_num, actual_cat.hard_num)
+        self.assert_category_info(expected_cat, actual_cat)
 
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader")
     def test_get_possible_categories_cached(self, mock_loader):
@@ -687,6 +683,44 @@ class TestTriviaGame(BaseTest):
         mock_print_error.assert_called_with("Problem getting questions. Please try again later.")
 
         self.assertIsNone(outcome)
+
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader", return_value=None)
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.category_cacher")
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_response")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_get_possible_categories_no_cache_valid_response(self, mock_print, mock_response, mock_cacher, mock_loader):
+        mock_response.side_effect = [
+            {'trivia_categories': [{'id': 9, 'name': 'General Knowledge'},
+                                   {'id': 10, 'name': 'Entertainment: Books'},
+                                   {'id': 11, 'name': 'Entertainment: Film'}]},
+            {'category_id': 9,
+             'category_question_count': {'total_easy_question_count': 161, 'total_hard_question_count': 62,
+                                         'total_medium_question_count': 142, 'total_question_count': 365}},
+            {'category_id': 10,
+             'category_question_count': {'total_easy_question_count': 34, 'total_hard_question_count': 29,
+                                         'total_medium_question_count': 48, 'total_question_count': 111}},
+            {'category_id': 11,
+             'category_question_count': {'total_easy_question_count': 99, 'total_hard_question_count': 49,
+                                         'total_medium_question_count': 129, 'total_question_count': 277}}
+        ]
+
+        expected: list[Category] = [
+            Category("General Knowledge", 9, 161, 142, 62),
+            Category("Entertainment: Books", 10, 34, 48, 29),
+            Category("Entertainment: Film", 11, 99, 129, 49)
+        ]
+        expected_len: int = len(expected)
+
+        actual: list[Category] = self.game.get_possible_categories()
+        actual_len: int = len(actual)
+
+        mock_print.assert_called_with("loading.........\n\n\n")
+        mock_cacher.assert_called_with(actual)
+
+        self.assertEqual(expected_len, actual_len)
+
+        for i in range(len(expected)):
+            self.assert_category_info(expected[i], actual[i])
 
     def assert_category_info(self, expected, actual):
         self.assertEqual(expected.name, actual.name)
