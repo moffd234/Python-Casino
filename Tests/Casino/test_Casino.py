@@ -59,6 +59,17 @@ class TestCasino(BaseTest):
 
         self.assert_account_info(account)
 
+    @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
+           side_effect=[None, UserAccount("test_username", "test_password", 50.0)])
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input",
+           side_effect=["test_username", "test_password"] * 2)
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_handle_signup_account_exist(self, mock_print, mock_inputs, mock_create_account):
+        account: UserAccount = self.casino.handle_signup()
+
+        mock_print.assert_called_once_with("Account with that username already exists")
+        self.assert_account_info(account)
+
     @patch("builtins.print")
     @patch("builtins.input", return_value="50")
     def test_handle_add_funds(self, mock_input, mock_print):
