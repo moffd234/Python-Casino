@@ -84,7 +84,7 @@ class Casino:
         while True:
             answer = self.console.get_string_input("You are logged in!" +
                 "\nFrom here, you can select any of the following options:" +
-                "\n\t[ manage-account ], [ select-game ]")
+                "\n\t[ manage-account ], [ select-game ], [ logout ]")
 
             if answer == "manage-account" or answer == "manage account" or answer == "manage":
                 self.handle_manage_selection()
@@ -94,7 +94,10 @@ class Casino:
                     self.console.print_error("You do not have enough money to play any games")
                 else:
                     self.prompt_game()
-            self.console.print_error("Invalid input. Please try again\n\n")
+            elif answer == "logout":
+                return None
+            else:
+                self.console.print_error("Invalid input. Please try again\n\n")
 
     def prompt_game(self) -> None:
         while True:
