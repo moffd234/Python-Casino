@@ -291,10 +291,22 @@ class TestCasino(BaseTest):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["logout"])
+
     def test_prompt_manage_or_select_logout(self, mock_input):
         self.assertIsNone(self.casino.prompt_manage_or_select())
         mock_input.assert_called_once_with('You are logged in!\nFrom here, you can select any of the following options:'
                                           '\n\t[ manage-account ], [ select-game ], [ logout ]')
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "logout"])
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_prompt_manage_or_select_invalid_input(self, mock_print, mock_input):
+        self.casino.prompt_manage_or_select()
+        mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
+                                          '\n\t[ manage-account ], [ select-game ], [ logout ]'),
+                                     call('You are logged in!\nFrom here, you can select any of the following options:'
+                                          '\n\t[ manage-account ], [ select-game ], [ logout ]')])
+
+        mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
 
 
     def assert_prompt_manage_or_select(self, mock_input, mock_selection):
