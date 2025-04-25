@@ -266,7 +266,7 @@ class TestCasino(BaseTest):
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select", "logout"])
     @patch("Application.Casino.Casino.Casino.prompt_game")
-    def test_prompt_manage_or_select_select_game(self, mock_selection, mock_input):
+    def test_prompt_manage_or_select_select(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select game", "logout"])
