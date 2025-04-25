@@ -64,11 +64,10 @@ class Casino:
                 self.console.print_error("Account with that username already exists")
 
     def handle_initial_action(self) -> UserAccount:
-        answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
-                "\nFrom here, you can select any of the following options:" +
-                "\n\t[ signup ], [ login ]")
-
         while True:
+            answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
+                                                        "\nFrom here, you can select any of the following options:" +
+                                                        "\n\t[ signup ], [ login ]")
 
             if answer == "login":
                 account: UserAccount | None = self.handle_login()
@@ -79,7 +78,7 @@ class Casino:
                 return account
 
             else:
-                answer = self.console.get_string_input("Invalid input. Please try again")
+                self.console.print_error("Invalid input. Please try again\n\n")
 
     def prompt_manage_or_select(self) -> None:
         while True:
