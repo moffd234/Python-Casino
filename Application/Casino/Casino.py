@@ -94,6 +94,7 @@ class Casino:
                     self.console.print_error("You do not have enough money to play any games")
                 else:
                     self.prompt_game()
+            self.console.print_error("Invalid input. Please try again\n\n")
 
     def prompt_game(self) -> None:
         while True:
