@@ -249,15 +249,29 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
         self.assert_account_info(actual_account)
 
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["manage", "logout"])
+    @patch("Application.Casino.Casino.Casino.handle_manage_selection")
+    def test_prompt_manage_or_select_manage(self, mock_selection, mock_input):
+        self.assert_prompt_manage_or_select(mock_input, mock_selection)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["manage account", "logout"])
+    @patch("Application.Casino.Casino.Casino.handle_manage_selection")
+    def test_prompt_manage_or_select_manage_account(self, mock_selection, mock_input):
+        self.assert_prompt_manage_or_select(mock_input, mock_selection)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["manage-account", "logout"])
+    @patch("Application.Casino.Casino.Casino.handle_manage_selection")
+    def test_prompt_manage_or_select_manage_dash_account(self, mock_selection, mock_input):
+        self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
 
-    def assert_prompt_manage_or_select(self, mock_input, mock_manage_selection):
+    def assert_prompt_manage_or_select(self, mock_input, mock_selection):
         self.casino.prompt_manage_or_select()
         mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
                                           '\n\t[ manage-account ], [ select-game ], [ logout ]'),
                                      call('You are logged in!\nFrom here, you can select any of the following options:'
                                           '\n\t[ manage-account ], [ select-game ], [ logout ]')])
-        mock_manage_selection.assert_called_once()
+        mock_selection.assert_called_once()
 
     def assert_account_info(self, account, expected_username="test_username", expected_password="test_password"):
         expected_username = expected_username
