@@ -25,17 +25,6 @@ class TestCasino(BaseTest):
         actual: str = self.casino.print_welcome()
         self.assertEqual(expected.strip(), actual.strip())
 
-    def assert_account_info(self, account):
-        expected_username = "test_username"
-        expected_password = "test_password"
-        expected_balance = 50.0
-        actual_username = account.username
-        actual_password = account.password
-        actual_balance = account.balance
-        self.assertEqual(expected_username, actual_username)
-        self.assertEqual(expected_password, actual_password)
-        self.assertEqual(expected_balance, actual_balance)
-
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
@@ -225,3 +214,49 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with(
             self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
         mock_add.assert_called_once()
+
+    @patch("builtins.input", return_value="login")
+    @patch("Application.Casino.Casino.Casino.handle_login",
+           return_value=UserAccount("test_username", "test_password", 50))
+    def test_handle_initial_action_login(self, mock_login, mock_input):
+        actual_account: UserAccount | None = self.casino.handle_initial_action()
+        self.assert_account_info(actual_account)
+
+    @patch("builtins.input", return_value="signup")
+    @patch("Application.Casino.Casino.Casino.handle_signup",
+           return_value=UserAccount("test_username", "test_password", 50))
+    def test_handle_initial_action_signup(self, mock_login, mock_input):
+        actual_account: UserAccount | None = self.casino.handle_initial_action()
+        self.assert_account_info(actual_account, "test_username", "test_password")
+
+    @patch("builtins.input", side_effect=["invalid_input", "signup"])
+    @patch("Application.Casino.Casino.Casino.handle_signup",
+           return_value=UserAccount("test_username", "test_password", 50))
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_handle_initial_action_invalid_then_signup(self, mock_print, mock_login, mock_input):
+        actual_account: UserAccount | None = self.casino.handle_initial_action()
+
+        mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
+        self.assert_account_info(actual_account, "test_username", "test_password")
+
+    @patch("builtins.input", side_effect=["invalid_input", "login"])
+    @patch("Application.Casino.Casino.Casino.handle_login",
+           return_value=UserAccount("test_username", "test_password", 50))
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    def test_handle_initial_action_login(self, mock_print, mock_login, mock_input):
+        actual_account: UserAccount | None = self.casino.handle_initial_action()
+
+        mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
+        self.assert_account_info(actual_account)
+
+    def assert_account_info(self, account, expected_username="test_username", expected_password="test_password"):
+        expected_username = expected_username
+        expected_password = expected_password
+        expected_balance = 50.0
+        actual_username = account.username
+        actual_password = account.password
+        actual_balance = account.balance
+
+        self.assertEqual(expected_username, actual_username)
+        self.assertEqual(expected_password, actual_password)
+        self.assertEqual(expected_balance, actual_balance)
