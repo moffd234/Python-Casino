@@ -225,7 +225,7 @@ class TestCasino(BaseTest):
     @patch("builtins.input", return_value="signup")
     @patch("Application.Casino.Casino.Casino.handle_signup",
            return_value=UserAccount("test_username", "test_password", 50))
-    def test_handle_initial_action_signup(self, mock_login, mock_input):
+    def test_handle_initial_action_signup(self, mock_signup, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
         self.assert_account_info(actual_account, "test_username", "test_password")
 
@@ -233,7 +233,7 @@ class TestCasino(BaseTest):
     @patch("Application.Casino.Casino.Casino.handle_signup",
            return_value=UserAccount("test_username", "test_password", 50))
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
-    def test_handle_initial_action_invalid_then_signup(self, mock_print, mock_login, mock_input):
+    def test_handle_initial_action_invalid_then_signup(self, mock_print, mock_signup, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
 
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
@@ -248,6 +248,16 @@ class TestCasino(BaseTest):
 
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
         self.assert_account_info(actual_account)
+
+
+
+    def assert_prompt_manage_or_select(self, mock_input, mock_manage_selection):
+        self.casino.prompt_manage_or_select()
+        mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
+                                          '\n\t[ manage-account ], [ select-game ], [ logout ]'),
+                                     call('You are logged in!\nFrom here, you can select any of the following options:'
+                                          '\n\t[ manage-account ], [ select-game ], [ logout ]')])
+        mock_manage_selection.assert_called_once()
 
     def assert_account_info(self, account, expected_username="test_username", expected_password="test_password"):
         expected_username = expected_username
