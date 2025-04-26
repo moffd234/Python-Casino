@@ -35,9 +35,3 @@ jobs:
       - name: Build Executable
         run: |
           pyinstaller --onefile Application/MainApplication.py --name casino-app
-
-      - name: Upload Executable Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: casino-app
-          path: dist/casino-app
