@@ -37,6 +37,10 @@ jobs:
         run: |
           pyinstaller --onefile Application/MainApplication.py --name casino-app
 
+      - name: Debug artifact generation
+        run: |
+          ls -al dist
+
       - name: Upload Executable Artifact
         uses: actions/upload-artifact@v3
         with:
