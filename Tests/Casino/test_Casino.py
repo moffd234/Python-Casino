@@ -327,6 +327,11 @@ class TestCasino(BaseTest):
     def test_prompt_game_number_guess(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["trivia", "back"])
+    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.run", return_value=None)
+    def test_prompt_game_trivia(self, mock_run, mock_input):
+        self.assert_prompt_game(mock_input, mock_run)
+
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
