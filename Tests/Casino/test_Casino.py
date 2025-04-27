@@ -314,17 +314,17 @@ class TestCasino(BaseTest):
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["rock paper scissors", "back"])
     @patch("Application.Casino.Games.RockPaperScissors.RPS.RPS.run", return_value=None)
-    def test_prompt_game_rps(self, mock_run, mock_input):
+    def test_prompt_game_rock_paper_scissors(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["numberguess", "back"])
     @patch("Application.Casino.Games.NumberGuess.NumberGuess.NumberGuess.run", return_value=None)
-    def test_prompt_game_rps(self, mock_run, mock_input):
+    def test_prompt_game_numberguess(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["number guess", "back"])
     @patch("Application.Casino.Games.NumberGuess.NumberGuess.NumberGuess.run", return_value=None)
-    def test_prompt_game_rps(self, mock_run, mock_input):
+    def test_prompt_game_number_guess(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
     def assert_prompt_game(self, mock_input, mock_run):
