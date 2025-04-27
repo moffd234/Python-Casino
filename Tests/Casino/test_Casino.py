@@ -312,6 +312,11 @@ class TestCasino(BaseTest):
     def test_prompt_game_rps(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["rock paper scissors", "back"])
+    @patch("Application.Casino.Games.RockPaperScissors.RPS.RPS.run", return_value=None)
+    def test_prompt_game_rps(self, mock_run, mock_input):
+        self.assert_prompt_game(mock_input, mock_run)
+
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
