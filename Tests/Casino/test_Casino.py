@@ -342,6 +342,16 @@ class TestCasino(BaseTest):
     def test_prompt_game_tictactoe(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["coinflip", "back"])
+    @patch("Application.Casino.Games.CoinFlip.CoinFlip.CoinFlip.run", return_value=None)
+    def test_prompt_game_coinflip(self, mock_run, mock_input):
+        self.assert_prompt_game(mock_input, mock_run)
+
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["coin flip", "back"])
+    @patch("Application.Casino.Games.CoinFlip.CoinFlip.CoinFlip.run", return_value=None)
+    def test_prompt_game_coin_flip(self, mock_run, mock_input):
+        self.assert_prompt_game(mock_input, mock_run)
+
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
