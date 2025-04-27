@@ -106,11 +106,11 @@ class Casino:
                 "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
 
             # The following are placeholders until the games are made
-            if answer == "rps":
+            if answer == "rps" or answer == "rock paper scissors":
                 game = RPS(self.account, self.manager)
                 game.run()
 
-            elif answer == "numberguess":
+            elif answer == "numberguess" or answer == "number guess":
                 game = NumberGuess(self.account, self.manager)
                 game.run()
 
