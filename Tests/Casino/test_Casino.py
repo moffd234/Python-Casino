@@ -352,6 +352,13 @@ class TestCasino(BaseTest):
     def test_prompt_game_coin_flip(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="back")
+    def test_prompt_game_back(self, mock_input):
+        self.casino.prompt_game()
+        mock_input.assert_called_once_with("Welcome to the Game Selection Dashboard!" +
+                                               "\nFrom here, you can select any of the following options:" +
+                                               "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
+
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
