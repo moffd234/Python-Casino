@@ -25,7 +25,6 @@ class TestCasino(BaseTest):
         actual: str = self.casino.print_welcome()
         self.assertEqual(expected.strip(), actual.strip())
 
-
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
@@ -102,7 +101,8 @@ class TestCasino(BaseTest):
         expected_password = "new_password"
         actual_password = self.casino.account.password
 
-        mock_print.assert_called_once_with(self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
+        mock_print.assert_called_once_with(
+            self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
         self.assertEqual(expected_password, actual_password)
 
     @patch("builtins.print")
@@ -141,7 +141,7 @@ class TestCasino(BaseTest):
     @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     @patch("builtins.input", side_effect=["wrong_password", "wrong_password", "password", "new_password"])
-    def test_reset_password_failed_then_works(self, mock_input,mock_print_error, mock_print):
+    def test_reset_password_failed_then_works(self, mock_input, mock_print_error, mock_print):
         self.casino.reset_password()
 
         expected_password: str = "new_password"
@@ -209,7 +209,7 @@ class TestCasino(BaseTest):
     @patch("builtins.print")
     @patch("Application.Casino.Casino.Casino.add_funds")
     @patch("builtins.input", side_effect=["invalid_input", "add"])
-    def test_handle_manage_selection_invalid_input(self,mock_input, mock_add, mock_print):
+    def test_handle_manage_selection_invalid_input(self, mock_input, mock_add, mock_print):
         self.casino.handle_manage_selection()
         mock_print.assert_called_once_with(
             self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
@@ -277,7 +277,7 @@ class TestCasino(BaseTest):
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select game", "logout"])
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     @patch("Application.Casino.Casino.Casino.prompt_game")
-    def test_prompt_manage_or_select_select_game_invalid_funds(self, mock_selection, mock_print,mock_input):
+    def test_prompt_manage_or_select_select_game_invalid_funds(self, mock_selection, mock_print, mock_input):
         self.casino.account.balance = 0.00
         self.casino.prompt_manage_or_select()
         mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
@@ -291,11 +291,10 @@ class TestCasino(BaseTest):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["logout"])
-
     def test_prompt_manage_or_select_logout(self, mock_input):
         self.assertIsNone(self.casino.prompt_manage_or_select())
         mock_input.assert_called_once_with('You are logged in!\nFrom here, you can select any of the following options:'
-                                          '\n\t[ manage-account ], [ select-game ], [ logout ]')
+                                           '\n\t[ manage-account ], [ select-game ], [ logout ]')
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "logout"])
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
@@ -308,6 +307,15 @@ class TestCasino(BaseTest):
 
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
 
+    def assert_prompt_game(self, mock_input, mock_run):
+        self.casino.prompt_game()
+        mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]"),
+                                     call("Welcome to the Game Selection Dashboard!" +
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")])
+        mock_run.assert_called_once()
 
     def assert_prompt_manage_or_select(self, mock_input, mock_selection):
         self.casino.prompt_manage_or_select()
