@@ -110,3 +110,12 @@ class TicTacToe(Game):
             if winner:
                 return winner
         return None
+
+    def is_board_full(self) -> bool:
+
+        for row in range(3):
+            for col in range(3):
+                if self.game_board[row][col] == " ":
+                    return False
+
+        return True
