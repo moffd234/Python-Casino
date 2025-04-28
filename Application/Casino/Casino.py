@@ -129,6 +129,9 @@ class Casino:
             elif answer == "back":
                 return None
 
+            else:
+                self.console.print_error("Invalid input. Please try again\n\n")
+
     def add_funds(self) -> None:
         answer: float = self.console.get_monetary_input("Enter the amount of money you want to add to your funds"
                                               " (no less than $1.00)")
