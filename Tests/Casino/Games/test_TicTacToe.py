@@ -260,6 +260,11 @@ class TestTicTacToe(BaseTest):
             self.assert_handle_turn(expected_turn, expected_board)
             mock_print.assert_called_once_with("Cell already occupied")
 
+    def test_is_board_full_true(self):
+        self.game.game_board = [["x" for _ in range(3)]]
+
+    def test_is_board_full_false(self):
+        self.game.game_board = [["x" for _ in range(2)]]
 
     def assert_handle_turn(self, expected_turn, expected_board):
         self.game.handle_turn()
