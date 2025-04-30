@@ -1,5 +1,5 @@
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.Slots.Slots import Slots, get_spin
+from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin
 from Tests.BaseTest import BaseTest
 
 
@@ -48,3 +48,42 @@ class TestSlots(BaseTest):
             self.assertIn(sym, outcomes)
 
         self.assertEqual(expected_len, actual_len)
+
+    def test_handle_spin_no_win(self):
+        syms: list[str] = ["🔔", "🔔", "⬛"]
+
+        actual: None = handle_spin(syms)
+
+        self.assertIsNone(actual)
+
+    def test_handle_spin_7_win(self):
+        syms: list[str] = ["7️⃣", "7️⃣", "7️⃣"]
+
+        expected: float = 10
+        actual: float = handle_spin(syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_handle_spin_bell_win(self):
+        syms: list[str] = ["🔔", "🔔", "🔔"]
+
+        expected: float = 5
+        actual: float = handle_spin(syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_handle_spin_bar_win(self):
+        syms: list[str] = ["⬛", "⬛", "⬛"]
+
+        expected: float = 2
+        actual: float = handle_spin(syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_handle_spin_cherry_win(self):
+        syms: list[str] = ["🍒", "🍒", "🍒"]
+
+        expected: float = 1.5
+        actual: float = handle_spin(syms)
+
+        self.assertEqual(expected, actual)
