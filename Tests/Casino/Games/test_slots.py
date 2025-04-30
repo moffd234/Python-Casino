@@ -1,5 +1,5 @@
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.Slots.Slots import Slots
+from Application.Casino.Games.Slots.Slots import Slots, get_spin
 from Tests.BaseTest import BaseTest
 
 
@@ -31,3 +31,20 @@ class TestSlots(BaseTest):
         actual: str = self.game.print_welcome_message()
 
         self.assertEqual(expected, actual)
+
+    def test_get_spin(self):
+        expected_len: int = 3
+        actual_len: int = len(get_spin())
+
+        outcomes: set[str] = set()
+        possibilities: list[str] = ["7️⃣", "🔔", "⬛", "🍒"]
+
+        for _ in range(1000):
+            outcomes.add(get_spin()[0])
+            outcomes.add(get_spin()[1])
+            outcomes.add(get_spin()[2])
+
+        for sym in possibilities:
+            self.assertIn(sym, outcomes)
+
+        self.assertEqual(expected_len, actual_len)
