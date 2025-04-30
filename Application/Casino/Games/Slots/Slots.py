@@ -1,6 +1,14 @@
+import random
+
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Game import Game
+
+
+def get_spin() -> list[str]:
+    possibilities: list[str] = ["7️⃣", "🔔", "🔔", "⬛", "⬛", "⬛", "🍒", "🍒", "🍒", "🍒", "🍒"]
+    random.shuffle(possibilities)
+    return possibilities[:3]
 
 
 class Slots(Game):
