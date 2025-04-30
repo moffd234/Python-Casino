@@ -18,6 +18,12 @@ def handle_spin(spin: list[str]) -> float | None:
 
     return payouts[spin[0]]
 
+
+def get_payout(wager: float, spin: list[str]) -> float:
+    multiplier: float = handle_spin(spin)
+    return multiplier * wager
+
+
 class Slots(Game):
 
     def __init__(self, player: UserAccount, manager: AccountManager):
