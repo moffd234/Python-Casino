@@ -9,11 +9,12 @@ from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
 
+
 class Casino:
     def __init__(self):
         self.console = IOConsole(ANSI_COLORS.BLUE)
         self.manager = AccountManager()
-        self.account:  UserAccount | None = None
+        self.account: UserAccount | None = None
 
     def run(self) -> None:
         self.print_welcome()
@@ -84,8 +85,8 @@ class Casino:
     def prompt_manage_or_select(self) -> None:
         while True:
             answer = self.console.get_string_input("You are logged in!" +
-                "\nFrom here, you can select any of the following options:" +
-                "\n\t[ manage-account ], [ select-game ], [ logout ]")
+                                                   "\nFrom here, you can select any of the following options:" +
+                                                   "\n\t[ manage-account ], [ select-game ], [ logout ]")
 
             if answer == "manage-account" or answer == "manage account" or answer == "manage":
                 self.handle_manage_selection()
@@ -103,8 +104,8 @@ class Casino:
     def prompt_game(self) -> None:
         while True:
             answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
-                "\nFrom here, you can select any of the following options:" +
-                "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
+                                                   "\nFrom here, you can select any of the following options:" +
+                                                   "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
 
             # The following are placeholders until the games are made
             if answer == "rps" or answer == "rock paper scissors":
@@ -139,10 +140,10 @@ class Casino:
 
     def add_funds(self) -> None:
         answer: float = self.console.get_monetary_input("Enter the amount of money you want to add to your funds"
-                                              " (no less than $1.00)")
+                                                        " (no less than $1.00)")
         self.manager.add_and_save_account(self.account, answer)
-        print(self.console.print_colored(f"You have added ${answer} to your funds! "
-                                         f"New Balance is {self.account.balance}", ANSI_COLORS.GREEN))
+        self.console.print_colored(f"You have added ${answer} to your funds! "
+                                   f"New Balance is {self.account.balance}", ANSI_COLORS.GREEN)
 
     def reset_password(self) -> None:
         for _ in range(5):

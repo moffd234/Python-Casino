@@ -11,7 +11,8 @@ class TestCasino(BaseTest):
         self.casino = Casino()
         self.casino.account = self.manager.create_account("username", "password")
 
-    def test_print_welcome(self):
+    @patch("builtins.print")
+    def test_print_welcome(self, mock_print):
         expected: str = r"""[34m
             888       888          888                                         888 888 
             888   o   888          888                                         888 888 
@@ -20,10 +21,10 @@ class TestCasino(BaseTest):
             888d88888b888 d8P  Y8b 888 d88P"   d88""88b 888 "888 "88b d8P  Y8b 888 888 
             88888P Y88888 88888888 888 888     888  888 888  888  888 88888888 Y8P Y8P 
             8888P   Y8888 Y8b.     888 Y88b.   Y88..88P 888  888  888 Y8b.      "   "  
-            888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888 
-        """
-        actual: str = self.casino.print_welcome()
-        self.assertEqual(expected.strip(), actual.strip())
+            888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888
+            """
+        self.casino.print_welcome()
+        mock_print.assert_called_with(expected)
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
@@ -93,7 +94,7 @@ class TestCasino(BaseTest):
         ])
         self.assertEqual(expected_balance, actual_balance)
 
-    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("builtins.input", side_effect=["password", "new_password"])
     def test_reset_password(self, mock_input, mock_print):
         self.casino.reset_password()
@@ -101,11 +102,10 @@ class TestCasino(BaseTest):
         expected_password = "new_password"
         actual_password = self.casino.account.password
 
-        mock_print.assert_called_once_with(
-            self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
+        mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         self.assertEqual(expected_password, actual_password)
 
-    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("builtins.input", side_effect=["test_pAsSwOrD123!", "new_password"])
     def test_reset_password_case_sensitive(self, mock_input, mock_print):
         account: UserAccount = self.casino.manager.create_account("test_username", "test_pAsSwOrD123!")
@@ -115,8 +115,7 @@ class TestCasino(BaseTest):
         expected_password = "new_password"
         actual_password = self.casino.account.password
 
-        mock_print.assert_called_once_with(
-            self.casino.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
+        mock_print.assert_called_once_with(f"Your password has been updated!", ANSI_COLORS.GREEN)
         self.assertEqual(expected_password, actual_password)
 
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
@@ -138,7 +137,7 @@ class TestCasino(BaseTest):
         ])
         self.assertEqual(expected_password, actual_password)
 
-    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     @patch("builtins.input", side_effect=["wrong_password", "wrong_password", "password", "new_password"])
     def test_reset_password_failed_then_works(self, mock_input, mock_print_error, mock_print):
@@ -147,8 +146,7 @@ class TestCasino(BaseTest):
         expected_password: str = "new_password"
         actual_password = self.casino.account.password
 
-        mock_print.assert_called_once_with((self.casino.console.print_colored("Your password has been updated!",
-                                                                              ANSI_COLORS.GREEN)))
+        mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         mock_print_error.assert_has_calls([
             call("Passwords do not match"),
             call("Passwords do not match")
@@ -206,13 +204,12 @@ class TestCasino(BaseTest):
         result: None = self.casino.handle_manage_selection()
         self.assertIsNone(result)
 
-    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_error")
     @patch("Application.Casino.Casino.Casino.add_funds")
     @patch("builtins.input", side_effect=["invalid_input", "add"])
     def test_handle_manage_selection_invalid_input(self, mock_input, mock_add, mock_print):
         self.casino.handle_manage_selection()
-        mock_print.assert_called_once_with(
-            self.casino.console.print_colored("Invalid input. Please try again", ANSI_COLORS.RED))
+        mock_print.assert_called_once_with("Invalid input. Please try again")
         mock_add.assert_called_once()
 
     @patch("builtins.input", return_value="login")
@@ -372,17 +369,17 @@ class TestCasino(BaseTest):
     def test_prompt_game_invalid_input(self, mock_print, mock_run, mock_input):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
-                                           "\nFrom here, you can select any of the following options:" +
-                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
                                      call("Welcome to the Game Selection Dashboard!" +
-                                           "\nFrom here, you can select any of the following options:" +
-                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
                                      call("Welcome to the Game Selection Dashboard!" +
-                                           "\nFrom here, you can select any of the following options:" +
-                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
                                      ])
         mock_run.assert_called_once()
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
@@ -390,13 +387,13 @@ class TestCasino(BaseTest):
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
-                                           "\nFrom here, you can select any of the following options:" +
-                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
                                      call("Welcome to the Game Selection Dashboard!" +
-                                           "\nFrom here, you can select any of the following options:" +
-                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")])
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")])
         mock_run.assert_called_once()
 
     def assert_prompt_manage_or_select(self, mock_input, mock_selection):
