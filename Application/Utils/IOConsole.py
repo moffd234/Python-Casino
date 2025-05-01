@@ -64,14 +64,14 @@ class IOConsole:
             return True
         return False
 
-    def print_colored(self, prompt: str, color: ANSI_COLORS = None) -> str:
+    def print_colored(self, prompt: str, color: ANSI_COLORS = None) -> None:
         if color is None or not isinstance(color, ANSI_COLORS):
             color = self.color
 
         else:
             color = color.value
 
-        return color + prompt
+        print(color + prompt)
 
     def print_error(self, error_message: str) -> None:
         """
