@@ -357,7 +357,8 @@ class TestCasino(BaseTest):
         self.casino.prompt_game()
         mock_input.assert_called_once_with("Welcome to the Game Selection Dashboard!" +
                                            "\nFrom here, you can select any of the following options:" +
-                                           "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
+                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
 
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input",
                                                                                   "coin flip", "back"])
@@ -366,14 +367,17 @@ class TestCasino(BaseTest):
     def test_prompt_game_invalid_input(self, mock_print, mock_run, mock_input):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]"),
+                                           "\nFrom here, you can select any of the following options:" +
+                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
                                      call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]"),
+                                           "\nFrom here, you can select any of the following options:" +
+                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
                                      call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")
+                                           "\nFrom here, you can select any of the following options:" +
+                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
                                      ])
         mock_run.assert_called_once()
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
@@ -381,11 +385,13 @@ class TestCasino(BaseTest):
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]"),
+                                           "\nFrom here, you can select any of the following options:" +
+                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
                                      call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ], [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ]")])
+                                           "\nFrom here, you can select any of the following options:" +
+                                           "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                           " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")])
         mock_run.assert_called_once()
 
     def assert_prompt_manage_or_select(self, mock_input, mock_selection):
