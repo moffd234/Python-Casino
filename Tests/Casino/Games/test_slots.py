@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, call
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin, get_payout
@@ -146,3 +146,18 @@ class TestSlots(BaseTest):
         actual: float = get_payout(10.33, syms)
 
         self.assertEqual(expected, actual)
+
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_spin(self, mock_print):
+        self.game.print_spin(["🍒", "🍒", "🍒"])
+
+        expected_calls = [
+            call("\n🎰 Spinning... 🎰\n"),
+            call("┌───┬───┬───┐"),
+            call("│ 🍒│ 🍒│ 🍒│"),
+            call("└───┴───┴───┘\n"),
+        ]
+
+        # Only compare the arguments passed to print_colored directly
+        actual_calls = mock_print.call_args_list
+        self.assertEqual(actual_calls, expected_calls)
