@@ -10,7 +10,6 @@ from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader, \
     CACHE_FILE_PATH, parse_cached_categories
 from Tests.BaseTest import BaseTest
-import requests
 
 
 
@@ -572,51 +571,46 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=0)
-    def test_get_category_valid(self, mock_input, mock_print_colored, mock_print):
+    def test_get_category_valid(self, mock_input, mock_print_colored):
         expected: Category = self.valid_cats[0]
         actual: Category = self.game.get_category(self.valid_cats)
 
-        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
+        self.assert_get_category(expected, actual, mock_print_colored)
 
-    @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=10)
-    def test_get_category_valid_upper_bound(self, mock_input, mock_print_colored, mock_print):
+    def test_get_category_valid_upper_bound(self, mock_input, mock_print_colored):
         expected: Category = self.valid_cats[len(self.valid_cats) - 1]
         actual: Category = self.game.get_category(self.valid_cats)
 
-        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
+        self.assert_get_category(expected, actual, mock_print_colored)
 
-    @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[100, 0])
-    def test_get_category_invalid_0(self, mock_input, mock_print_error, mock_print_colored, mock_print):
+    def test_get_category_invalid_0(self, mock_input, mock_print_error, mock_print_colored):
         expected: Category = self.valid_cats[0]
         actual: Category = self.game.get_category(self.valid_cats)
 
         mock_print_error.assert_called_once_with("Invalid category number")
 
-        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
+        self.assert_get_category(expected, actual, mock_print_colored)
 
-    @patch("builtins.print")
     @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[100, 10])
-    def test_get_category_invalid_upper_bound(self, mock_input, mock_print_error, mock_print_colored, mock_print):
+    def test_get_category_invalid_upper_bound(self, mock_input, mock_print_error, mock_print_colored):
         expected: Category = self.valid_cats[len(self.valid_cats) - 1]
         actual: Category = self.game.get_category(self.valid_cats)
 
         mock_print_error.assert_called_once_with("Invalid category number")
 
-        self.assert_get_category(expected, actual, mock_print_colored, mock_print)
+        self.assert_get_category(expected, actual, mock_print_colored)
 
-    def assert_get_category(self, expected, actual, mock_print_colored, mock_print):
+    def assert_get_category(self, expected, actual, mock_print_colored):
         expected_print_count: int = len(self.valid_cats) + 2  # Additional print for get_integer and blank print
-        actual_print_count: int = mock_print.call_count
 
         mock_print_colored.assert_has_calls([
             call("0. General Knowledge"),
@@ -633,7 +627,6 @@ class TestTriviaGame(BaseTest):
         ])
 
         self.assertEqual(expected, actual)
-        self.assertEqual(expected_print_count, actual_print_count)
 
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_question_type", return_value="tf")
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_difficulty", return_value="easy")

@@ -14,6 +14,7 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 CACHE_FILE_PATH = "category_cache.txt"
 
+
 def create_questions(q_response: dict) -> list[Question]:
     questions_list: list[Question] = []
     for question in q_response["results"]:
@@ -88,7 +89,7 @@ class TriviaGame(Game):
 
     def run(self):
 
-        print(self.console.print_colored(self.print_welcome_message()))
+        self.console.print_colored(self.print_welcome_message())
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
@@ -104,11 +105,11 @@ class TriviaGame(Game):
             if self.score > 6:
                 winnings = self.get_winnings_total(wager)
                 self.manager.add_and_save_account(self.player, winnings)
-                print(self.console.print_colored(f"You Won!!! Your winnings were {winnings}.\n"
-                                                 f"This brings your account total to {self.player.balance}"))
+                self.console.print_colored(f"You Won!!! Your winnings were {winnings}.\n"
+                                           f"This brings your account total to {self.player.balance}")
             else:
-                print(self.console.print_colored("Sorry you did not get enough questions correct. "
-                                                 "Better luck next time"))
+                self.console.print_colored("Sorry you did not get enough questions correct. "
+                                           "Better luck next time")
 
     def get_question_type(self) -> str:
         question_type: str = self.console.get_string_input("Enter the type of questions you want to play "
@@ -129,9 +130,9 @@ class TriviaGame(Game):
         return difficulty
 
     def get_category(self, valid_cats: list[Category]) -> Category:
-        print(self.console.print_colored("Available Categories:"))
+        self.console.print_colored("Available Categories:")
         for i in range(len(valid_cats)):
-            print(self.console.print_colored(f"{i}. {valid_cats[i].name}"))
+            self.console.print_colored(f"{i}. {valid_cats[i].name}")
 
         print()
 
@@ -157,7 +158,7 @@ class TriviaGame(Game):
         if cached_categories:
             return parse_cached_categories(cached_categories)
 
-        print(self.console.print_colored("loading.........\n\n\n"))
+        self.console.print_colored("loading.........\n\n\n")
         cat_response = self.get_response(f"{self.base_url}api_category.php")
 
         if cat_response is None:
