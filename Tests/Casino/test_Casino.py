@@ -352,6 +352,11 @@ class TestCasino(BaseTest):
     def test_prompt_game_coin_flip(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
+    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["slots", "back"])
+    @patch("Application.Casino.Games.Slots.Slots.Slots.run", return_value=None)
+    def test_prompt_game_slots(self, mock_run, mock_input):
+        self.assert_prompt_game(mock_input, mock_run)
+
     @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="back")
     def test_prompt_game_back(self, mock_input):
         self.casino.prompt_game()
