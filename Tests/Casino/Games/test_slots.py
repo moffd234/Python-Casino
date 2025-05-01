@@ -90,3 +90,59 @@ class TestSlots(BaseTest):
         actual: float = handle_spin(syms)
 
         self.assertEqual(expected, actual)
+
+    @patch("Application.Casino.Games.Slots.Slots.handle_spin")
+    def test_get_payout_assert_mock_called(self, mock_handle_spin):
+        spin: list[str] = ["🔔", "🔔", "⬛"]
+        get_payout(10, spin)
+
+        mock_handle_spin.assert_called_once_with(spin)
+
+    def test_get_payout_none(self):
+        expected: float = 0
+
+        spin: list[str] = ["🔔", "🔔", "⬛"]
+        actual: float = get_payout(10, spin)
+
+        self.assertEqual(expected, actual)
+
+    def test_get_payout_7_win(self):
+        syms: list[str] = ["7️⃣", "7️⃣", "7️⃣"]
+
+        expected: float = 100.0
+        actual: float = get_payout(10, syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_get_payout_bell_win(self):
+        syms: list[str] = ["🔔", "🔔", "🔔"]
+
+        expected: float = 50.0
+        actual: float = get_payout(10, syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_get_payout_bar_win(self):
+        syms: list[str] = ["⬛", "⬛", "⬛"]
+
+        expected: float = 20.0
+        actual: float = get_payout(10, syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_get_payout_cherry_win(self):
+        syms: list[str] = ["🍒", "🍒", "🍒"]
+
+        expected: float = 15.0
+        actual: float = get_payout(10, syms)
+
+        self.assertEqual(expected, actual)
+
+    def test_get_payout_round_up(self):
+        # There is no round down test as that shouldn't be able to occur
+        syms: list[str] = ["🍒", "🍒", "🍒"]
+
+        expected: float = 15.50
+        actual: float = get_payout(10.33, syms)
+
+        self.assertEqual(expected, actual)
