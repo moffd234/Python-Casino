@@ -12,7 +12,8 @@ class TestNumberGuess(BaseTest):
         self.player: UserAccount = UserAccount("test_username", "test_password", 50)
         self.game: NumberGuess = NumberGuess(self.player, self.manager)
 
-    def test_print_welcome_message(self):
+    @patch("builtins.print")
+    def test_print_welcome_message(self, mock_print):
         expected: str = r"""[36m
         
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      88b 88 88   88 8b    d8      dP""b8 88   88 888888 .dP"Y8 .dP"Y8 
@@ -25,8 +26,8 @@ class TestNumberGuess(BaseTest):
                 2. You will get one chance to input a guess
                 3. If you are right you will win 2x your wager
         """
-        actual: str = self.game.print_welcome_message()
-        self.assertEqual(expected, actual)
+        self.game.print_welcome_message()
+        mock_print.assert_called_once_with(expected)
 
     def test_handle_guess_right(self):
         expected_output: str = "You Won! The answer was 5"

@@ -8,7 +8,8 @@ class TestTicTacToe(BaseTest):
         super().setUp()
         self.game = TicTacToe(self.manager.get_account("Username", "Password"), self.manager)
 
-    def test_print_welcome_message(self):
+    @patch("builtins.print")
+    def test_print_welcome_message(self, mock_print):
         expected: str = r"""[36m
          __          __  _                            _______      _______ _          _______             _______         
          \ \        / / | |                          |__   __|    |__   __(_)        |__   __|           |__   __|        
@@ -24,9 +25,8 @@ class TestTicTacToe(BaseTest):
                 The first player to place three of their symbols in a horizontal, vertical, or diagonal row wins.                                                                                                    
         """
 
-        actual: str = self.game.print_welcome_message()
-
-        self.assertEqual(expected, actual)
+        self.game.print_welcome_message()
+        mock_print.assert_called_once_with(expected)
 
     def test_check_for_winner_horizontal(self):
         self.game.game_board = \

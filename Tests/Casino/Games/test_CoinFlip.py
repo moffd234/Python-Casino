@@ -12,7 +12,8 @@ class TestCoinFlip(BaseTest):
         self.account: UserAccount = self.manager.create_account("test_username", "test_password")
         self.game: CoinFlip = CoinFlip(self.account, self.manager)
 
-    def test_print_welcome(self):
+    @patch("builtins.print")
+    def test_print_welcome(self, mock_print):
         expected: str = r"""[34m
         
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb       dP""b8  dP"Yb  88 88b 88     888888 88     88 88""Yb 
@@ -25,10 +26,8 @@ class TestCoinFlip(BaseTest):
              2. A coin will be flipped
              3. If you guess correctly you will win 1.25x your wager
         """
-
-        actual: str = self.game.print_welcome_message()
-
-        self.assertEqual(expected, actual)
+        self.game.print_welcome_message()
+        mock_print.assert_called_once_with(expected)
 
     @patch("Application.Casino.Games.CoinFlip.CoinFlip.random.randint", return_value=0)
     def test_handle_heads_tails_zero(self, mock_randint):
