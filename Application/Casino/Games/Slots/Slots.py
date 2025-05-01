@@ -21,7 +21,7 @@ def handle_spin(spin: list[str]) -> float:
 
 def get_payout(wager: float, spin: list[str]) -> float:
     multiplier: float = handle_spin(spin)
-    return multiplier * wager
+    return round(multiplier * wager, 2)
 
 
 class Slots(Game):
