@@ -10,9 +10,9 @@ def get_spin() -> list[str]:
     random.shuffle(possibilities)
     return possibilities[:3]
 
-def handle_spin(spin: list[str]) -> float | None:
+def handle_spin(spin: list[str]) -> float:
     if spin[0] != spin[1] or spin[0] != spin[2]:
-        return None
+        return 0
 
     payouts = {"7️⃣": 10, "🔔": 5, "⬛": 2, "🍒": 1.5}
 

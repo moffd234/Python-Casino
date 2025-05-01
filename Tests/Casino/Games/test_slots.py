@@ -1,5 +1,7 @@
+from unittest.mock import patch
+
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin
+from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin, get_payout
 from Tests.BaseTest import BaseTest
 
 
@@ -52,9 +54,10 @@ class TestSlots(BaseTest):
     def test_handle_spin_no_win(self):
         syms: list[str] = ["🔔", "🔔", "⬛"]
 
-        actual: None = handle_spin(syms)
+        expected: float = 0
+        actual: float = handle_spin(syms)
 
-        self.assertIsNone(actual)
+        self.assertEqual(expected, actual)
 
     def test_handle_spin_7_win(self):
         syms: list[str] = ["7️⃣", "7️⃣", "7️⃣"]
