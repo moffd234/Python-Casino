@@ -23,6 +23,12 @@ def get_payout(wager: float, spin: list[str]) -> float:
     multiplier: float = handle_spin(spin)
     return round(multiplier * wager, 2)
 
+def print_spin(spin: list[str]) -> None:
+    print("\n🎰 Spinning... 🎰\n")
+    print("┌───┬───┬───┐")
+    print(f"│ {spin[0]}│ {spin[1]}│ {spin[2]}│")
+    print("└───┴───┴───┘\n")
+
 
 class Slots(Game):
 
@@ -49,3 +55,4 @@ class Slots(Game):
 
     def run(self):
         pass
+
