@@ -36,9 +36,9 @@ class TicTacToe(Game):
         while self.get_continue_input():
             winner: str | None = self.play_game()
             if winner == "tie":
-                print(self.console.print_colored("Game Over. It is a tie"))
+                self.console.print_colored("Game Over. It is a tie")
             else:
-                print(self.console.print_colored(f"Winner is {winner}", ANSI_COLORS.GREEN))
+                self.console.print_colored(f"Winner is {winner}", ANSI_COLORS.GREEN)
             self.print_board()
 
 
@@ -47,7 +47,7 @@ class TicTacToe(Game):
         for row in self.game_board:
             board_lines.append(" | ".join(row))
         board_display = "\n---------\n".join(board_lines)
-        print(self.console.print_colored(board_display))
+        self.console.print_colored(board_display)
 
     def is_cell_empty(self, row: int, col: int) -> bool:
         return self.game_board[row][col] == " "
