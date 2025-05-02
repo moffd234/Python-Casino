@@ -49,7 +49,7 @@ class Slots(Game):
         """
 
     def run(self):
-        print(self.console.print_colored(self.print_welcome_message()))
+        self.console.print_colored(self.print_welcome_message())
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
@@ -58,15 +58,15 @@ class Slots(Game):
             payout: float = get_payout(wager, spin)
 
             if payout != 0:
-                print(self.console.print_colored(f"Congrats you won! ${payout} has been added to your account!",
-                                                 "green"))
+                self.console.print_colored(f"Congrats you won! ${payout} has been added to your account!",
+                                                 "green")
                 self.manager.add_and_save_account(self.player, payout)
 
             else:
-                print(self.console.print_colored("Sorry, you lost"))
+                self.console.print_colored("Sorry, you lost")
 
     def print_spin(self, spin: list[str]) -> None:
-        print(self.console.print_colored("\n🎰 Spinning... 🎰\n"))
-        print(self.console.print_colored("┌───┬───┬───┐"))
-        print(self.console.print_colored(f"│ {spin[0]}│ {spin[1]}│ {spin[2]}│"))
-        print(self.console.print_colored("└───┴───┴───┘\n"))
+        self.console.print_colored("\n🎰 Spinning... 🎰\n")
+        self.console.print_colored("┌───┬───┬───┐")
+        self.console.print_colored(f"│ {spin[0]}│ {spin[1]}│ {spin[2]}│")
+        self.console.print_colored("└───┴───┴───┘\n")
