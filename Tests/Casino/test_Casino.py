@@ -71,12 +71,12 @@ class TestCasino(BaseTest):
                                            f" New Balance is {self.casino.account.balance}")
         self.assertEqual(expected_balance, actual_balance)
 
-    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("builtins.input", side_effect=["-1", "50"])
     def test_handle_add_funds_negative(self, mock_input, mock_print):
         self.add_funds_and_assert(mock_print)
 
-    @patch("builtins.print")
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
     @patch("builtins.input", side_effect=[".99", "50"])
     def test_handle_add_funds_low_decimal(self, mock_input, mock_print):
         self.add_funds_and_assert(mock_print)
@@ -86,11 +86,11 @@ class TestCasino(BaseTest):
         self.casino.add_funds()
         actual_balance: float = self.casino.account.balance
         mock_print.assert_has_calls([
-            call(self.casino.console.print_colored("Please enter a valid amount "
-                                                   "(A positive number >= 1.00 with no more than 2 decimal places).",
-                                                   ANSI_COLORS.RED)),
+            call("Please enter a valid amount "
+                 "(A positive number >= 1.00 with no more than 2 decimal places).",
+                 ANSI_COLORS.RED),
             call(
-                f"{ANSI_COLORS.GREEN.value}You have added $50.0 to your funds! New Balance is {self.casino.account.balance}")
+                f"You have added $50.0 to your funds! New Balance is {self.casino.account.balance}", ANSI_COLORS.GREEN)
         ])
         self.assertEqual(expected_balance, actual_balance)
 

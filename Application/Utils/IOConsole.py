@@ -79,7 +79,7 @@ class IOConsole:
         :param error_message: A string value that will be printed as the error message
         :return: None
         """
-        print(self.print_colored(error_message, ANSI_COLORS.RED))
+        self.print_colored(error_message, ANSI_COLORS.RED)
 
     def get_monetary_input(self, prompt, color: ANSI_COLORS=None) -> float:
         """
