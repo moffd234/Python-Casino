@@ -151,7 +151,7 @@ class Casino:
             if answer == self.account.password:
                 new_password = self.console.get_string_input("Enter new password: ")
                 self.manager.update_password(self.account, new_password)
-                print(self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN))
+                self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN)
                 return
             else:
                 self.console.print_error("Passwords do not match")
