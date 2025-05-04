@@ -9,10 +9,8 @@ from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader, \
     CACHE_FILE_PATH, parse_cached_categories
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, TRIVIA_GAME_FILE_PATH, TRIVIA_GAME_CLASS_PATH
 
-TRIVIA_GAME_PATH: str = "Application.Casino.Games.TriviaGame.TriviaGame"
-TRIVIA_GAME_CLASS_PATH: str = f"{TRIVIA_GAME_PATH}.TriviaGame"
 
 class TestTriviaGame(BaseTest):
 
@@ -333,7 +331,7 @@ class TestTriviaGame(BaseTest):
             self.assertEqual(expected_length, actual_length)
 
     @patch("builtins.open", new_callable=mock_open)
-    @patch(f"{TRIVIA_GAME_PATH}.datetime")
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.datetime")
     def test_category_cacher(self, mock_datetime, mock_file):
         mock_datetime.now.return_value = datetime(2025, 4, 11, 12, 0, 0)
         possible_categories: list = [
@@ -381,7 +379,7 @@ class TestTriviaGame(BaseTest):
         expected: None = cache_loader()
         self.assertIsNone(expected)
 
-    @patch(f"{TRIVIA_GAME_PATH}.datetime")
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.datetime")
     @patch("json.load")
     @patch("builtins.open", new_callable=mock_open)
     @patch("os.path.exists", return_value=True)
@@ -652,7 +650,7 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected_diff, actual_diff)
         self.assert_category_info(expected_cat, actual_cat)
 
-    @patch(f"{TRIVIA_GAME_PATH}.cache_loader")
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.cache_loader")
     def test_get_possible_categories_cached(self, mock_loader):
         mock_loader.return_value = [
             {"name": "General Knowledge", "id": 9, "easy_num": 152, "med_num": 135, "hard_num": 62}]
@@ -669,7 +667,7 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected[0].med_num, actual[0].med_num)
         self.assertEqual(expected[0].hard_num, actual[0].hard_num)
 
-    @patch(f"{TRIVIA_GAME_PATH}.cache_loader", return_value=None)
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.cache_loader", return_value=None)
     @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_response", return_value=None)
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch(f"{IOCONSOLE_PATH}.print_error")
@@ -683,8 +681,8 @@ class TestTriviaGame(BaseTest):
 
         self.assertIsNone(outcome)
 
-    @patch(f"{TRIVIA_GAME_PATH}.cache_loader", return_value=None)
-    @patch(f"{TRIVIA_GAME_PATH}.category_cacher")
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.cache_loader", return_value=None)
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.category_cacher")
     @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_response")
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_get_possible_categories_no_cache_valid_response(self, mock_print, mock_response, mock_cacher, mock_loader):
@@ -806,7 +804,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch(f"{TRIVIA_GAME_PATH}.requests.get")
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.requests.get")
     def test_get_response_success(self, mock_get):
         mock_response = Mock()
         mock_response.raise_for_status.return_value = None
@@ -819,7 +817,7 @@ class TestTriviaGame(BaseTest):
         mock_response.raise_for_status.assert_called_once()
         mock_response.json.assert_called_once()
 
-    @patch(f"{TRIVIA_GAME_PATH}.requests.get")
+    @patch(f"{TRIVIA_GAME_FILE_PATH}.requests.get")
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_response_http_error(self, mock_print, mock_get):
         mock_response = Mock()
