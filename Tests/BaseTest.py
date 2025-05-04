@@ -10,6 +10,7 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         self.session = init_db(in_memory=True)
         self.manager = AccountManager(session=self.session)
+        self.IOConsole_path = "Application.Utils.IOConsole.IOConsole"
 
 
     def tearDown(self):
