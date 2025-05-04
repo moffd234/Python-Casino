@@ -11,9 +11,8 @@ class TicTacToe(Game):
         self.game_board: list[list[str]] = [[" " for _ in range(3)] for _ in range(3)]
         self.turn = "x"
 
-    def print_welcome_message(self) -> str:
-        return self.console.print_colored(
-            r"""
+    def print_welcome_message(self) -> None:
+        self.console.print_colored(r"""
          __          __  _                            _______      _______ _          _______             _______         
          \ \        / / | |                          |__   __|    |__   __(_)        |__   __|           |__   __|        
           \ \  /\  / /__| | ___ ___  _ __ ___   ___     | | ___      | |   _  ___ ______| | __ _  ___ ______| | ___   ___ 
