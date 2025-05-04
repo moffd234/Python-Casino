@@ -12,7 +12,7 @@ class Game(ABC):
         self.manager = manager
 
     @abstractmethod
-    def print_welcome_message(self) -> str:
+    def print_welcome_message(self) -> None:
         pass
 
     @abstractmethod
