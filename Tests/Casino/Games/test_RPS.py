@@ -4,6 +4,7 @@ from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.RockPaperScissors.RPS import RPS, get_comp_turn
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
+RPS_PATH: str = "Application.Casino.Games.RockPaperScissors.RPS"
 
 class TestRPS(BaseTest):
 
@@ -29,7 +30,7 @@ class TestRPS(BaseTest):
 
         mock_print.assert_called_with(expected)
 
-    @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=0)
+    @patch(f"{RPS_PATH}.randint", return_value=0)
     def test_get_comp_turn_paper(self, mock_random):
         expected: str = "paper"
         actual: str = get_comp_turn()
@@ -38,7 +39,7 @@ class TestRPS(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=1)
+    @patch(f"{RPS_PATH}.randint", return_value=1)
     def test_get_comp_turn_scissors(self, mock_random):
         expected: str = "scissors"
         actual: str = get_comp_turn()
@@ -47,7 +48,7 @@ class TestRPS(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=2)
+    @patch(f"{RPS_PATH}.randint", return_value=2)
     def test_get_comp_turn_rock(self, mock_random):
         expected: str = "rock"
         actual: str = get_comp_turn()
