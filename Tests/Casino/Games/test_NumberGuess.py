@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
-from Tests.BaseTest import BaseTest
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
 
 class TestNumberGuess(BaseTest):
@@ -71,7 +71,7 @@ class TestNumberGuess(BaseTest):
         self.assertEqual(expected, actual)
 
     @patch("builtins.input", side_effect=["11", "5"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_guess_too_high(self, mock_print, mock_input):
         expected: int = 5
         actual: int = self.game.get_guess()
@@ -80,7 +80,7 @@ class TestNumberGuess(BaseTest):
         self.assertEqual(expected, actual)
 
     @patch("builtins.input", side_effect=["0", "3"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_guess_too_low(self, mock_print, mock_input):
         expected: int = 3
         actual: int = self.game.get_guess()
@@ -89,7 +89,7 @@ class TestNumberGuess(BaseTest):
         self.assertEqual(expected, actual)
 
     @patch("builtins.input", side_effect=["-1", "4"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_guess_too_negative(self, mock_print, mock_input):
         expected: int = 4
         actual: int = self.game.get_guess()

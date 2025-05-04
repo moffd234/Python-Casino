@@ -2,7 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin, get_payout
-from Tests.BaseTest import BaseTest
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
 
 class TestSlots(BaseTest):
@@ -12,7 +12,7 @@ class TestSlots(BaseTest):
         self.player: UserAccount = UserAccount("test_username", "test_password", 50)
         self.game = Slots(self.player, self.manager)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_welcome_message(self, mock_print):
         expected: str = r"""        
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      .dP"Y8 88      dP"Yb  888888 .dP"Y8 
@@ -148,7 +148,7 @@ class TestSlots(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_spin(self, mock_print):
         self.game.print_spin(["🍒", "🍒", "🍒"])
 
