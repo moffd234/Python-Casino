@@ -35,7 +35,7 @@ class TestTriviaGame(BaseTest):
             Category(id_num=31, name='Entertainment: Japanese Anime & Manga', easy_num=62, med_num=84, hard_num=47),
         ]
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_welcome(self, mock_print):
         expected: str = r'''
         
@@ -479,7 +479,7 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected, actual)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid input", "mc"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_question_type_invalid_mc(self, mock_print, mock_input):
         expected: str = "multiple"
         actual: str = self.game.get_question_type()

@@ -1,7 +1,7 @@
 from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
-from Tests.BaseTest import BaseTest
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
 
 class TestCasino(BaseTest):
@@ -28,21 +28,21 @@ class TestCasino(BaseTest):
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_login(self, mock_inputs, mock_get_account):
         account: UserAccount = self.casino.handle_login()
 
         self.assert_account_info(account)
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account", return_value=None)
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["wrong_user", "wrong_pass"] * 5)
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["wrong_user", "wrong_pass"] * 5)
     def test_handle_login_fail(self, mock_get_string_input, mock_get_account):
         account = self.casino.handle_login()
         self.assertIsNone(account)
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["test_username", "test_password"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_signup(self, mock_inputs, mock_get_account):
         account: UserAccount = self.casino.handle_signup()
 
@@ -50,9 +50,9 @@ class TestCasino(BaseTest):
 
     @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
            side_effect=[None, UserAccount("test_username", "test_password", 50.0)])
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input",
+    @patch(f"{IOCONSOLE_PATH}.get_string_input",
            side_effect=["test_username", "test_password"] * 2)
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_signup_account_exist(self, mock_print, mock_inputs, mock_create_account):
         account: UserAccount = self.casino.handle_signup()
 
@@ -71,12 +71,12 @@ class TestCasino(BaseTest):
                                            f" New Balance is {self.casino.account.balance}")
         self.assertEqual(expected_balance, actual_balance)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch("builtins.input", side_effect=["-1", "50"])
     def test_handle_add_funds_negative(self, mock_input, mock_print):
         self.add_funds_and_assert(mock_print)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch("builtins.input", side_effect=[".99", "50"])
     def test_handle_add_funds_low_decimal(self, mock_input, mock_print):
         self.add_funds_and_assert(mock_print)
@@ -94,7 +94,7 @@ class TestCasino(BaseTest):
         ])
         self.assertEqual(expected_balance, actual_balance)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch("builtins.input", side_effect=["password", "new_password"])
     def test_reset_password(self, mock_input, mock_print):
         self.casino.reset_password()
@@ -105,7 +105,7 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         self.assertEqual(expected_password, actual_password)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch("builtins.input", side_effect=["test_pAsSwOrD123!", "new_password"])
     def test_reset_password_case_sensitive(self, mock_input, mock_print):
         account: UserAccount = self.casino.manager.create_account("test_username", "test_pAsSwOrD123!")
@@ -118,7 +118,7 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with(f"Your password has been updated!", ANSI_COLORS.GREEN)
         self.assertEqual(expected_password, actual_password)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch("builtins.input", side_effect=["wrong_password"] * 5)
     def test_reset_password_failed_times(self, mock_input, mock_print_error):
         expected_password: str = self.casino.account.password
@@ -137,8 +137,8 @@ class TestCasino(BaseTest):
         ])
         self.assertEqual(expected_password, actual_password)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch("builtins.input", side_effect=["wrong_password", "wrong_password", "password", "new_password"])
     def test_reset_password_failed_then_works(self, mock_input, mock_print_error, mock_print):
         self.casino.reset_password()
@@ -204,7 +204,7 @@ class TestCasino(BaseTest):
         result: None = self.casino.handle_manage_selection()
         self.assertIsNone(result)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch("Application.Casino.Casino.Casino.add_funds")
     @patch("builtins.input", side_effect=["invalid_input", "add"])
     def test_handle_manage_selection_invalid_input(self, mock_input, mock_add, mock_print):
@@ -229,7 +229,7 @@ class TestCasino(BaseTest):
     @patch("builtins.input", side_effect=["invalid_input", "signup"])
     @patch("Application.Casino.Casino.Casino.handle_signup",
            return_value=UserAccount("test_username", "test_password", 50))
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_initial_action_invalid_then_signup(self, mock_print, mock_signup, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
 
@@ -239,40 +239,40 @@ class TestCasino(BaseTest):
     @patch("builtins.input", side_effect=["invalid_input", "login"])
     @patch("Application.Casino.Casino.Casino.handle_login",
            return_value=UserAccount("test_username", "test_password", 50))
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_initial_action_login(self, mock_print, mock_login, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
 
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
         self.assert_account_info(actual_account)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["manage", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage", "logout"])
     @patch("Application.Casino.Casino.Casino.handle_manage_selection")
     def test_prompt_manage_or_select_manage(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["manage account", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage account", "logout"])
     @patch("Application.Casino.Casino.Casino.handle_manage_selection")
     def test_prompt_manage_or_select_manage_account(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["manage-account", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage-account", "logout"])
     @patch("Application.Casino.Casino.Casino.handle_manage_selection")
     def test_prompt_manage_or_select_manage_dash_account(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select", "logout"])
     @patch("Application.Casino.Casino.Casino.prompt_game")
     def test_prompt_manage_or_select_select(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select game", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select game", "logout"])
     @patch("Application.Casino.Casino.Casino.prompt_game")
     def test_prompt_manage_or_select_select_game(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select game", "logout"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select game", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch("Application.Casino.Casino.Casino.prompt_game")
     def test_prompt_manage_or_select_select_game_invalid_funds(self, mock_selection, mock_print, mock_input):
         self.casino.account.balance = 0.00
@@ -282,19 +282,19 @@ class TestCasino(BaseTest):
                                      call('You are logged in!\nFrom here, you can select any of the following options:'
                                           '\n\t[ manage-account ], [ select-game ], [ logout ]')])
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["select-game", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select-game", "logout"])
     @patch("Application.Casino.Casino.Casino.prompt_game")
     def test_prompt_manage_or_select_select_dash_game(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["logout"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["logout"])
     def test_prompt_manage_or_select_logout(self, mock_input):
         self.assertIsNone(self.casino.prompt_manage_or_select())
         mock_input.assert_called_once_with('You are logged in!\nFrom here, you can select any of the following options:'
                                            '\n\t[ manage-account ], [ select-game ], [ logout ]')
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "logout"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid_input", "logout"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_prompt_manage_or_select_invalid_input(self, mock_print, mock_input):
         self.casino.prompt_manage_or_select()
         mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
@@ -304,57 +304,57 @@ class TestCasino(BaseTest):
 
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["rps", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["rps", "back"])
     @patch("Application.Casino.Games.RockPaperScissors.RPS.RPS.run", return_value=None)
     def test_prompt_game_rps(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["rock paper scissors", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["rock paper scissors", "back"])
     @patch("Application.Casino.Games.RockPaperScissors.RPS.RPS.run", return_value=None)
     def test_prompt_game_rock_paper_scissors(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["numberguess", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["numberguess", "back"])
     @patch("Application.Casino.Games.NumberGuess.NumberGuess.NumberGuess.run", return_value=None)
     def test_prompt_game_numberguess(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["number guess", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["number guess", "back"])
     @patch("Application.Casino.Games.NumberGuess.NumberGuess.NumberGuess.run", return_value=None)
     def test_prompt_game_number_guess(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["trivia", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["trivia", "back"])
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.run", return_value=None)
     def test_prompt_game_trivia(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["tic-tac-toe", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["tic-tac-toe", "back"])
     @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.run", return_value=None)
     def test_prompt_game_tic_tac_toe_dashes(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["tictactoe", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["tictactoe", "back"])
     @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.run", return_value=None)
     def test_prompt_game_tictactoe(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["coinflip", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["coinflip", "back"])
     @patch("Application.Casino.Games.CoinFlip.CoinFlip.CoinFlip.run", return_value=None)
     def test_prompt_game_coinflip(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["coin flip", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["coin flip", "back"])
     @patch("Application.Casino.Games.CoinFlip.CoinFlip.CoinFlip.run", return_value=None)
     def test_prompt_game_coin_flip(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["slots", "back"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["slots", "back"])
     @patch("Application.Casino.Games.Slots.Slots.Slots.run", return_value=None)
     def test_prompt_game_slots(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="back")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="back")
     def test_prompt_game_back(self, mock_input):
         self.casino.prompt_game()
         mock_input.assert_called_once_with("Welcome to the Game Selection Dashboard!" +
@@ -362,10 +362,10 @@ class TestCasino(BaseTest):
                                            "\n\t[ RPS ], [ NUMBERGUESS ],"
                                            " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input",
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid_input",
                                                                                   "coin flip", "back"])
     @patch("Application.Casino.Games.CoinFlip.CoinFlip.CoinFlip.run", return_value=None)
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_prompt_game_invalid_input(self, mock_print, mock_run, mock_input):
         self.casino.prompt_game()
         mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
