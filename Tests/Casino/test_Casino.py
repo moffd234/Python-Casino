@@ -2,6 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
+from Tests.Casino.Games.test_TriviaGame import TRIVIA_GAME_CLASS_PATH
 
 
 class TestCasino(BaseTest):
@@ -325,7 +326,7 @@ class TestCasino(BaseTest):
         self.assert_prompt_game(mock_input, mock_run)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["trivia", "back"])
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.run", return_value=None)
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.run", return_value=None)
     def test_prompt_game_trivia(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 

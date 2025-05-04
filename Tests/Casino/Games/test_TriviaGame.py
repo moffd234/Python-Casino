@@ -11,6 +11,8 @@ from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_qu
     CACHE_FILE_PATH, parse_cached_categories
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
+TRIVIA_GAME_PATH: str = "Application.Casino.Games.TriviaGame.TriviaGame"
+TRIVIA_GAME_CLASS_PATH: str = f"{TRIVIA_GAME_PATH}.TriviaGame"
 
 class TestTriviaGame(BaseTest):
 
@@ -331,7 +333,7 @@ class TestTriviaGame(BaseTest):
             self.assertEqual(expected_length, actual_length)
 
     @patch("builtins.open", new_callable=mock_open)
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.datetime")
+    @patch(f"{TRIVIA_GAME_PATH}.datetime")
     def test_category_cacher(self, mock_datetime, mock_file):
         mock_datetime.now.return_value = datetime(2025, 4, 11, 12, 0, 0)
         possible_categories: list = [
@@ -379,7 +381,7 @@ class TestTriviaGame(BaseTest):
         expected: None = cache_loader()
         self.assertIsNone(expected)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.datetime")
+    @patch(f"{TRIVIA_GAME_PATH}.datetime")
     @patch("json.load")
     @patch("builtins.open", new_callable=mock_open)
     @patch("os.path.exists", return_value=True)
@@ -628,11 +630,11 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_question_type", return_value="tf")
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_difficulty", return_value="easy")
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_category",
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_question_type", return_value="tf")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_difficulty", return_value="easy")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_category",
            return_value=Category(id_num=9, name='General Knowledge', easy_num=155, med_num=135, hard_num=62))
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_valid_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_valid_categories")
     def test_get_choices(self, mock_valid_cats, mock_cat, mock_diff, mock_type):
         expected_type: str = "tf"
         expected_diff: str = "easy"
@@ -650,7 +652,7 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected_diff, actual_diff)
         self.assert_category_info(expected_cat, actual_cat)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader")
+    @patch(f"{TRIVIA_GAME_PATH}.cache_loader")
     def test_get_possible_categories_cached(self, mock_loader):
         mock_loader.return_value = [
             {"name": "General Knowledge", "id": 9, "easy_num": 152, "med_num": 135, "hard_num": 62}]
@@ -667,8 +669,8 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected[0].med_num, actual[0].med_num)
         self.assertEqual(expected[0].hard_num, actual[0].hard_num)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader", return_value=None)
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_response", return_value=None)
+    @patch(f"{TRIVIA_GAME_PATH}.cache_loader", return_value=None)
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_response", return_value=None)
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_possible_categories_no_response(self, mock_print_error, mock_print_colored, mock_response,
@@ -681,9 +683,9 @@ class TestTriviaGame(BaseTest):
 
         self.assertIsNone(outcome)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader", return_value=None)
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.category_cacher")
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_response")
+    @patch(f"{TRIVIA_GAME_PATH}.cache_loader", return_value=None)
+    @patch(f"{TRIVIA_GAME_PATH}.category_cacher")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_response")
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_get_possible_categories_no_cache_valid_response(self, mock_print, mock_response, mock_cacher, mock_loader):
         mock_response.side_effect = [
@@ -726,7 +728,7 @@ class TestTriviaGame(BaseTest):
         self.assertEqual(expected.med_num, actual.med_num)
         self.assertEqual(expected.hard_num, actual.hard_num)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_possible_categories")
     def test_get_valid_categories_easy(self, mock_get_possible_cats):
         mock_get_possible_cats.return_value = [
             Category("General Knowledge", 9, 161, 142, 62),
@@ -739,7 +741,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_possible_categories")
     def test_get_valid_categories_medium(self, mock_get_possible_cats):
         mock_get_possible_cats.return_value = [
             Category("General Knowledge", 9, 161, 142, 62),
@@ -752,7 +754,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_possible_categories")
     def test_get_valid_categories_hard(self, mock_get_possible_cats):
         mock_get_possible_cats.return_value = [
             Category("General Knowledge", 9, 161, 142, 12),
@@ -765,7 +767,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_possible_categories")
     def test_get_valid_categories_easy_no_valid(self, mock_get_possible_cats):
         mock_get_possible_cats.return_value = [
             Category("General Knowledge", 9, 1, 1, 12),
@@ -778,7 +780,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_possible_categories")
     def test_get_valid_categories_medium_no_valid(self, mock_get_possible_cats):
         mock_get_possible_cats.return_value = [
             Category("General Knowledge", 9, 161, 1, 12),
@@ -791,7 +793,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_possible_categories")
+    @patch(f"{TRIVIA_GAME_CLASS_PATH}.get_possible_categories")
     def test_get_valid_categories_hard_no_valid(self, mock_get_possible_cats):
         mock_get_possible_cats.return_value = [
             Category("General Knowledge", 9, 161, 142, 12),
@@ -804,7 +806,7 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.requests.get")
+    @patch(f"{TRIVIA_GAME_PATH}.requests.get")
     def test_get_response_success(self, mock_get):
         mock_response = Mock()
         mock_response.raise_for_status.return_value = None
@@ -817,7 +819,7 @@ class TestTriviaGame(BaseTest):
         mock_response.raise_for_status.assert_called_once()
         mock_response.json.assert_called_once()
 
-    @patch("Application.Casino.Games.TriviaGame.TriviaGame.requests.get")
+    @patch(f"{TRIVIA_GAME_PATH}.requests.get")
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_response_http_error(self, mock_print, mock_get):
         mock_response = Mock()
