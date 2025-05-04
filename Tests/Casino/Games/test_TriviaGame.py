@@ -36,7 +36,8 @@ class TestTriviaGame(BaseTest):
             Category(id_num=31, name='Entertainment: Japanese Anime & Manga', easy_num=62, med_num=84, hard_num=47),
         ]
 
-    def test_print_welcome(self):
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_welcome(self, mock_print):
         expected: str = r'''
         
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      888888 88""Yb 88 Yb    dP 88    db    
@@ -53,9 +54,9 @@ class TestTriviaGame(BaseTest):
                 2. You will then be given 10 questions from that category
                 3. You must answer at least 7 questions correctly to win
         '''
-        actual: str = self.game.print_welcome_message()
+        self.game.print_welcome_message()
 
-        self.assertEqual(expected, actual)
+        mock_print.assert_called_once_with(expected)
 
     def test_get_winnings_total_hard_multiple(self):
         self.game.q_type = "multiple"

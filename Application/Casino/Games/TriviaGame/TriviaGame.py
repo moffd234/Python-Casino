@@ -69,8 +69,8 @@ class TriviaGame(Game):
         self.base_url = "https://opentdb.com/"
         self.score = 0
 
-    def print_welcome_message(self) -> str:
-        return r'''
+    def print_welcome_message(self) -> None:
+        self.console.print_colored(r'''
         
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      888888 88""Yb 88 Yb    dP 88    db    
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb       88   88__dP 88  Yb  dP  88   dPYb   
@@ -85,7 +85,7 @@ class TriviaGame(Game):
                              an additional 1.25x your wager if you choose multiple choice
                 2. You will then be given 10 questions from that category
                 3. You must answer at least 7 questions correctly to win
-        '''
+        ''')
 
     def run(self):
 
