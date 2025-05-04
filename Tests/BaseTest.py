@@ -4,13 +4,13 @@ import unittest
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.db import init_db
 
+IOCONSOLE_PATH: str = "Application.Utils.IOConsole.IOConsole"
 
 class BaseTest(unittest.TestCase):
 
     def setUp(self):
         self.session = init_db(in_memory=True)
         self.manager = AccountManager(session=self.session)
-        self.IOConsole_path = "Application.Utils.IOConsole.IOConsole"
 
 
     def tearDown(self):
