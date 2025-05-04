@@ -25,8 +25,8 @@ class Casino:
 
         self.prompt_manage_or_select()
 
-    def print_welcome(self) -> str:
-        return self.console.print_colored(r"""
+    def print_welcome(self) -> None:
+        self.console.print_colored(r"""
             888       888          888                                         888 888 
             888   o   888          888                                         888 888 
             888  d8b  888          888                                         888 888 
