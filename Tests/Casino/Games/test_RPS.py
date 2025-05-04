@@ -12,7 +12,8 @@ class TestRPS(BaseTest):
         self.account: UserAccount = self.manager.create_account("username", "password")
         self.game = RPS(self.account, self.manager)
 
-    def test_print_welcome(self):
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_welcome(self, mock_print):
         expected: str = r"""
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      88""Yb 88""Yb .dP"Y8 
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     88__dP 88__dP `Ybo." 
@@ -24,8 +25,9 @@ class TestRPS(BaseTest):
                 - Payout is 1.25x the wager amount
         """
 
-        actual: str = self.game.print_welcome_message()
-        self.assertEqual(expected, actual)
+        self.game.print_welcome_message()
+
+        mock_print.assert_called_with(expected)
 
     @patch("Application.Casino.Games.RockPaperScissors.RPS.randint", return_value=0)
     def test_get_comp_turn_paper(self, mock_random):

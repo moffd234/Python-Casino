@@ -15,8 +15,8 @@ def get_comp_turn() -> str:
 
 
 class RPS(Game):
-    def print_welcome_message(self) -> str:
-        return r"""
+    def print_welcome_message(self) -> None:
+        self.console.print_colored(r"""
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      88""Yb 88""Yb .dP"Y8 
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     88__dP 88__dP `Ybo." 
           YbdPYbdP   88""   88  .o Yb      Yb   dP 88YbdP88 88""         88   Yb   dP     88"Yb  88""''   `Y8b 
@@ -25,7 +25,7 @@ class RPS(Game):
            Rules:
                 - Normal Rock Paper Scissors rules (rock beats scissors, scissors beats paper, paper beats rock)
                 - Payout is 1.25x the wager amount
-        """
+        """)
 
     def run(self):
         self.console.print_colored(self.print_welcome_message())
