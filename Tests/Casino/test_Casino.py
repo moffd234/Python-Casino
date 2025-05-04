@@ -1,7 +1,7 @@
 from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH, SLOTS_FILE_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH, SLOTS_FILE_PATH, CASINO_CLASS_PATH
 from Tests.Casino.Games.test_RPS import RPS_FILE_PATH
 from Tests.Casino.Games.test_TicTacToe import TICTACTOE_CLASS_PATH
 from Tests.Casino.Games.test_TriviaGame import TRIVIA_GAME_CLASS_PATH
@@ -156,37 +156,37 @@ class TestCasino(BaseTest):
         ])
         self.assertEqual(expected_password, actual_password)
 
-    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch(f"{CASINO_CLASS_PATH}.add_funds")
     @patch("builtins.input", return_value="add")
     def test_handle_manage_selection_add(self, mock_input, mock_add_funds):
         self.casino.handle_manage_selection()
         mock_add_funds.assert_called_once()
 
-    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch(f"{CASINO_CLASS_PATH}.add_funds")
     @patch("builtins.input", return_value="add-funds")
     def test_handle_manage_selection_add_dash_funds(self, mock_input, mock_add_funds):
         self.casino.handle_manage_selection()
         mock_add_funds.assert_called_once()
 
-    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch(f"{CASINO_CLASS_PATH}.add_funds")
     @patch("builtins.input", return_value="add funds")
     def test_handle_manage_selection_add_funds(self, mock_input, mock_add_funds):
         self.casino.handle_manage_selection()
         mock_add_funds.assert_called_once()
 
-    @patch("Application.Casino.Casino.Casino.reset_password")
+    @patch(f"{CASINO_CLASS_PATH}.reset_password")
     @patch("builtins.input", return_value="reset")
     def test_handle_manage_selection_reset(self, mock_input, mock_reset):
         self.casino.handle_manage_selection()
         mock_reset.assert_called_once()
 
-    @patch("Application.Casino.Casino.Casino.reset_password")
+    @patch(f"{CASINO_CLASS_PATH}.reset_password")
     @patch("builtins.input", return_value="reset password")
     def test_handle_manage_selection_reset_password(self, mock_input, mock_reset):
         self.casino.handle_manage_selection()
         mock_reset.assert_called_once()
 
-    @patch("Application.Casino.Casino.Casino.reset_password")
+    @patch(f"{CASINO_CLASS_PATH}.reset_password")
     @patch("builtins.input", return_value="reset-password")
     def test_handle_manage_selection_reset_dash_password(self, mock_input, mock_reset):
         self.casino.handle_manage_selection()
@@ -208,7 +208,7 @@ class TestCasino(BaseTest):
         self.assertIsNone(result)
 
     @patch(f"{IOCONSOLE_PATH}.print_error")
-    @patch("Application.Casino.Casino.Casino.add_funds")
+    @patch(f"{CASINO_CLASS_PATH}.add_funds")
     @patch("builtins.input", side_effect=["invalid_input", "add"])
     def test_handle_manage_selection_invalid_input(self, mock_input, mock_add, mock_print):
         self.casino.handle_manage_selection()
@@ -216,21 +216,21 @@ class TestCasino(BaseTest):
         mock_add.assert_called_once()
 
     @patch("builtins.input", return_value="login")
-    @patch("Application.Casino.Casino.Casino.handle_login",
+    @patch(f"{CASINO_CLASS_PATH}.handle_login",
            return_value=UserAccount("test_username", "test_password", 50))
     def test_handle_initial_action_login(self, mock_login, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
         self.assert_account_info(actual_account)
 
     @patch("builtins.input", return_value="signup")
-    @patch("Application.Casino.Casino.Casino.handle_signup",
+    @patch(f"{CASINO_CLASS_PATH}.handle_signup",
            return_value=UserAccount("test_username", "test_password", 50))
     def test_handle_initial_action_signup(self, mock_signup, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
         self.assert_account_info(actual_account, "test_username", "test_password")
 
     @patch("builtins.input", side_effect=["invalid_input", "signup"])
-    @patch("Application.Casino.Casino.Casino.handle_signup",
+    @patch(f"{CASINO_CLASS_PATH}.handle_signup",
            return_value=UserAccount("test_username", "test_password", 50))
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_initial_action_invalid_then_signup(self, mock_print, mock_signup, mock_input):
@@ -240,7 +240,7 @@ class TestCasino(BaseTest):
         self.assert_account_info(actual_account, "test_username", "test_password")
 
     @patch("builtins.input", side_effect=["invalid_input", "login"])
-    @patch("Application.Casino.Casino.Casino.handle_login",
+    @patch(f"{CASINO_CLASS_PATH}.handle_login",
            return_value=UserAccount("test_username", "test_password", 50))
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_initial_action_login(self, mock_print, mock_login, mock_input):
@@ -250,33 +250,33 @@ class TestCasino(BaseTest):
         self.assert_account_info(actual_account)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage", "logout"])
-    @patch("Application.Casino.Casino.Casino.handle_manage_selection")
+    @patch(f"{CASINO_CLASS_PATH}.handle_manage_selection")
     def test_prompt_manage_or_select_manage(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage account", "logout"])
-    @patch("Application.Casino.Casino.Casino.handle_manage_selection")
+    @patch(f"{CASINO_CLASS_PATH}.handle_manage_selection")
     def test_prompt_manage_or_select_manage_account(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage-account", "logout"])
-    @patch("Application.Casino.Casino.Casino.handle_manage_selection")
+    @patch(f"{CASINO_CLASS_PATH}.handle_manage_selection")
     def test_prompt_manage_or_select_manage_dash_account(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select", "logout"])
-    @patch("Application.Casino.Casino.Casino.prompt_game")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_game")
     def test_prompt_manage_or_select_select(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select game", "logout"])
-    @patch("Application.Casino.Casino.Casino.prompt_game")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_game")
     def test_prompt_manage_or_select_select_game(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select game", "logout"])
     @patch(f"{IOCONSOLE_PATH}.print_error")
-    @patch("Application.Casino.Casino.Casino.prompt_game")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_game")
     def test_prompt_manage_or_select_select_game_invalid_funds(self, mock_selection, mock_print, mock_input):
         self.casino.account.balance = 0.00
         self.casino.prompt_manage_or_select()
@@ -286,7 +286,7 @@ class TestCasino(BaseTest):
                                           '\n\t[ manage-account ], [ select-game ], [ logout ]')])
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["select-game", "logout"])
-    @patch("Application.Casino.Casino.Casino.prompt_game")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_game")
     def test_prompt_manage_or_select_select_dash_game(self, mock_selection, mock_input):
         self.assert_prompt_manage_or_select(mock_input, mock_selection)
 
