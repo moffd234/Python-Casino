@@ -9,8 +9,7 @@ from Application.Casino.Games.TriviaGame.Category import Category
 from Application.Casino.Games.TriviaGame.Question import Question
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame, create_questions, category_cacher, cache_loader, \
     CACHE_FILE_PATH, parse_cached_categories
-from Tests.BaseTest import BaseTest
-
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
 
 class TestTriviaGame(BaseTest):
@@ -465,21 +464,21 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected_length, actual_length)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="mc")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="mc")
     def test_get_question_type_valid_mc(self, mock_input):
         expected: str = "multiple"
         actual: str = self.game.get_question_type()
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="tf")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="tf")
     def test_get_question_type_valid_tf(self, mock_input):
         expected: str = "boolean"
         actual: str = self.game.get_question_type()
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid input", "mc"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid input", "mc"])
     @patch("Application.Utils.IOConsole.IOConsole.print_error")
     def test_get_question_type_invalid_mc(self, mock_print, mock_input):
         expected: str = "multiple"
@@ -494,8 +493,8 @@ class TestTriviaGame(BaseTest):
         ])
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid input", "tf"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid input", "tf"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_question_type_invalid_tf(self, mock_print, mock_input):
         expected: str = "boolean"
         actual: str = self.game.get_question_type()
@@ -509,29 +508,29 @@ class TestTriviaGame(BaseTest):
         ])
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="easy")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="easy")
     def test_get_difficulty_easy(self, mock_input):
         expected: str = "easy"
         actual: str = self.game.get_difficulty()
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="medium")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="medium")
     def test_get_difficulty_med(self, mock_input):
         expected: str = "medium"
         actual: str = self.game.get_difficulty()
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", return_value="hard")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="hard")
     def test_get_difficulty_hard(self, mock_input):
         expected: str = "hard"
         actual: str = self.game.get_difficulty()
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "easy"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid_input", "easy"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_difficulty_invalid_easy(self, mock_print, mock_input):
         expected: str = "easy"
         actual: str = self.game.get_difficulty()
@@ -544,8 +543,8 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "medium"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid_input", "medium"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_difficulty_invalid_medium(self, mock_print, mock_input):
         expected: str = "medium"
         actual: str = self.game.get_difficulty()
@@ -558,8 +557,8 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_string_input", side_effect=["invalid_input", "hard"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["invalid_input", "hard"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_difficulty_invalid_hard(self, mock_print, mock_input):
         expected: str = "hard"
         actual: str = self.game.get_difficulty()
@@ -572,25 +571,25 @@ class TestTriviaGame(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", return_value=0)
     def test_get_category_valid(self, mock_input, mock_print_colored):
         expected: Category = self.valid_cats[0]
         actual: Category = self.game.get_category(self.valid_cats)
 
         self.assert_get_category(expected, actual, mock_print_colored)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=10)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", return_value=10)
     def test_get_category_valid_upper_bound(self, mock_input, mock_print_colored):
         expected: Category = self.valid_cats[len(self.valid_cats) - 1]
         actual: Category = self.game.get_category(self.valid_cats)
 
         self.assert_get_category(expected, actual, mock_print_colored)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[100, 0])
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[100, 0])
     def test_get_category_invalid_0(self, mock_input, mock_print_error, mock_print_colored):
         expected: Category = self.valid_cats[0]
         actual: Category = self.game.get_category(self.valid_cats)
@@ -599,9 +598,9 @@ class TestTriviaGame(BaseTest):
 
         self.assert_get_category(expected, actual, mock_print_colored)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[100, 10])
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[100, 10])
     def test_get_category_invalid_upper_bound(self, mock_input, mock_print_error, mock_print_colored):
         expected: Category = self.valid_cats[len(self.valid_cats) - 1]
         actual: Category = self.game.get_category(self.valid_cats)
@@ -670,8 +669,8 @@ class TestTriviaGame(BaseTest):
 
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader", return_value=None)
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_response", return_value=None)
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_possible_categories_no_response(self, mock_print_error, mock_print_colored, mock_response,
                                                  mock_loader):
         outcome: None = self.game.get_possible_categories()
@@ -685,7 +684,7 @@ class TestTriviaGame(BaseTest):
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.cache_loader", return_value=None)
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.category_cacher")
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.TriviaGame.get_response")
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_get_possible_categories_no_cache_valid_response(self, mock_print, mock_response, mock_cacher, mock_loader):
         mock_response.side_effect = [
             {'trivia_categories': [{'id': 9, 'name': 'General Knowledge'},
@@ -819,7 +818,7 @@ class TestTriviaGame(BaseTest):
         mock_response.json.assert_called_once()
 
     @patch("Application.Casino.Games.TriviaGame.TriviaGame.requests.get")
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_response_http_error(self, mock_print, mock_get):
         mock_response = Mock()
         mock_response.raise_for_status.side_effect = HTTPError("Test HTTP Error")

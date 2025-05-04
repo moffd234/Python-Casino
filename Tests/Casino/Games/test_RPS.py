@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.RockPaperScissors.RPS import RPS, get_comp_turn
-from Tests.BaseTest import BaseTest
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
 
 class TestRPS(BaseTest):
@@ -12,7 +12,7 @@ class TestRPS(BaseTest):
         self.account: UserAccount = self.manager.create_account("username", "password")
         self.game = RPS(self.account, self.manager)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_welcome(self, mock_print):
         expected: str = r"""
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      88""Yb 88""Yb .dP"Y8 
