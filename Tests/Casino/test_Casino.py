@@ -1,7 +1,8 @@
 from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH, SLOTS_FILE_PATH, CASINO_CLASS_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH, SLOTS_FILE_PATH, CASINO_CLASS_PATH, \
+    ACCOUNT_MANAGER_CLASS_PATH
 from Tests.Casino.Games.test_RPS import RPS_FILE_PATH
 from Tests.Casino.Games.test_TicTacToe import TICTACTOE_CLASS_PATH
 from Tests.Casino.Games.test_TriviaGame import TRIVIA_GAME_CLASS_PATH
@@ -29,7 +30,7 @@ class TestCasino(BaseTest):
         self.casino.print_welcome()
         mock_print.assert_called_with(expected)
 
-    @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account",
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.get_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_login(self, mock_inputs, mock_get_account):
@@ -37,13 +38,13 @@ class TestCasino(BaseTest):
 
         self.assert_account_info(account)
 
-    @patch("Application.Casino.Accounts.AccountManager.AccountManager.get_account", return_value=None)
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.get_account", return_value=None)
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["wrong_user", "wrong_pass"] * 5)
     def test_handle_login_fail(self, mock_get_string_input, mock_get_account):
         account = self.casino.handle_login()
         self.assertIsNone(account)
 
-    @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            return_value=UserAccount("test_username", "test_password", 50.0))
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "test_password"])
     def test_handle_signup(self, mock_inputs, mock_get_account):
@@ -51,7 +52,7 @@ class TestCasino(BaseTest):
 
         self.assert_account_info(account)
 
-    @patch("Application.Casino.Accounts.AccountManager.AccountManager.create_account",
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            side_effect=[None, UserAccount("test_username", "test_password", 50.0)])
     @patch(f"{IOCONSOLE_PATH}.get_string_input",
            side_effect=["test_username", "test_password"] * 2)
