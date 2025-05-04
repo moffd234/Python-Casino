@@ -2,6 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
+from Tests.Casino.Games.test_TicTacToe import TICTACTOE_PATH
 from Tests.Casino.Games.test_TriviaGame import TRIVIA_GAME_CLASS_PATH
 
 
@@ -331,12 +332,12 @@ class TestCasino(BaseTest):
         self.assert_prompt_game(mock_input, mock_run)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["tic-tac-toe", "back"])
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.run", return_value=None)
+    @patch(f"{TICTACTOE_PATH}.run", return_value=None)
     def test_prompt_game_tic_tac_toe_dashes(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["tictactoe", "back"])
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.run", return_value=None)
+    @patch(f"{TICTACTOE_PATH}.run", return_value=None)
     def test_prompt_game_tictactoe(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 

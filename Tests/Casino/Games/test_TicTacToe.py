@@ -2,6 +2,7 @@ from unittest.mock import patch
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
 
+TICTACTOE_PATH: str = "Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe"
 
 class TestTicTacToe(BaseTest):
 
@@ -216,8 +217,8 @@ class TestTicTacToe(BaseTest):
         self.game.print_board()
         mock_print.assert_called_once_with(expected)
 
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", return_value=1)
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", return_value=1)
+    @patch(f"{TICTACTOE_PATH}.get_row", return_value=1)
+    @patch(f"{TICTACTOE_PATH}.get_col", return_value=1)
     def test_handle_turn_valid_x_turn(self, mock_col, mock_row):
         self.game.turn = 'x'
         expected_turn: str = 'o'
@@ -225,8 +226,8 @@ class TestTicTacToe(BaseTest):
 
         self.assert_handle_turn(expected_turn, expected_board)
 
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", return_value=2)
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", return_value=1)
+    @patch(f"{TICTACTOE_PATH}.get_row", return_value=2)
+    @patch(f"{TICTACTOE_PATH}.get_col", return_value=1)
     def test_handle_turn_valid_o_turn(self, mock_col, mock_row):
         self.game.turn = 'o'
         expected_turn: str = 'x'
@@ -234,8 +235,8 @@ class TestTicTacToe(BaseTest):
 
         self.assert_handle_turn(expected_turn, expected_board)
 
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", side_effect=[1, 2])
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", side_effect=[1, 1])
+    @patch(f"{TICTACTOE_PATH}.get_row", side_effect=[1, 2])
+    @patch(f"{TICTACTOE_PATH}.get_col", side_effect=[1, 1])
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_turn_invalid_o_turn(self, mock_print, mock_col, mock_row):
         self.game.turn = 'o'
@@ -248,8 +249,8 @@ class TestTicTacToe(BaseTest):
             self.assert_handle_turn(expected_turn, expected_board)
             mock_print.assert_called_once_with("Cell already occupied")
 
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", side_effect=[1, 2])
-    @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", side_effect=[1, 1])
+    @patch(f"{TICTACTOE_PATH}.get_row", side_effect=[1, 2])
+    @patch(f"{TICTACTOE_PATH}.get_col", side_effect=[1, 1])
     def test_handle_turn_invalid_x_turn(self, mock_col, mock_row):
         self.game.turn = 'x'
         self.game.game_board = [["o", " ", " "], [" ", " ", " "], [" ", " ", " "]]
