@@ -12,7 +12,8 @@ class TestSlots(BaseTest):
         self.player: UserAccount = UserAccount("test_username", "test_password", 50)
         self.game = Slots(self.player, self.manager)
 
-    def test_print_welcome_message(self):
+    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    def test_print_welcome_message(self, mock_print):
         expected: str = r"""        
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      .dP"Y8 88      dP"Yb  888888 .dP"Y8 
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     `Ybo." 88     dP   Yb   88   `Ybo." 
@@ -30,9 +31,9 @@ class TestSlots(BaseTest):
                      - Any other combination: No Win (You lose your wager)
         """
 
-        actual: str = self.game.print_welcome_message()
+        self.game.print_welcome_message()
 
-        self.assertEqual(expected, actual)
+        mock_print.assert_called_with(expected)
 
     def test_get_spin(self):
         expected_len: int = 3

@@ -30,8 +30,8 @@ class Slots(Game):
     def __init__(self, player: UserAccount, manager: AccountManager):
         super().__init__(player, manager)
 
-    def print_welcome_message(self) -> str:
-        return r"""        
+    def print_welcome_message(self) -> None:
+        self.console.print_colored(r"""        
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      .dP"Y8 88      dP"Yb  888888 .dP"Y8 
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     `Ybo." 88     dP   Yb   88   `Ybo." 
           YbdPYbdP   88""   88  .o Yb      Yb   dP 88YbdP88 88""         88   Yb   dP     o.`Y8b 88  .o Yb   dP   88   o.`Y8b 
@@ -46,7 +46,7 @@ class Slots(Game):
                      - Three Bars: Medium Win (2x)
                      - Three Cherries: Small Win (1.5x)
                      - Any other combination: No Win (You lose your wager)
-        """
+        """)
 
     def run(self):
         self.console.print_colored(self.print_welcome_message())
