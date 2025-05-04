@@ -1,7 +1,7 @@
 from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH, SLOTS_FILE_PATH
 from Tests.Casino.Games.test_RPS import RPS_FILE_PATH
 from Tests.Casino.Games.test_TicTacToe import TICTACTOE_CLASS_PATH
 from Tests.Casino.Games.test_TriviaGame import TRIVIA_GAME_CLASS_PATH
@@ -353,7 +353,7 @@ class TestCasino(BaseTest):
         self.assert_prompt_game(mock_input, mock_run)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["slots", "back"])
-    @patch("Application.Casino.Games.Slots.Slots.Slots.run", return_value=None)
+    @patch(f"{SLOTS_FILE_PATH}.Slots.run", return_value=None)
     def test_prompt_game_slots(self, mock_run, mock_input):
         self.assert_prompt_game(mock_input, mock_run)
 

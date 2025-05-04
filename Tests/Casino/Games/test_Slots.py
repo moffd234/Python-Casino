@@ -2,7 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin, get_payout
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, SLOTS_FILE_PATH
 
 
 class TestSlots(BaseTest):
@@ -92,7 +92,7 @@ class TestSlots(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Casino.Games.Slots.Slots.handle_spin")
+    @patch(f"{SLOTS_FILE_PATH}.handle_spin")
     def test_get_payout_assert_mock_called(self, mock_handle_spin):
         spin: list[str] = ["🔔", "🔔", "⬛"]
         get_payout(10, spin)
