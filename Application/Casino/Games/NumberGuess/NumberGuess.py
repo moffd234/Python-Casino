@@ -11,8 +11,8 @@ class NumberGuess(Game):
         super().__init__(player, manager)
         self.console.color = ANSI_COLORS.CYAN.value
 
-    def print_welcome_message(self) -> str:
-        return self.console.print_colored(r"""
+    def print_welcome_message(self) -> None:
+        self.console.print_colored(r"""
         
         Yb        dP 888888 88      dP""b8  dP"Yb  8b    d8 888888     888888  dP"Yb      88b 88 88   88 8b    d8      dP""b8 88   88 888888 .dP"Y8 .dP"Y8 
          Yb  db  dP  88__   88     dP   `" dP   Yb 88b  d88 88__         88   dP   Yb     88Yb88 88   88 88b  d88     dP   `" 88   88 88__   `Ybo." `Ybo." 
