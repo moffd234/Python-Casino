@@ -1,6 +1,7 @@
 from unittest.mock import patch
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
-from Tests.BaseTest import BaseTest
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
+
 
 class TestTicTacToe(BaseTest):
 
@@ -136,13 +137,13 @@ class TestTicTacToe(BaseTest):
         actual: bool = self.game.is_cell_empty(1, 0)
         self.assertTrue(actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=1)
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", return_value=1)
     def test_get_row_first_try(self, mock_input):
         expected: int = 1
         actual: int = self.game.get_row()
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[0, 1])
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[0, 1])
     def test_get_row_second_try(self, mock_input):
         self.game.console.get_integer_input.side_effect = [0, 1]
 
@@ -154,7 +155,7 @@ class TestTicTacToe(BaseTest):
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[0, 5, 6, 7, 2])
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[0, 5, 6, 7, 2])
     def test_get_row_fifth_try(self, mock_input):
 
         expected: int = 2
@@ -165,14 +166,14 @@ class TestTicTacToe(BaseTest):
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", return_value=1)
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", return_value=1)
     def test_get_col_first_try(self, mock_input):
 
         expected: int = 1
         actual: int = self.game.get_col()
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[0, 1])
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[0, 1])
     def test_get_col_second_try(self, mock_input):
 
         expected: int = 1
@@ -183,7 +184,7 @@ class TestTicTacToe(BaseTest):
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_integer_input", side_effect=[0, 5, 6, 7, 2])
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[0, 5, 6, 7, 2])
     def test_get_col_fifth_try(self, mock_input):
 
         expected: int = 2
@@ -194,7 +195,7 @@ class TestTicTacToe(BaseTest):
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_board_empty(self, mock_print):
         expected: str = ("  |   |  "
                         "\n---------\n"
@@ -204,7 +205,7 @@ class TestTicTacToe(BaseTest):
         self.game.print_board()
         mock_print.assert_called_once_with(expected)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_board_full(self, mock_print):
         self.game.game_board = [["x", "o", "x"],["o", "x", "o"],["x", "o", "x"]]
         expected: str = ("x | o | x"
@@ -235,7 +236,7 @@ class TestTicTacToe(BaseTest):
 
     @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_row", side_effect=[1, 2])
     @patch("Application.Casino.Games.TicTacToe.TicTacToe.TicTacToe.get_col", side_effect=[1, 1])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_turn_invalid_o_turn(self, mock_print, mock_col, mock_row):
         self.game.turn = 'o'
         self.game.game_board = [["x", " ", " "], [" ", " ", " "], [" ", " ", " "]]
