@@ -3,6 +3,7 @@ from unittest.mock import patch, call
 
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole, count_decimals
+from Tests.BaseTest import IOCONSOLE_PATH
 
 
 class TestIOConsole(unittest.TestCase):
@@ -66,7 +67,7 @@ class TestIOConsole(unittest.TestCase):
         self.assertEqual(result, 100)
 
     @patch("builtins.input", side_effect=["####", "10"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_integer_input_value_error(self, mock_print, mock_input):
         expected: int = 10
         actual: int = self.console.get_integer_input("Some prompt: ")
@@ -85,7 +86,7 @@ class TestIOConsole(unittest.TestCase):
         self.assertEqual(result, 100.63)
 
     @patch("builtins.input", side_effect=["####", "10.0"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_float_input_value_error(self, mock_print, mock_input):
         expected: float = 10.0
         actual: float = self.console.get_float_input("Some prompt: ")
@@ -93,7 +94,7 @@ class TestIOConsole(unittest.TestCase):
         mock_print.assert_called_once_with("#### is not a valid float.")
         self.assertEqual(actual, expected)
 
-    @patch("Application.Utils.IOConsole.IOConsole.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_error(self, mock_print_colored):
         self.console.print_error("Some Prompt")
         mock_print_colored.assert_called_once_with("Some Prompt", ANSI_COLORS.RED)
@@ -122,7 +123,7 @@ class TestIOConsole(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", return_value=1.11)
+    @patch(f"{IOCONSOLE_PATH}.get_float_input", return_value=1.11)
     def test_get_monetary_input_valid_with_color(self, mock_input):
         expected: float = 1.11
         actual: float = self.console.get_monetary_input("Some Prompt", ANSI_COLORS.BLUE)
@@ -130,7 +131,7 @@ class TestIOConsole(unittest.TestCase):
         mock_input.assert_called_once_with("Some Prompt", ANSI_COLORS.BLUE)
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", return_value=1.11)
+    @patch(f"{IOCONSOLE_PATH}.get_float_input", return_value=1.11)
     def test_get_monetary_input_valid_no_color(self, mock_input):
         expected: float = 1.11
         actual: float = self.console.get_monetary_input("Some Prompt")
@@ -138,8 +139,8 @@ class TestIOConsole(unittest.TestCase):
         mock_input.assert_called_once_with("Some Prompt", None)
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[1.2345, 123.4])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_float_input", side_effect=[1.2345, 123.4])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_monetary_input_invalid_decimal_with_color(self, mock_print, mock_input):
         expected: float = 123.4
         actual: float = self.console.get_monetary_input("Some Prompt", ANSI_COLORS.BLUE)
@@ -153,8 +154,8 @@ class TestIOConsole(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[1.2345, 123.4])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_float_input", side_effect=[1.2345, 123.4])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_monetary_input_invalid_decimal_no_color(self, mock_print, mock_input):
         expected: float = 123.4
         actual: float = self.console.get_monetary_input("Some Prompt")
@@ -168,8 +169,8 @@ class TestIOConsole(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[0, 123.4])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_float_input", side_effect=[0, 123.4])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_monetary_input_zero_with_color(self, mock_print, mock_input):
         expected: float = 123.4
         actual: float = self.console.get_monetary_input("Some Prompt", ANSI_COLORS.BLUE)
@@ -183,8 +184,8 @@ class TestIOConsole(unittest.TestCase):
 
         self.assertEqual(expected, actual)
 
-    @patch("Application.Utils.IOConsole.IOConsole.get_float_input", side_effect=[0, 123])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_float_input", side_effect=[0, 123])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_get_monetary_input_zero_no_color(self, mock_print, mock_input):
         expected: float = 123
         actual: float = self.console.get_monetary_input("Some Prompt")
@@ -259,7 +260,7 @@ class TestIOConsole(unittest.TestCase):
         self.assertFalse(actual)
 
     @patch("builtins.input", side_effect=["NotValidInput", "False"])
-    @patch("Application.Utils.IOConsole.IOConsole.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_boolean_invalid(self, mock_print, mock_input):
         actual: bool = self.console.get_boolean_input("Some Prompt")
 
