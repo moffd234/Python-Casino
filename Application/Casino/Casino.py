@@ -74,12 +74,22 @@ class Casino:
         while True:
             username: str = self.console.get_string_input("Create your username", return_in_lower=False)
             password: str = self.console.get_string_input("Create your password", return_in_lower=False)
-            account: UserAccount = self.manager.create_account(username=username, password=password)
-            if account:
-                return account
+
+            if is_password_valid(password):
+                account: UserAccount = self.manager.create_account(username=username, password=password)
+                if account:
+                    return account
+
+                else:
+                    self.console.print_error("Account with that username already exists")
 
             else:
-                self.console.print_error("Account with that username already exists")
+                self.console.print_error("Invalid password. Password must follow the following:\n"
+                                         "- At least 8 characters long\n"
+                                         "- At least one uppercase letter\n"
+                                         "- At least one lowercase letter\n"
+                                         "- At least one number\n"
+                                         "- At least one special character")
 
     def handle_initial_action(self) -> UserAccount:
         while True:
