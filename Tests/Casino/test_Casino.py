@@ -305,7 +305,7 @@ class TestCasino(BaseTest):
     @patch(f"{CASINO_CLASS_PATH}.handle_login",
            return_value=UserAccount("test_username", "ValidPassword123!", 50))
     @patch(f"{IOCONSOLE_PATH}.print_error")
-    def test_handle_initial_action_login(self, mock_print, mock_login, mock_input):
+    def test_handle_initial_action_login_with_invalid(self, mock_print, mock_login, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
 
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
