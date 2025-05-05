@@ -161,6 +161,15 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         self.assertEqual(expected_password, actual_password)
 
+    @patch(f"{CASINO_CLASS_PATH}.update_password")
+    @patch("builtins.input", side_effect=["password", "ValidPassword123!"])
+    def test_reset_password_assert_update_called(self, mock_input, mock_update_password):
+        self.casino.reset_password()
+
+        expected_password = "ValidPassword123!"
+
+        mock_update_password.assert_called_once_with(expected_password)
+
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch("builtins.input", side_effect=["test_pAsSwOrD123!", "ValidPassword123!"])
     def test_reset_password_case_sensitive(self, mock_input, mock_print):
