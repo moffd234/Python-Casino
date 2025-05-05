@@ -176,12 +176,23 @@ class Casino:
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
             if answer == self.account.password:
                 new_password = self.console.get_string_input("Enter new password: ")
-                self.manager.update_password(self.account, new_password)
-                self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN)
+                self.update_password(new_password)
                 return
             else:
                 self.console.print_error("Passwords do not match")
         self.console.print_error("Too many invalid attempts. Please try again")
+
+    def update_password(self, new_password):
+        if is_password_valid(new_password):
+            self.manager.update_password(self.account, new_password)
+            self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN)
+        else:
+            self.console.print_error("Invalid password. Password must follow the following:\n"
+                                     "- At least 8 characters long\n"
+                                     "- At least one uppercase letter\n"
+                                     "- At least one lowercase letter\n"
+                                     "- At least one number\n"
+                                     "- At least one special character")
 
     def handle_manage_selection(self) -> None:
         while True:
