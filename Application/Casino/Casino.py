@@ -10,6 +10,7 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
 import re
 
+
 def is_password_valid(password: str) -> bool:
     """
     Checks if the password has the following requirements:
@@ -175,24 +176,33 @@ class Casino:
         for _ in range(5):
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
             if answer == self.account.password:
-                new_password = self.console.get_string_input("Enter new password: ")
+                new_password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
                 self.update_password(new_password)
                 return
             else:
                 self.console.print_error("Passwords do not match")
         self.console.print_error("Too many invalid attempts. Please try again")
 
-    def update_password(self, new_password):
-        if is_password_valid(new_password):
-            self.manager.update_password(self.account, new_password)
-            self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN)
-        else:
+    def update_password(self, new_password) -> None:
+
+        attempts_flag: int = 0
+        while not is_password_valid(new_password) and attempts_flag < 5:
             self.console.print_error("Invalid password. Password must follow the following:\n"
                                      "- At least 8 characters long\n"
                                      "- At least one uppercase letter\n"
                                      "- At least one lowercase letter\n"
                                      "- At least one number\n"
                                      "- At least one special character")
+
+            new_password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
+            attempts_flag += 1
+
+        if attempts_flag != 5:
+            self.manager.update_password(self.account, new_password)
+            self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN)
+
+        else:
+            self.console.print_error("Too many invalid attempts. Password was not updated.")
 
     def handle_manage_selection(self) -> None:
         while True:
