@@ -108,11 +108,11 @@ class TestCasino(BaseTest):
         account: UserAccount = self.casino.handle_signup()
 
         mock_print.assert_called_once_with("Invalid password. Password must follow the following:\n"
-                                         "- At least 8 characters long\n"
-                                         "- At least one uppercase letter\n"
-                                         "- At least one lowercase letter\n"
-                                         "- At least one number\n"
-                                         "- At least one special character")
+                                           "- At least 8 characters long\n"
+                                           "- At least one uppercase letter\n"
+                                           "- At least one lowercase letter\n"
+                                           "- At least one number\n"
+                                           "- At least one special character")
         self.assert_account_info(account)
 
     @patch("builtins.print")
@@ -449,8 +449,6 @@ class TestCasino(BaseTest):
         mock_run.assert_called_once()
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
 
-
-
     def test_is_password_valid_true(self):
         test_password: str = "validPassword123!"
 
@@ -515,3 +513,58 @@ class TestCasino(BaseTest):
         test_password: str = ""
 
         self.assertFalse(is_password_valid(test_password))
+
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.update_password")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_update_password_valid(self, mock_print, mock_update):
+        self.casino.update_password("ValidPassword123!")
+
+        mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
+        mock_update.assert_called_once()
+
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.update_password")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="ValidPassword123!")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_update_password_fail_then_valid(self, mock_print, mock_print_error, mock_input, mock_update):
+        self.casino.update_password("invalid_password")
+
+        mock_print_error.assert_called_once_with("Invalid password. Password must follow the following:\n"
+                                                 "- At least 8 characters long\n"
+                                                 "- At least one uppercase letter\n"
+                                                 "- At least one lowercase letter\n"
+                                                 "- At least one number\n"
+                                                 "- At least one special character")
+        mock_input.assert_called_once_with("Enter new password: ", return_in_lower=False)
+        mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
+        mock_update.assert_called_once()
+
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.update_password")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["none", "none", "none", "none", "none"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_update_password_max_fail(self, mock_print_error, mock_input, mock_update):
+        self.casino.update_password("invalid_password")
+
+        expected_error: str = "Invalid password. Password must follow the following:\n" \
+                              "- At least 8 characters long\n" \
+                              "- At least one uppercase letter\n" \
+                              "- At least one lowercase letter\n" \
+                              "- At least one number\n" \
+                              "- At least one special character"
+
+        mock_print_error.assert_has_calls([
+            call(expected_error),
+            call(expected_error),
+            call(expected_error),
+            call(expected_error),
+            call(expected_error),
+            call("Too many invalid attempts. Password was not updated.")])
+
+        mock_input.assert_has_calls([
+            call("Enter new password: ", return_in_lower=False),
+            call("Enter new password: ", return_in_lower=False),
+            call("Enter new password: ", return_in_lower=False),
+            call("Enter new password: ", return_in_lower=False),
+            call("Enter new password: ", return_in_lower=False)])
+
+        mock_update.assert_not_called()
