@@ -15,6 +15,38 @@ class TestCasino(BaseTest):
         self.casino = Casino()
         self.casino.account = self.manager.create_account("username", "password")
 
+    def assert_prompt_game(self, mock_input, mock_run):
+        self.casino.prompt_game()
+        mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
+                                     call("Welcome to the Game Selection Dashboard!" +
+                                          "\nFrom here, you can select any of the following options:" +
+                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
+                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")])
+        mock_run.assert_called_once()
+
+    def assert_prompt_manage_or_select(self, mock_input, mock_selection):
+        self.casino.prompt_manage_or_select()
+        mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
+                                          '\n\t[ manage-account ], [ select-game ], [ logout ]'),
+                                     call('You are logged in!\nFrom here, you can select any of the following options:'
+                                          '\n\t[ manage-account ], [ select-game ], [ logout ]')])
+        mock_selection.assert_called_once()
+
+    def assert_account_info(self, account, expected_username="test_username", expected_password="ValidPassword123!"):
+        expected_username = expected_username
+        expected_password = expected_password
+        expected_balance = 50.0
+        actual_username = account.username
+        actual_password = account.password
+        actual_balance = account.balance
+
+        self.assertEqual(expected_username, actual_username)
+        self.assertEqual(expected_password, actual_password)
+        self.assertEqual(expected_balance, actual_balance)
+
     @patch("builtins.print")
     def test_print_welcome(self, mock_print):
         expected: str = r"""[34m
@@ -474,36 +506,3 @@ class TestCasino(BaseTest):
         test_password: str = ""
 
         self.assertFalse(is_password_valid(test_password))
-
-
-    def assert_prompt_game(self, mock_input, mock_run):
-        self.casino.prompt_game()
-        mock_input.assert_has_calls([call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]"),
-                                     call("Welcome to the Game Selection Dashboard!" +
-                                          "\nFrom here, you can select any of the following options:" +
-                                          "\n\t[ RPS ], [ NUMBERGUESS ],"
-                                          " [ TRIVIA ], [ TIC-TAC-TOE ]. [ COINFLIP ], [ SLOTS ]")])
-        mock_run.assert_called_once()
-
-    def assert_prompt_manage_or_select(self, mock_input, mock_selection):
-        self.casino.prompt_manage_or_select()
-        mock_input.assert_has_calls([call('You are logged in!\nFrom here, you can select any of the following options:'
-                                          '\n\t[ manage-account ], [ select-game ], [ logout ]'),
-                                     call('You are logged in!\nFrom here, you can select any of the following options:'
-                                          '\n\t[ manage-account ], [ select-game ], [ logout ]')])
-        mock_selection.assert_called_once()
-
-    def assert_account_info(self, account, expected_username="test_username", expected_password="ValidPassword123!"):
-        expected_username = expected_username
-        expected_password = expected_password
-        expected_balance = 50.0
-        actual_username = account.username
-        actual_password = account.password
-        actual_balance = account.balance
-
-        self.assertEqual(expected_username, actual_username)
-        self.assertEqual(expected_password, actual_password)
-        self.assertEqual(expected_balance, actual_balance)
