@@ -44,26 +44,44 @@ class TestCasino(BaseTest):
         account = self.casino.handle_login()
         self.assertIsNone(account)
 
+    @patch(f"Application.Casino.Casino.is_password_valid")
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            return_value=UserAccount("test_username", "ValidPassword123!", 50.0))
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "ValidPassword123!"])
-    def test_handle_signup(self, mock_inputs, mock_get_account):
+    def test_handle_signup(self, mock_inputs, mock_get_account, mock_is_password_valid):
         account: UserAccount = self.casino.handle_signup()
 
+        mock_is_password_valid.assert_called_once_with("ValidPassword123!")
         self.assert_account_info(account)
 
+    @patch(f"Application.Casino.Casino.is_password_valid", side_effect=[True, True])
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            side_effect=[None, UserAccount("test_username", "ValidPassword123!", 50.0)])
     @patch(f"{IOCONSOLE_PATH}.get_string_input",
-           side_effect=["test_username", "ValidPassword123!"] * 2)
+           side_effect=["test_username", "ValidPassword123!", "test_username", "ValidPassword1234!"])
     @patch(f"{IOCONSOLE_PATH}.print_error")
-    def test_handle_signup_account_exist(self, mock_print, mock_inputs, mock_create_account):
+    def test_handle_signup_account_exist(self, mock_print, mock_inputs, mock_create_account, mock_is_password_valid):
         account: UserAccount = self.casino.handle_signup()
 
         mock_print.assert_called_once_with("Account with that username already exists")
+        mock_is_password_valid.assert_has_calls([call("ValidPassword123!"), call("ValidPassword1234!")])
+        self.assertEqual(mock_is_password_valid.call_count, 2)
+
         self.assert_account_info(account)
 
+    @patch(f"{IOCONSOLE_PATH}.get_string_input",
+           side_effect=["test_username", "test_password", "test_username", "ValidPassword123!"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_handle_signup_invalid_password(self, mock_print, mock_inputs):
+        account: UserAccount = self.casino.handle_signup()
 
+        mock_print.assert_called_once_with("Invalid password. Password must follow the following:\n"
+                                         "- At least 8 characters long\n"
+                                         "- At least one uppercase letter\n"
+                                         "- At least one lowercase letter\n"
+                                         "- At least one number\n"
+                                         "- At least one special character")
+        self.assert_account_info(account)
 
     @patch("builtins.print")
     @patch("builtins.input", return_value="50")
