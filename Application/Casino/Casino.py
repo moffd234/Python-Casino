@@ -8,6 +8,11 @@ from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
 from Application.Casino.Games.TriviaGame.TriviaGame import TriviaGame
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Application.Utils.IOConsole import IOConsole
+import re
+
+def is_password_valid(password: str) -> bool:
+    pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$"
+    return True if re.match(pattern, password) else False
 
 
 class Casino:
