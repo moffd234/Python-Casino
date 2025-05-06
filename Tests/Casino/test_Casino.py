@@ -568,3 +568,15 @@ class TestCasino(BaseTest):
             call("Enter new password: ", return_in_lower=False)])
 
         mock_update.assert_not_called()
+
+    @patch(f"{CASINO_CLASS_PATH}.print_welcome")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_manage_or_select")
+    @patch(f"{CASINO_CLASS_PATH}.handle_initial_action", return_value=UserAccount("test_usr",
+                                                                                  "ValidPass123!",
+                                                                                  50.0))
+    def test_run_valid_account(self, mock_action, mock_prompt, mock_print):
+        self.casino.run()
+
+        mock_action.assert_called_once()
+        mock_prompt.assert_called_once()
+        mock_print.assert_called_once()
