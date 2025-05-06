@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip, handle_heads_tails
-from Tests.BaseTest import BaseTest, COINFLIP_FILE_PATH
+from Tests.BaseTest import BaseTest, COINFLIP_FILE_PATH, COINFLIP_CLASS_PATH
 
 
 class TestCoinFlip(BaseTest):
@@ -110,3 +110,8 @@ class TestCoinFlip(BaseTest):
 
         self.assertEqual(expected_output, actual_output)
         self.assertEqual(expected_balance, actual_balance)
+
+    @patch(f"{COINFLIP_CLASS_PATH}.print_welcome_message")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_continue_input", return_value=True)
+    def test_run(self):
+        pass
