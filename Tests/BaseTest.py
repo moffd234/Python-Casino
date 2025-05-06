@@ -12,6 +12,7 @@ TICTACTOE_CLASS_PATH: str = f"{GAMES_PATH}.TicTacToe.TicTacToe.TicTacToe"
 RPS_FILE_PATH: str = f"{GAMES_PATH}.RockPaperScissors.RPS"
 SLOTS_FILE_PATH: str = f"{GAMES_PATH}.Slots.Slots"
 COINFLIP_FILE_PATH: str = f"{GAMES_PATH}.CoinFlip.CoinFlip"
+COINFLIP_CLASS_PATH: str = f"{GAMES_PATH}.CoinFlip.CoinFlip.CoinFlip"
 CASINO_CLASS_PATH: str = "Application.Casino.Casino.Casino"
 ACCOUNT_MANAGER_CLASS_PATH: str = "Application.Casino.Accounts.AccountManager.AccountManager"
 

@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip, handle_heads_tails
-from Tests.BaseTest import BaseTest, COINFLIP_FILE_PATH, COINFLIP_CLASS_PATH
+from Tests.BaseTest import BaseTest, COINFLIP_FILE_PATH, COINFLIP_CLASS_PATH, IOCONSOLE_PATH
 
 
 class TestCoinFlip(BaseTest):
@@ -11,6 +11,20 @@ class TestCoinFlip(BaseTest):
         super().setUp()
         self.account: UserAccount = self.manager.create_account("test_username", "test_password")
         self.game: CoinFlip = CoinFlip(self.account, self.manager)
+
+
+
+    def assert_run(self, mock_continue, mock_guess, mock_heads_tails, mock_input, mock_print, mock_welcome):
+        self.game.run()
+        mock_welcome.assert_called_once()
+        mock_heads_tails.assert_called_once()
+        mock_guess.assert_called_once()
+        mock_input.assert_called_once()
+        mock_print.assert_called_once_with(
+            self.game.handle_outcome(mock_guess.return_value, mock_heads_tails.return_value, 10.0))
+        expected_call_count: int = 2
+        continue_call_count: int = mock_continue.call_count
+        self.assertEqual(expected_call_count, continue_call_count)
 
     @patch("builtins.print")
     def test_print_welcome(self, mock_print):
@@ -57,7 +71,7 @@ class TestCoinFlip(BaseTest):
 
         self.assertEqual(expected, actual)
 
-    @patch("builtins.input", side_effect=["invalid_input","tails"])
+    @patch("builtins.input", side_effect=["invalid_input", "tails"])
     def test_get_guess_invalid_tails(self, mock_input):
         expected: str = "tails"
         actual: str = self.game.get_guess()
@@ -110,8 +124,3 @@ class TestCoinFlip(BaseTest):
 
         self.assertEqual(expected_output, actual_output)
         self.assertEqual(expected_balance, actual_balance)
-
-    @patch(f"{COINFLIP_CLASS_PATH}.print_welcome_message")
-    @patch(f"{COINFLIP_CLASS_PATH}.get_continue_input", return_value=True)
-    def test_run(self):
-        pass
