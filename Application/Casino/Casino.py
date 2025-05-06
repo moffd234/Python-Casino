@@ -35,10 +35,7 @@ class Casino:
 
     def run(self) -> None:
         self.print_welcome()
-
-        self.account = self.handle_initial_action()
-        while not self.account:
-            self.account = self.handle_initial_action()
+        self.account: UserAccount = self.handle_initial_action()
 
         self.prompt_manage_or_select()
 
