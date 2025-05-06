@@ -124,3 +124,47 @@ class TestCoinFlip(BaseTest):
 
         self.assertEqual(expected_output, actual_output)
         self.assertEqual(expected_balance, actual_balance)
+
+    @patch(f"{COINFLIP_CLASS_PATH}.print_welcome_message")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{COINFLIP_FILE_PATH}.handle_heads_tails", return_value="tails")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_guess", return_value="tails")
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_win(self, mock_print, mock_input, mock_guess, mock_heads_tails, mock_continue, mock_welcome):
+        self.assert_run(mock_continue, mock_guess, mock_heads_tails, mock_input, mock_print, mock_welcome)
+
+        expected_message = "You Won! The coin was tails"
+        mock_print.assert_called_once_with(expected_message)
+
+    @patch(f"{COINFLIP_CLASS_PATH}.print_welcome_message")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{COINFLIP_FILE_PATH}.handle_heads_tails", return_value="tails")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_guess", return_value="heads")
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_lose(self, mock_print, mock_input, mock_guess, mock_heads_tails, mock_continue, mock_welcome):
+        self.assert_run(mock_continue, mock_guess, mock_heads_tails, mock_input, mock_print, mock_welcome)
+
+        expected_message = f"You Loss! The coin was tails"
+        mock_print.assert_called_once_with(expected_message)
+
+    @patch(f"{COINFLIP_CLASS_PATH}.print_welcome_message")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_continue_input", side_effect=[True, True, False])
+    @patch(f"{COINFLIP_FILE_PATH}.handle_heads_tails", return_value="tails")
+    @patch(f"{COINFLIP_CLASS_PATH}.get_guess", return_value="heads")
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_multiple_games(self, mock_print, mock_input, mock_guess, mock_heads_tails, mock_continue, mock_welcome):
+        self.game.run()
+
+        expected_call_count: int = 2
+        continue_call_count: int = mock_continue.call_count
+        heads_tails_call_count: int = mock_heads_tails.call_count
+        guess_call_count: int = mock_guess.call_count
+        input_call_count: int = mock_input.call_count
+
+        self.assertEqual(expected_call_count + 1, continue_call_count)
+        self.assertEqual(heads_tails_call_count, expected_call_count)
+        self.assertEqual(guess_call_count, expected_call_count)
+        self.assertEqual(input_call_count, expected_call_count)
