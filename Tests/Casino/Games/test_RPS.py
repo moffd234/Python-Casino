@@ -12,13 +12,16 @@ class TestRPS(BaseTest):
         self.account: UserAccount = self.manager.create_account("username", "password")
         self.game = RPS(self.account, self.manager)
 
-    def call_and_assert_run(self, mock_input, mock_comp_turn, mock_user_turn, mock_welcome):
+    def call_and_assert_run(self, mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome):
         self.game.run()
 
         mock_input.assert_called_once()
         mock_comp_turn.assert_called_once()
         mock_user_turn.assert_called_once()
         mock_welcome.assert_called_once()
+
+        expected_call_count: int = 2
+        actual_call_count: int = mock_continue.call_count
 
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_welcome(self, mock_print):
@@ -191,3 +194,61 @@ class TestRPS(BaseTest):
 
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
+
+    @patch(f"{RPS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{RPS_CLASS_PATH}.get_user_turn", return_value="rock")
+    @patch(f"{RPS_FILE_PATH}.get_comp_turn", return_value="scissors")
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_win(self, mock_print, mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome):
+
+        self.call_and_assert_run(mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome)
+
+        mock_print.assert_any_call("You won! Rock beats scissors!")
+
+    @patch(f"{RPS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{RPS_CLASS_PATH}.get_user_turn", return_value="rock")
+    @patch(f"{RPS_FILE_PATH}.get_comp_turn", return_value="paper")
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_lose(self, mock_print, mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome):
+        self.call_and_assert_run(mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome)
+
+        mock_print.assert_any_call("You lost! Rock loses to paper!")
+
+    @patch(f"{RPS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{RPS_CLASS_PATH}.get_user_turn", return_value="paper")
+    @patch(f"{RPS_FILE_PATH}.get_comp_turn", return_value="paper")
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_tie(self, mock_print, mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome):
+        self.call_and_assert_run(mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome)
+
+        mock_print.assert_any_call("Draw! Paper ties paper!")
+
+    @patch(f"{RPS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, True, False])
+    @patch(f"{RPS_CLASS_PATH}.get_user_turn", side_effect=["rock", "scissors"])
+    @patch(f"{RPS_FILE_PATH}.get_comp_turn", side_effect=["rock", "scissors"])
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_three_times(self, mock_print, mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome):
+        self.game.run()
+
+        expected_called_count: int = 2
+        actual_input_count: int = mock_input.call_count
+        actual_comp_turn_count: int = mock_comp_turn.call_count
+        actual_user_turn_count: int = mock_user_turn.call_count
+        actual_continue_call_count: int = mock_continue.call_count
+        actual_welcome_call_count: int = mock_welcome.call_count
+
+        self.assertEqual(expected_called_count, actual_input_count)
+        self.assertEqual(expected_called_count, actual_comp_turn_count)
+        self.assertEqual(expected_called_count, actual_user_turn_count)
+        self.assertEqual(expected_called_count + 1, actual_continue_call_count)
+        self.assertEqual(expected_called_count - 1, actual_welcome_call_count)
+
+        mock_print.assert_any_call("Draw! Rock ties rock!")
