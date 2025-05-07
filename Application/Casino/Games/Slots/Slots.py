@@ -3,6 +3,7 @@ import random
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Game import Game
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 def get_spin() -> list[str]:
@@ -59,7 +60,7 @@ class Slots(Game):
 
             if payout != 0:
                 self.console.print_colored(f"Congrats you won! ${payout} has been added to your account!",
-                                                 "green")
+                                                 ANSI_COLORS.GREEN)
                 self.manager.add_and_save_account(self.player, payout)
 
             else:

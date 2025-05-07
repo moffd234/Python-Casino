@@ -2,6 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin, get_payout
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, SLOTS_FILE_PATH, SLOTS_CLASS_PATH, GAME_CLASS_PATH
 
 
@@ -177,3 +178,55 @@ class TestSlots(BaseTest):
         # Only compare the arguments passed to print_colored directly
         actual_calls = mock_print.call_args_list
         self.assertEqual(actual_calls, expected_calls)
+
+
+    @patch(f"{SLOTS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{SLOTS_FILE_PATH}.get_spin", return_value=["⬛", "⬛", "⬛"])
+    @patch(f"{SLOTS_CLASS_PATH}.print_spin")
+    @patch(f"{SLOTS_FILE_PATH}.get_payout", return_value=20.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_won(self, mock_print, mock_payout, mock_print_spin, mock_get_spin,
+                          mock_money_input, mock_continue, mock_print_welcome):
+        self.run_and_assert(mock_payout, mock_print_spin, mock_get_spin,
+                            mock_money_input, mock_continue, mock_print_welcome)
+
+        mock_print.assert_any_call("Congrats you won! $20.0 has been added to your account!", ANSI_COLORS.GREEN)
+
+
+    @patch(f"{SLOTS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{SLOTS_FILE_PATH}.get_spin", return_value=["⬛", "⬛", "🍒"])
+    @patch(f"{SLOTS_CLASS_PATH}.print_spin")
+    @patch(f"{SLOTS_FILE_PATH}.get_payout", return_value=0.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_loss(self, mock_print, mock_payout, mock_print_spin, mock_get_spin,
+                          mock_money_input, mock_continue, mock_print_welcome):
+        self.run_and_assert(mock_payout, mock_print_spin, mock_get_spin,
+                            mock_money_input, mock_continue, mock_print_welcome)
+
+        mock_print.assert_any_call("Sorry, you lost")
+
+    @patch(f"{SLOTS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, True, False])
+    @patch(f"{IOCONSOLE_PATH}.get_monetary_input", return_value=10.0)
+    @patch(f"{SLOTS_FILE_PATH}.get_spin", side_effect=[["⬛", "⬛", "🍒"], ["⬛", "🍒", "🍒"]])
+    @patch(f"{SLOTS_CLASS_PATH}.print_spin")
+    @patch(f"{SLOTS_FILE_PATH}.get_payout", return_value=0.0)
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_twice(self, mock_print, mock_payout, mock_print_spin, mock_get_spin,
+                           mock_money_input, mock_continue, mock_print_welcome):
+        self.game.run()
+
+        expected_call_count = 2
+
+        self.assertEqual(expected_call_count, mock_print_spin.call_count)
+        self.assertEqual(expected_call_count, mock_payout.call_count)
+        self.assertEqual(expected_call_count, mock_get_spin.call_count)
+        self.assertEqual(expected_call_count, mock_money_input.call_count)
+        self.assertEqual(expected_call_count + 1, mock_continue.call_count)
+        self.assertEqual(expected_call_count - 1, mock_print_welcome.call_count)
+
+        mock_print.assert_any_call("Sorry, you lost")
