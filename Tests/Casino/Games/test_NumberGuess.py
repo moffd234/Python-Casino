@@ -105,3 +105,22 @@ class TestNumberGuess(BaseTest):
 
         mock_print.assert_called_with("Number should be from 1 - 10 (inclusive)")
         self.assertEqual(expected, actual)
+
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_wager_amount", return_value=10.0)
+    @patch(f"{NUMBERGUESS_FILE_PATH}.random.randint", return_value=5)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_guess", return_value=5)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.handle_guess", return_value="You Won! The answer was 5")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_win(self, mock_print, mock_handle_guess, mock_get_guess, mock_random, mock_wager, mock_continue,
+                      mock_print_welcome):
+        self.assert_run(mock_get_guess, mock_handle_guess, mock_print, mock_print_welcome, mock_random, mock_wager)
+
+        expected_call_count: int = 2
+        actual_call_count: int = mock_continue.call_count
+
+        self.assertEqual(expected_call_count, actual_call_count)
+
+
+
