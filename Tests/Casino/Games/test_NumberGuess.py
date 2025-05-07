@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, NUMBERGUESS_FILE_PATH, NUMBERGUESS_CLASS_PATH
 
 
 class TestNumberGuess(BaseTest):
@@ -11,6 +11,15 @@ class TestNumberGuess(BaseTest):
         super().setUp()
         self.player: UserAccount = UserAccount("test_username", "test_password", 50)
         self.game: NumberGuess = NumberGuess(self.player, self.manager)
+
+    def assert_run(self, mock_get_guess, mock_handle_guess, mock_print, mock_print_welcome, mock_random, mock_wager):
+        self.game.run()
+        mock_handle_guess.assert_called_once()
+        mock_get_guess.assert_called_once()
+        mock_random.assert_called_once()
+        mock_wager.assert_called_once()
+        mock_print.assert_called_once_with(f"You Won! The answer was {mock_random.return_value}")
+        mock_print_welcome.assert_called_once()
 
     @patch("builtins.print")
     def test_print_welcome_message(self, mock_print):
