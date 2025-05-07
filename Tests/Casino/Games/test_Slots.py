@@ -2,7 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Slots.Slots import Slots, get_spin, handle_spin, get_payout
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, SLOTS_FILE_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, SLOTS_FILE_PATH, SLOTS_CLASS_PATH, GAME_CLASS_PATH
 
 
 class TestSlots(BaseTest):
@@ -11,6 +11,21 @@ class TestSlots(BaseTest):
         super().setUp()
         self.player: UserAccount = UserAccount("test_username", "test_password", 50)
         self.game = Slots(self.player, self.manager)
+
+    def run_and_assert(self, mock_payout, mock_print_spin, mock_get_spin,
+                       mock_get_money_input, mock_continue, mock_print_welcome):
+        self.game.run()
+
+        mock_payout.assert_called_once()
+        mock_print_spin.assert_called_once_with(mock_get_spin.return_value)
+        mock_get_spin.assert_called_once()
+        mock_get_money_input.assert_called_once()
+        mock_print_welcome.assert_called_once()
+
+        expected_call_count: int = 2
+        actual_call_count: int = mock_continue.call_count
+
+        self.assertEqual(expected_call_count, actual_call_count)
 
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_welcome_message(self, mock_print):
