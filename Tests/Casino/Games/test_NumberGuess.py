@@ -18,7 +18,6 @@ class TestNumberGuess(BaseTest):
         mock_get_guess.assert_called_once()
         mock_random.assert_called_once()
         mock_wager.assert_called_once()
-        mock_print.assert_called_once_with(f"You Won! The answer was {mock_random.return_value}")
         mock_print_welcome.assert_called_once()
 
     @patch("builtins.print")
@@ -116,11 +115,56 @@ class TestNumberGuess(BaseTest):
     def test_run_once_win(self, mock_print, mock_handle_guess, mock_get_guess, mock_random, mock_wager, mock_continue,
                       mock_print_welcome):
         self.assert_run(mock_get_guess, mock_handle_guess, mock_print, mock_print_welcome, mock_random, mock_wager)
+        mock_print.assert_called_once_with(f"You Won! The answer was {mock_random.return_value}")
 
         expected_call_count: int = 2
         actual_call_count: int = mock_continue.call_count
 
         self.assertEqual(expected_call_count, actual_call_count)
 
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_wager_amount", return_value=10.0)
+    @patch(f"{NUMBERGUESS_FILE_PATH}.random.randint", return_value=5)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_guess", return_value=2)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.handle_guess", return_value="You lost! The answer was 5")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_lose(self, mock_print, mock_handle_guess, mock_get_guess, mock_random, mock_wager, mock_continue,
+                          mock_print_welcome):
+        self.assert_run(mock_get_guess, mock_handle_guess, mock_print, mock_print_welcome, mock_random, mock_wager)
+        mock_print.assert_called_once_with(f"You lost! The answer was {mock_random.return_value}")
+
+        expected_call_count: int = 2
+        actual_call_count: int = mock_continue.call_count
+
+        self.assertEqual(expected_call_count, actual_call_count)
+
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.print_welcome_message")
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_continue_input", side_effect=[True, True, False])
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_wager_amount", return_value=10.0)
+    @patch(f"{NUMBERGUESS_FILE_PATH}.random.randint", return_value=5)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.get_guess", return_value=2)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.handle_guess", return_value="You lost! The answer was 5")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_twice(self, mock_print, mock_handle_guess, mock_get_guess, mock_random, mock_wager, mock_continue,
+                           mock_print_welcome):
 
 
+        self.game.run()
+
+        expected_call_count: int = 2
+        mock_print_call_count: int = mock_print.call_count
+        mock_handle_guess_call_count: int = mock_handle_guess.call_count
+        mock_wager_call_count: int = mock_wager.call_count
+        mock_print_welcome_calls_count: int = mock_print_welcome.call_count
+        mock_get_guess_call_count: int = mock_get_guess.call_count
+        mock_random_calls_count: int = mock_random.call_count
+        mock_continue_calls_count: int = mock_continue.call_count
+
+        self.assertEqual(expected_call_count, mock_print_call_count)
+        self.assertEqual(expected_call_count, mock_handle_guess_call_count)
+        self.assertEqual(expected_call_count, mock_wager_call_count)
+        self.assertEqual(expected_call_count - 1, mock_print_welcome_calls_count)
+        self.assertEqual(expected_call_count, mock_get_guess_call_count)
+        self.assertEqual(expected_call_count, mock_random_calls_count)
+        self.assertEqual(expected_call_count + 1, mock_continue_calls_count)
