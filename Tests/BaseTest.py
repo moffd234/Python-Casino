@@ -6,10 +6,12 @@ from Application.Casino.Accounts.db import init_db
 
 IOCONSOLE_PATH: str = "Application.Utils.IOConsole.IOConsole"
 GAMES_PATH: str = "Application.Casino.Games"
+GAME_CLASS_PATH: str = "Application.Casino.Games.Game.Game"
 TRIVIA_GAME_FILE_PATH: str = f"{GAMES_PATH}.TriviaGame.TriviaGame"
 TRIVIA_GAME_CLASS_PATH: str = f"{TRIVIA_GAME_FILE_PATH}.TriviaGame"
 TICTACTOE_CLASS_PATH: str = f"{GAMES_PATH}.TicTacToe.TicTacToe.TicTacToe"
 RPS_FILE_PATH: str = f"{GAMES_PATH}.RockPaperScissors.RPS"
+RPS_CLASS_PATH: str = f"{RPS_FILE_PATH}.RPS"
 SLOTS_FILE_PATH: str = f"{GAMES_PATH}.Slots.Slots"
 COINFLIP_FILE_PATH: str = f"{GAMES_PATH}.CoinFlip.CoinFlip"
 COINFLIP_CLASS_PATH: str = f"{COINFLIP_FILE_PATH}.CoinFlip"
