@@ -24,7 +24,12 @@ class TestTicTacToe(BaseTest):
         mock_print_board.assert_called_once()
         mock_play.assert_called_once()
         mock_print_welcome.assert_called_once()
-        mock_print.assert_any_call(f"Winner is {mock_play.return_value}", ANSI_COLORS.GREEN)
+
+        if mock_play.return_value != "tie":
+            mock_print.assert_any_call(f"Winner is {mock_play.return_value}", ANSI_COLORS.GREEN)
+
+        else:
+            mock_print.assert_any_call("Game Over. It is a tie")
 
     @patch("builtins.print")
     def test_print_welcome_message(self, mock_print):
@@ -290,3 +295,52 @@ class TestTicTacToe(BaseTest):
         self.game.game_board = [[" " for _ in range(3)]]
         self.assertFalse(self.game.is_board_full())
 
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{TICTACTOE_CLASS_PATH}.play_game", return_value="x")
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_board")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_x_win(self, mock_print, mock_print_board, mock_play, mock_continue_input, mock_print_welcome):
+        self.run_and_assert(mock_play, mock_print, mock_print_board, mock_print_welcome)
+
+        expected_call_count = 2
+        self.assertEqual(expected_call_count, mock_continue_input.call_count)
+
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{TICTACTOE_CLASS_PATH}.play_game", return_value="o")
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_board")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_o_win(self, mock_print, mock_print_board, mock_play, mock_continue_input, mock_print_welcome):
+        self.run_and_assert(mock_play, mock_print, mock_print_board, mock_print_welcome)
+
+        expected_call_count = 2
+        self.assertEqual(expected_call_count, mock_continue_input.call_count)
+
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, False])
+    @patch(f"{TICTACTOE_CLASS_PATH}.play_game", return_value="tie")
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_board")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_once_tie(self, mock_print, mock_print_board, mock_play, mock_continue_input, mock_print_welcome):
+        self.run_and_assert(mock_play, mock_print, mock_print_board, mock_print_welcome)
+
+        expected_call_count = 2
+        self.assertEqual(expected_call_count, mock_continue_input.call_count)
+
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_welcome_message")
+    @patch(f"{GAME_CLASS_PATH}.get_continue_input", side_effect=[True, True, False])
+    @patch(f"{TICTACTOE_CLASS_PATH}.play_game", side_effect=["o", "tie"])
+    @patch(f"{TICTACTOE_CLASS_PATH}.print_board")
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_run_twice(self, mock_print, mock_print_board, mock_play, mock_continue_input, mock_print_welcome):
+        self.game.run()
+
+        expected_call_count = 2
+        self.assertEqual(expected_call_count, mock_print_board.call_count)
+        self.assertEqual(expected_call_count, mock_play.call_count)
+        self.assertEqual(expected_call_count + 1, mock_continue_input.call_count)
+        self.assertEqual(expected_call_count - 1, mock_print_welcome.call_count)
+
+        mock_print.assert_any_call(f"Winner is o", ANSI_COLORS.GREEN)
+        mock_print.assert_any_call("Game Over. It is a tie")
