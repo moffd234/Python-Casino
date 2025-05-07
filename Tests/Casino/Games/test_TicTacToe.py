@@ -1,6 +1,7 @@
 from unittest.mock import patch
 from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, TICTACTOE_CLASS_PATH
+from Application.Utils.ANSI_COLORS import ANSI_COLORS
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, TICTACTOE_CLASS_PATH, GAME_CLASS_PATH
 
 
 class TestTicTacToe(BaseTest):
@@ -8,6 +9,22 @@ class TestTicTacToe(BaseTest):
     def setUp(self):
         super().setUp()
         self.game = TicTacToe(self.manager.get_account("Username", "Password"), self.manager)
+
+    def assert_handle_turn(self, expected_turn, expected_board):
+        self.game.handle_turn()
+        actual_turn: str = self.game.turn
+        actual_board: list[list[str]] = self.game.game_board
+
+        self.assertEqual(expected_turn, actual_turn)
+        self.assertEqual(expected_board, actual_board)
+
+    def run_and_assert(self, mock_play, mock_print, mock_print_board, mock_print_welcome):
+        self.game.run()
+        self.game.game_board = [["x", "o", "x"], ["x", "o", "o"], ["x", " ", " "]]
+        mock_print_board.assert_called_once()
+        mock_play.assert_called_once()
+        mock_print_welcome.assert_called_once()
+        mock_print.assert_any_call(f"Winner is {mock_play.return_value}", ANSI_COLORS.GREEN)
 
     @patch("builtins.print")
     def test_print_welcome_message(self, mock_print):
@@ -273,10 +290,3 @@ class TestTicTacToe(BaseTest):
         self.game.game_board = [[" " for _ in range(3)]]
         self.assertFalse(self.game.is_board_full())
 
-    def assert_handle_turn(self, expected_turn, expected_board):
-        self.game.handle_turn()
-        actual_turn: str = self.game.turn
-        actual_board: list[list[str]] = self.game.game_board
-
-        self.assertEqual(expected_turn, actual_turn)
-        self.assertEqual(expected_board, actual_board)
