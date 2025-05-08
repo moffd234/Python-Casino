@@ -71,3 +71,19 @@ class Slots(Game):
         self.console.print_colored("┌───┬───┬───┐")
         self.console.print_colored(f"│ {spin[0]}│ {spin[1]}│ {spin[2]}│")
         self.console.print_colored("└───┴───┴───┘\n")
+
+
+def main():
+    import os
+
+    account_manager: AccountManager = AccountManager()
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    game: Slots = Slots(account, account_manager)
+    game.run()
+
+    if os.path.exists("casino.db"):
+        os.remove("casino.db")
+
+
+if __name__ == "__main__":
+    main()
