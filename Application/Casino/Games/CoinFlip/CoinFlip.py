@@ -1,3 +1,4 @@
+import os.path
 import random
 
 from Application.Casino.Accounts.AccountManager import AccountManager
@@ -57,3 +58,13 @@ class CoinFlip(Game):
 
         else:
             return f"You Loss! The coin was {flip}"
+
+
+if __name__ == "__main__":
+    manager: AccountManager = AccountManager()
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    game: CoinFlip = CoinFlip(account, manager)
+    game.run()
+
+    if os.path.exists("casino.db"):
+        os.remove("casino.db")
