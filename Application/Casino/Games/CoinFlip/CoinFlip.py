@@ -61,9 +61,9 @@ class CoinFlip(Game):
 
 
 if __name__ == "__main__":
-    manager: AccountManager = AccountManager()
+    account_manager: AccountManager = AccountManager()
     account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
-    game: CoinFlip = CoinFlip(account, manager)
+    game: CoinFlip = CoinFlip(account, account_manager)
     game.run()
 
     if os.path.exists("casino.db"):
