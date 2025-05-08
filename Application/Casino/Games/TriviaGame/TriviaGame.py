@@ -247,3 +247,19 @@ class TriviaGame(Game):
             self.console.print_error("Problem getting questions. Please try again later.")
             return None
         return response.json()
+
+
+def main():
+    import os
+
+    account_manager: AccountManager = AccountManager()
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    game: TriviaGame = TriviaGame(account, account_manager)
+    game.run()
+
+    if os.path.exists("casino.db"):
+        os.remove("casino.db")
+
+
+if __name__ == "__main__":
+    main()
