@@ -124,3 +124,18 @@ class TicTacToe(Game):
                     return False
 
         return True
+
+def main():
+    import os
+
+    account_manager: AccountManager = AccountManager()
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    game: TicTacToe = TicTacToe(account, account_manager)
+    game.run()
+
+    if os.path.exists("casino.db"):
+        os.remove("casino.db")
+
+
+if __name__ == "__main__":
+    main()
