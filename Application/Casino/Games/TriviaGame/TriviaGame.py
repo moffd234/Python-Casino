@@ -89,7 +89,7 @@ class TriviaGame(Game):
 
     def run(self):
 
-        self.console.print_colored(self.print_welcome_message())
+        self.print_welcome_message()
 
         while self.get_continue_input():
             wager: float = self.get_wager_amount()
