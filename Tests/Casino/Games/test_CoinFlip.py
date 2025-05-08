@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip, handle_heads_tails
+from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip, handle_heads_tails, main
 from Tests.BaseTest import BaseTest, COINFLIP_FILE_PATH, COINFLIP_CLASS_PATH, IOCONSOLE_PATH
 
 
@@ -168,3 +168,13 @@ class TestCoinFlip(BaseTest):
         self.assertEqual(heads_tails_call_count, expected_call_count)
         self.assertEqual(guess_call_count, expected_call_count)
         self.assertEqual(input_call_count, expected_call_count)
+
+    @patch(f"{COINFLIP_FILE_PATH}.os.remove")
+    @patch(f"{COINFLIP_FILE_PATH}.os.path.exists", return_value=True)
+    @patch(f"{COINFLIP_CLASS_PATH}.run")
+    def test_main(self, mock_run, mock_exists, mock_remove):
+        main()
+
+        mock_run.assert_called_once()
+        mock_exists.assert_called_once_with("casino.db")
+        mock_remove.assert_called_once_with("casino.db")

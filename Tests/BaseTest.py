@@ -19,6 +19,7 @@ COINFLIP_CLASS_PATH: str = f"{COINFLIP_FILE_PATH}.CoinFlip"
 NUMBERGUESS_FILE_PATH: str = f"{GAMES_PATH}.NumberGuess.NumberGuess"
 NUMBERGUESS_CLASS_PATH: str = f"{NUMBERGUESS_FILE_PATH}.NumberGuess"
 CASINO_CLASS_PATH: str = "Application.Casino.Casino.Casino"
+USER_ACCOUNT_CLASS_PATH: str = "Application.Casino.Accounts.UserAccount.UserAccount"
 ACCOUNT_MANAGER_CLASS_PATH: str = "Application.Casino.Accounts.AccountManager.AccountManager"
 
 class BaseTest(unittest.TestCase):
