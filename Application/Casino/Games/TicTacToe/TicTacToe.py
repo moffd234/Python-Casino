@@ -30,7 +30,7 @@ class TicTacToe(Game):
 
 
     def run(self):
-        print(self.print_welcome_message())
+        self.print_welcome_message()
 
         while self.get_continue_input():
             winner: str | None = self.play_game()
