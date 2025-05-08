@@ -166,8 +166,7 @@ class Casino:
         answer: float = self.console.get_monetary_input("Enter the amount of money you want to add to your funds"
                                                         " (no less than $1.00)")
         self.manager.add_and_save_account(self.account, answer)
-        self.console.print_colored(f"You have added ${answer} to your funds! "
-                                   f"New Balance is {self.account.balance}", ANSI_COLORS.GREEN)
+        self.console.print_success(f"You have added ${answer} to your funds! New Balance is {self.account.balance}")
 
     def reset_password(self) -> None:
         for _ in range(5):
@@ -196,7 +195,7 @@ class Casino:
 
         if attempts_flag != 5:
             self.manager.update_password(self.account, new_password)
-            self.console.print_colored(f"Your password has been updated!", ANSI_COLORS.GREEN)
+            self.console.print_success(f"Your password has been updated!")
 
         else:
             self.console.print_error("Too many invalid attempts. Password was not updated.")
