@@ -266,3 +266,10 @@ class TestIOConsole(unittest.TestCase):
 
         self.assertFalse(actual)
 
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    def test_print_success(self, mock_print):
+        self.console.print_success("Some Prompt")
+
+        mock_print.assert_called_once_with("Some Prompt", ANSI_COLORS.GREEN)
+
+
