@@ -37,7 +37,7 @@ class TicTacToe(Game):
             if winner == "tie":
                 self.console.print_colored("Game Over. It is a tie")
             else:
-                self.console.print_colored(f"Winner is {winner}", ANSI_COLORS.GREEN)
+                self.console.print_success(f"Winner is {winner}")
             self.print_board()
 
 
