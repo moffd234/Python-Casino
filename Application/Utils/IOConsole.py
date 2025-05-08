@@ -98,3 +98,6 @@ class IOConsole:
             money_input = self.get_float_input(prompt, color)
 
         return money_input
+
+    def print_success(self, message: str) -> None:
+        self.print_colored(message, ANSI_COLORS.GREEN)
