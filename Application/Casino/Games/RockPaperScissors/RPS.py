@@ -67,3 +67,17 @@ class RPS(Game):
 
         # ASSERT: CPU has winning move
         return f"You lost! {user_turn.title()} loses to {comp_turn}!"
+
+def main():
+    import os
+
+    account_manager: AccountManager = AccountManager()
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    game: RPS = RPS(account, account_manager)
+    game.run()
+
+    if os.path.exists("casino.db"):
+        os.remove("casino.db")
+
+if __name__ == "__main__":
+    main()
