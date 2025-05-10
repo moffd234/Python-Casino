@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 from html import unescape
 import json
-import os.path
-
+import os
 import requests
 
 from Application.Casino.Accounts.AccountManager import AccountManager
@@ -250,7 +249,6 @@ class TriviaGame(Game):
 
 
 def main():
-    import os
 
     account_manager: AccountManager = AccountManager()
     account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
