@@ -1,3 +1,4 @@
+import os
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.Game import Game
@@ -126,7 +127,6 @@ class TicTacToe(Game):
         return True
 
 def main():
-    import os
 
     account_manager: AccountManager = AccountManager()
     account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)

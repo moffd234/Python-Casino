@@ -1,7 +1,7 @@
 from unittest.mock import patch
-from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe
+from Application.Casino.Games.TicTacToe.TicTacToe import TicTacToe, main
 from Application.Utils.ANSI_COLORS import ANSI_COLORS
-from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, TICTACTOE_CLASS_PATH, GAME_CLASS_PATH
+from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, TICTACTOE_CLASS_PATH, GAME_CLASS_PATH, TICTACTOE_FILE_PATH
 
 
 class TestTicTacToe(BaseTest):
@@ -344,3 +344,13 @@ class TestTicTacToe(BaseTest):
 
         mock_print.assert_any_call(f"Winner is o", ANSI_COLORS.GREEN)
         mock_print.assert_any_call("Game Over. It is a tie")
+
+    @patch(f"{TICTACTOE_FILE_PATH}.os.remove")
+    @patch(f"{TICTACTOE_FILE_PATH}.os.path.exists", return_value=True)
+    @patch(f"{TICTACTOE_CLASS_PATH}.run")
+    def test_main(self, mock_run, mock_exists, mock_remove):
+        main()
+
+        mock_run.assert_called_once()
+        mock_exists.assert_called_once_with("casino.db")
+        mock_remove.assert_called_once_with("casino.db")
