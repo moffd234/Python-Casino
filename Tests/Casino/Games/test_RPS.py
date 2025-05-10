@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.RockPaperScissors.RPS import RPS, get_comp_turn
+from Application.Casino.Games.RockPaperScissors.RPS import RPS, get_comp_turn, main
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, RPS_FILE_PATH, RPS_CLASS_PATH, GAME_CLASS_PATH
 
 
@@ -252,3 +252,13 @@ class TestRPS(BaseTest):
         self.assertEqual(expected_called_count - 1, actual_welcome_call_count)
 
         mock_print.assert_any_call("Draw! Rock ties rock!")
+
+    @patch(f"{RPS_FILE_PATH}.os.remove")
+    @patch(f"{RPS_FILE_PATH}.os.path.exists", return_value=True)
+    @patch(f"{RPS_CLASS_PATH}.run")
+    def test_main(self, mock_run, mock_exists, mock_remove):
+        main()
+
+        mock_run.assert_called_once()
+        mock_exists.assert_called_once_with("casino.db")
+        mock_remove.assert_called_once_with("casino.db")

@@ -1,3 +1,4 @@
+import os
 from random import randint
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
@@ -69,7 +70,6 @@ class RPS(Game):
         return f"You lost! {user_turn.title()} loses to {comp_turn}!"
 
 def main():
-    import os
 
     account_manager: AccountManager = AccountManager()
     account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
