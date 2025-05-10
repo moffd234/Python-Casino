@@ -67,11 +67,18 @@ class Casino:
         print("Too many login attempts - returning to main screen\n\n\n")
         return None
 
-    def handle_signup(self) -> UserAccount:
+    def handle_signup(self) -> UserAccount | None:
 
         while True:
-            username: str = self.console.get_string_input("Create your username", return_in_lower=False)
-            password: str = self.console.get_string_input("Create your password", return_in_lower=False)
+            username: str = self.console.get_string_input("Create your username or type back", return_in_lower=False)
+
+            if username == "back":
+                return None
+
+            password: str = self.console.get_string_input("Create your password or type back", return_in_lower=False)
+
+            if password == "back":
+                return None
 
             if is_password_valid(password):
                 account: UserAccount = self.manager.create_account(username=username, password=password)
