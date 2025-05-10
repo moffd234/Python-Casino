@@ -1,3 +1,4 @@
+import os
 import random
 
 from Application.Casino.Accounts.AccountManager import AccountManager
@@ -74,7 +75,6 @@ class Slots(Game):
 
 
 def main():
-    import os
 
     account_manager: AccountManager = AccountManager()
     account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
