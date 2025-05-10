@@ -52,7 +52,7 @@ class Casino:
             
             Notes:
                 - At anypoint you can exit the application by typing "exit"
-                - Funds can be added and you can reset you password from the manage account screen after logging in            
+                - Funds can be added and you can reset you password from the manage account screen after logging in
             """)
 
     def handle_login(self) -> UserAccount | None:

@@ -58,6 +58,10 @@ class TestCasino(BaseTest):
             88888P Y88888 88888888 888 888     888  888 888  888  888 88888888 Y8P Y8P 
             8888P   Y8888 Y8b.     888 Y88b.   Y88..88P 888  888  888 Y8b.      "   "  
             888P     Y888  "Y8888  888  "Y8888P "Y88P"  888  888  888  "Y8888  888 888
+            
+            Notes:
+                - At anypoint you can exit the application by typing "exit"
+                - Funds can be added and you can reset you password from the manage account screen after logging in
             """
         self.casino.print_welcome()
         mock_print.assert_called_with(expected)
