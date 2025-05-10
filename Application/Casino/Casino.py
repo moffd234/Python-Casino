@@ -90,21 +90,23 @@ class Casino:
                                          "- At least one special character")
 
     def handle_initial_action(self) -> UserAccount:
-        while True:
+        account: UserAccount | None = None
+
+        while account is None:
             answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                                                         "\nFrom here, you can select any of the following options:" +
                                                         "\n\t[ signup ], [ login ]")
 
             if answer == "login":
-                account: UserAccount | None = self.handle_login()
-                return account
+                account = self.handle_login()
 
             elif answer == "signup":
-                account: UserAccount = self.handle_signup()
-                return account
+                account = self.handle_signup()
 
             else:
                 self.console.print_error("Invalid input. Please try again\n\n")
+
+        return account
 
     def prompt_manage_or_select(self) -> None:
         while True:
