@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from Application.Casino.Accounts.UserAccount import UserAccount
-from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
+from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess, main
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, NUMBERGUESS_FILE_PATH, NUMBERGUESS_CLASS_PATH
 
 
@@ -168,3 +168,13 @@ class TestNumberGuess(BaseTest):
         self.assertEqual(expected_call_count, mock_get_guess_call_count)
         self.assertEqual(expected_call_count, mock_random_calls_count)
         self.assertEqual(expected_call_count + 1, mock_continue_calls_count)
+
+    @patch(f"{NUMBERGUESS_FILE_PATH}.os.remove")
+    @patch(f"{NUMBERGUESS_FILE_PATH}.os.path.exists", return_value=True)
+    @patch(f"{NUMBERGUESS_CLASS_PATH}.run")
+    def test_main(self, mock_run, mock_exists, mock_remove):
+        main()
+
+        mock_run.assert_called_once()
+        mock_exists.assert_called_once_with("casino.db")
+        mock_remove.assert_called_once_with("casino.db")

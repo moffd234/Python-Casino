@@ -1,3 +1,4 @@
+import os
 import random
 
 from Application.Casino.Accounts.AccountManager import AccountManager
@@ -51,7 +52,6 @@ class NumberGuess(Game):
         return f"You lost. The answer was {ran_num}"
 
 def main():
-    import os
 
     account_manager: AccountManager = AccountManager()
     account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
