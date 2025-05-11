@@ -11,6 +11,7 @@ def handle_heads_tails() -> str:
     flip_num: int = random.randint(0, 1)
     return "tails" if flip_num == 0 else "heads"
 
+
 class CoinFlip(Game):
 
     def __init__(self, player: UserAccount, manager: AccountManager):
@@ -64,12 +65,15 @@ def main():
     import os
 
     account_manager: AccountManager = AccountManager()
-    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000, "test@email.com",
+                                       ["Who is your favorite sports team?", "Test Answer",
+                                        "What street did you grow up on?", "Test Street"])
     game: CoinFlip = CoinFlip(account, account_manager)
     game.run()
 
     if os.path.exists("casino.db"):
         os.remove("casino.db")
+
 
 if __name__ == "__main__":
     main()

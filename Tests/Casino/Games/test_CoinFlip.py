@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip, handle_heads_tails, main
 from Tests.BaseTest import BaseTest, COINFLIP_FILE_PATH, COINFLIP_CLASS_PATH, IOCONSOLE_PATH
 
@@ -9,7 +8,6 @@ class TestCoinFlip(BaseTest):
 
     def setUp(self):
         super().setUp()
-        self.account: UserAccount = self.manager.create_account("test_username", "test_password")
         self.game: CoinFlip = CoinFlip(self.account, self.manager)
 
 
