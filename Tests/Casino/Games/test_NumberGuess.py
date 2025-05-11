@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess, main
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, NUMBERGUESS_FILE_PATH, NUMBERGUESS_CLASS_PATH
 
@@ -9,8 +8,7 @@ class TestNumberGuess(BaseTest):
 
     def setUp(self):
         super().setUp()
-        self.player: UserAccount = UserAccount("test_username", "test_password", 50)
-        self.game: NumberGuess = NumberGuess(self.player, self.manager)
+        self.game: NumberGuess = NumberGuess(self.account, self.manager)
 
     def assert_run(self, mock_get_guess, mock_handle_guess, mock_print, mock_print_welcome, mock_random, mock_wager):
         self.game.run()
@@ -39,20 +37,20 @@ class TestNumberGuess(BaseTest):
 
     def test_handle_guess_right(self):
         expected_output: str = "You Won! The answer was 5"
-        expected_balance: float = self.player.balance + 20
+        expected_balance: float = self.account.balance + 20
 
         actual_output: str = self.game.handle_guess(5, 5, 10)
-        actual_balance: float = self.player.balance
+        actual_balance: float = self.account.balance
 
         self.assertEqual(expected_output, actual_output)
         self.assertEqual(expected_balance, actual_balance)
 
     def test_handle_guess_wrong(self):
         expected_output: str = "You lost. The answer was 5"
-        expected_balance: float = self.player.balance
+        expected_balance: float = self.account.balance
 
         actual_output: str = self.game.handle_guess(6, 5, 10)
-        actual_balance: float = self.player.balance
+        actual_balance: float = self.account.balance
 
         self.assertEqual(expected_output, actual_output)
         self.assertEqual(expected_balance, actual_balance)

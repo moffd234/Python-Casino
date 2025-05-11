@@ -51,15 +51,18 @@ class NumberGuess(Game):
 
         return f"You lost. The answer was {ran_num}"
 
-def main():
 
+def main():
     account_manager: AccountManager = AccountManager()
-    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000, "test@email.com",
+                                       ["Who is your favorite sports team?", "Test Answer",
+                                        "What street did you grow up on?", "Test Street"])
     game: NumberGuess = NumberGuess(account, account_manager)
     game.run()
 
     if os.path.exists("casino.db"):
         os.remove("casino.db")
+
 
 if __name__ == "__main__":
     main()
