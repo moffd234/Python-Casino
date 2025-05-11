@@ -77,7 +77,9 @@ class Slots(Game):
 def main():
 
     account_manager: AccountManager = AccountManager()
-    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000, "test_username",
+                                       ["Who is your favorite sports team?", "Test Answer",
+                                        "What street did you grow up on?", "Test Street"])
     game: Slots = Slots(account, account_manager)
     game.run()
 

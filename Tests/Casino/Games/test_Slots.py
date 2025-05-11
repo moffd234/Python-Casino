@@ -10,8 +10,7 @@ class TestSlots(BaseTest):
 
     def setUp(self):
         super().setUp()
-        self.player: UserAccount = UserAccount("test_username", "test_password", 50)
-        self.game = Slots(self.player, self.manager)
+        self.game = Slots(self.account, self.manager)
 
     def run_and_assert(self, mock_payout, mock_print_spin, mock_get_spin,
                        mock_get_money_input, mock_continue, mock_print_welcome):
