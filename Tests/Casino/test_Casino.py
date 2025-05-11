@@ -2,7 +2,7 @@ from unittest.mock import patch, call
 
 from Application.Casino.Casino import *
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, COINFLIP_FILE_PATH, GAMES_PATH, SLOTS_FILE_PATH, CASINO_CLASS_PATH, \
-    ACCOUNT_MANAGER_CLASS_PATH
+    ACCOUNT_MANAGER_CLASS_PATH, TEST_QUESTIONS
 from Tests.Casino.Games.test_RPS import RPS_FILE_PATH
 from Tests.Casino.Games.test_TicTacToe import TICTACTOE_CLASS_PATH
 from Tests.Casino.Games.test_TriviaGame import TRIVIA_GAME_CLASS_PATH
@@ -13,7 +13,7 @@ class TestCasino(BaseTest):
     def setUp(self):
         super().setUp()
         self.casino = Casino()
-        self.casino.account = self.manager.create_account("username", "password")
+        self.casino.account = self.account
 
     def assert_prompt_game(self, mock_input, mock_run):
         self.casino.prompt_game()
@@ -67,7 +67,8 @@ class TestCasino(BaseTest):
         mock_print.assert_called_with(expected)
 
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.get_account",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50.0))
+           return_value=UserAccount("test_username", "ValidPassword123!", 50.0,
+                                    "test@email.com", TEST_QUESTIONS))
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "ValidPassword123!"])
     def test_handle_login(self, mock_inputs, mock_get_account):
         account: UserAccount = self.casino.handle_login()
@@ -82,7 +83,8 @@ class TestCasino(BaseTest):
 
     @patch(f"Application.Casino.Casino.is_password_valid")
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50.0))
+           return_value=UserAccount("test_username", "ValidPassword123!", 50.0,
+                                    "test@email.com", TEST_QUESTIONS))
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "ValidPassword123!"])
     def test_handle_signup(self, mock_inputs, mock_get_account, mock_is_password_valid):
         account: UserAccount = self.casino.handle_signup()
@@ -92,7 +94,8 @@ class TestCasino(BaseTest):
 
     @patch(f"Application.Casino.Casino.is_password_valid", side_effect=[True, True])
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
-           side_effect=[None, UserAccount("test_username", "ValidPassword123!", 50.0)])
+           side_effect=[None, UserAccount("test_username", "ValidPassword123!", 50.0,
+                                    "test@email.com", TEST_QUESTIONS)])
     @patch(f"{IOCONSOLE_PATH}.get_string_input",
            side_effect=["test_username", "ValidPassword123!", "test_username", "ValidPassword1234!"])
     @patch(f"{IOCONSOLE_PATH}.print_error")
@@ -301,21 +304,24 @@ class TestCasino(BaseTest):
 
     @patch("builtins.input", return_value="login")
     @patch(f"{CASINO_CLASS_PATH}.handle_login",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50))
+           return_value=UserAccount("test_username", "ValidPassword123!", 50,
+                                    "test@email.com", TEST_QUESTIONS))
     def test_handle_initial_action_login(self, mock_login, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
         self.assert_account_info(actual_account)
 
     @patch("builtins.input", return_value="signup")
     @patch(f"{CASINO_CLASS_PATH}.handle_signup",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50))
+           return_value=UserAccount("test_username", "ValidPassword123!", 50,
+                                    "test@email.com", TEST_QUESTIONS))
     def test_handle_initial_action_signup(self, mock_signup, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
         self.assert_account_info(actual_account, "test_username", "ValidPassword123!")
 
     @patch("builtins.input", side_effect=["invalid_input", "signup"])
     @patch(f"{CASINO_CLASS_PATH}.handle_signup",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50))
+           return_value=UserAccount("test_username", "ValidPassword123!", 50,
+                                    "test@email.com", TEST_QUESTIONS))
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_initial_action_invalid_then_signup(self, mock_print, mock_signup, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
@@ -325,7 +331,8 @@ class TestCasino(BaseTest):
 
     @patch("builtins.input", side_effect=["invalid_input", "login"])
     @patch(f"{CASINO_CLASS_PATH}.handle_login",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50))
+           return_value=UserAccount("test_username", "ValidPassword123!", 50,
+                                    "test@email.com", TEST_QUESTIONS))
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_handle_initial_action_login_with_invalid(self, mock_print, mock_login, mock_input):
         actual_account: UserAccount | None = self.casino.handle_initial_action()
@@ -595,7 +602,8 @@ class TestCasino(BaseTest):
     @patch(f"{CASINO_CLASS_PATH}.prompt_manage_or_select")
     @patch(f"{CASINO_CLASS_PATH}.handle_initial_action", return_value=UserAccount("test_usr",
                                                                                   "ValidPass123!",
-                                                                                  50.0))
+                                                                                  50.0,
+                                    "test@email.com", TEST_QUESTIONS))
     def test_run_valid_account(self, mock_action, mock_prompt, mock_print):
         self.casino.run()
 

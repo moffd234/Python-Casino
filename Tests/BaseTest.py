@@ -23,6 +23,8 @@ NUMBERGUESS_CLASS_PATH: str = f"{NUMBERGUESS_FILE_PATH}.NumberGuess"
 CASINO_CLASS_PATH: str = "Application.Casino.Casino.Casino"
 USER_ACCOUNT_CLASS_PATH: str = "Application.Casino.Accounts.UserAccount.UserAccount"
 ACCOUNT_MANAGER_CLASS_PATH: str = "Application.Casino.Accounts.AccountManager.AccountManager"
+TEST_QUESTIONS: list[str] = ["Who is your favorite sports team?", "Test Answer",
+                             "What street did you grow up on?", "Test Street"]
 
 
 class BaseTest(unittest.TestCase):
@@ -30,9 +32,8 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         self.session = init_db(in_memory=True)
         self.manager = AccountManager(session=self.session)
-        self.account = UserAccount("test_username", "ValidPassword123!", 50.0, "test@email.com",
-                                     ["Who is your favorite sports team?", "Test Answer",
-                                      "What street did you grow up on?", "Test Street"])
+        self.account = UserAccount("test_username", "ValidPassword123!", 50.0,
+                                   "test@email.com", TEST_QUESTIONS)
 
     def tearDown(self):
         if hasattr(self.manager, 'session'):
