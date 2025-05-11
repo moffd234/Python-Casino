@@ -27,8 +27,7 @@ class TicTacToe(Game):
                 Two players take turns placing their symbol on the board.
                 The first player to place three of their symbols in a horizontal, vertical, or diagonal row wins.                                                                                                    
         """
-        )
-
+                                   )
 
     def run(self):
         self.print_welcome_message()
@@ -41,7 +40,6 @@ class TicTacToe(Game):
                 self.console.print_success(f"Winner is {winner}")
             self.print_board()
 
-
     def print_board(self) -> None:
         board_lines = []
         for row in self.game_board:
@@ -53,13 +51,13 @@ class TicTacToe(Game):
         return self.game_board[row][col] == " "
 
     def get_row(self) -> int:
-         row = self.console.get_integer_input("Enter row number (1-3)")
+        row = self.console.get_integer_input("Enter row number (1-3)")
 
-         while row < 1 or row > 3:
-             self.console.print_error("Row number must be between 1 and 3")
-             row = self.console.get_integer_input("Enter row number (1-3)")
+        while row < 1 or row > 3:
+            self.console.print_error("Row number must be between 1 and 3")
+            row = self.console.get_integer_input("Enter row number (1-3)")
 
-         return row
+        return row
 
     def get_col(self) -> int:
         col = self.console.get_integer_input("Enter column number (1-3)")
@@ -126,10 +124,12 @@ class TicTacToe(Game):
 
         return True
 
-def main():
 
+def main():
     account_manager: AccountManager = AccountManager()
-    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000, "test@email.com",
+                                       ["Who is your favorite sports team?", "Test Answer",
+                                        "What street did you grow up on?", "Test Street"])
     game: TicTacToe = TicTacToe(account, account_manager)
     game.run()
 
