@@ -2,6 +2,7 @@ import os.path
 import unittest
 
 from Application.Casino.Accounts.AccountManager import AccountManager
+from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
 
 IOCONSOLE_PATH: str = "Application.Utils.IOConsole.IOConsole"
@@ -23,12 +24,15 @@ CASINO_CLASS_PATH: str = "Application.Casino.Casino.Casino"
 USER_ACCOUNT_CLASS_PATH: str = "Application.Casino.Accounts.UserAccount.UserAccount"
 ACCOUNT_MANAGER_CLASS_PATH: str = "Application.Casino.Accounts.AccountManager.AccountManager"
 
+
 class BaseTest(unittest.TestCase):
 
     def setUp(self):
         self.session = init_db(in_memory=True)
         self.manager = AccountManager(session=self.session)
-
+        self.account = UserAccount("test_username", "ValidPassword123!", 50.0, "test@email.com",
+                                     ["Who is your favorite sports team?", "Test Answer",
+                                      "What street did you grow up on?", "Test Street"])
 
     def tearDown(self):
         if hasattr(self.manager, 'session'):
