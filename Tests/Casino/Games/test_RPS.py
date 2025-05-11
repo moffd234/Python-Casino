@@ -1,6 +1,5 @@
 from unittest.mock import patch
 
-from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.RockPaperScissors.RPS import RPS, get_comp_turn, main
 from Tests.BaseTest import BaseTest, IOCONSOLE_PATH, RPS_FILE_PATH, RPS_CLASS_PATH, GAME_CLASS_PATH
 
@@ -9,7 +8,6 @@ class TestRPS(BaseTest):
 
     def setUp(self):
         super().setUp()
-        self.account: UserAccount = self.manager.create_account("username", "password")
         self.game = RPS(self.account, self.manager)
 
     def call_and_assert_run(self, mock_input, mock_comp_turn, mock_user_turn, mock_continue, mock_welcome):
