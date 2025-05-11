@@ -10,13 +10,13 @@ class AccountManager:
     def __init__(self, session=None):
         self.session: Session = session or init_db()
 
-    def create_account(self, username: str, password: str) -> UserAccount | None:
+    def create_account(self, username: str, password: str, email: str, questions: list[str]) -> UserAccount | None:
         user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
 
         if user:
             return None
 
-        user = UserAccount(username, password, 50.0)
+        user = UserAccount(username, password, 50.0, email, questions)
         self.session.add(user)
         self.session.commit()
         logging.debug(f"Created new user account. With username: {username}")
