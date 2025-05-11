@@ -249,9 +249,10 @@ class TriviaGame(Game):
 
 
 def main():
-
     account_manager: AccountManager = AccountManager()
-    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000)
+    account: UserAccount = UserAccount("Tester", "ValidPassword123!", 1000, "test@email.com",
+                                       ["Who is your favorite sports team?", "Test Answer",
+                                        "What street did you grow up on?", "Test Street"])
     game: TriviaGame = TriviaGame(account, account_manager)
     game.run()
 

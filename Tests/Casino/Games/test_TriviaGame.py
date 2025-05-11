@@ -16,7 +16,6 @@ class TestTriviaGame(BaseTest):
 
     def setUp(self):
         super().setUp()
-        self.account: UserAccount = UserAccount("test_username", "test_password", 50.0)
         self.game = TriviaGame(self.account, self.manager)
         self.test_question_tf = Question("is this how to spell true 'true'?", "true", ["false"])
         self.test_question_mc = Question("What is the first letter of the alphabet'?",
