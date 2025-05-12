@@ -26,6 +26,20 @@ def is_password_valid(password: str) -> bool:
     pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$"
     return True if re.match(pattern, password) else False
 
+def is_email_valid(email: str) -> bool:
+    """
+    Checks that the given email address has the following:
+    - One or more character before an @ symbol
+    - @ symbol
+    - a . before a domain extension
+    - Two or more characters for the domain extension after the .
+
+    :param email: email previously inputted by user
+    :return: return True if email is valid. Otherwise, returns False
+    """
+    pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+    return True if re.match(pattern, email) else False
+
 
 class Casino:
     def __init__(self):
