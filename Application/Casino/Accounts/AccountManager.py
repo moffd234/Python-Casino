@@ -11,6 +11,21 @@ class AccountManager:
         self.session: Session = session or init_db()
 
     def create_account(self, username: str, password: str, email: str, questions: list[str]) -> UserAccount | None:
+        """
+        Attempts to create a new user account with the provided credentials and security questions.
+
+        Checks if a user with the given username already exists in the database. If the username is unique, a new
+        UserAccount is created with a default balance of $50.00, added to the session, and committed to the database.
+
+        Args:
+            username (str): The desired username for the new account.
+            password (str): The password associated with the account.
+            email (str): The email address tied to the account for recovery or contact purposes.
+            questions (list[str]): A list of security questions for account recovery.
+
+        Returns:
+                UserAccount | None: The newly created UserAccount object if successful, or None if the username is already taken.
+        """
         user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
 
         if user:
