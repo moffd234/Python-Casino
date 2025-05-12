@@ -79,10 +79,7 @@ class Casino:
             if username == "back":
                 return None
 
-            password: str = self.console.get_string_input("Create your password or type back", return_in_lower=False)
-
-            if password == "back":
-                return None
+            password: str = self.console.get_string_input("Create your password", return_in_lower=False)
 
             if is_password_valid(password):
                 account: UserAccount = self.manager.create_account(username=username, password=password)

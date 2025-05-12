@@ -130,16 +130,6 @@ class TestCasino(BaseTest):
 
         self.assertIsNone(actual)
 
-    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "back"])
-    def test_handle_signup_password_back(self, mock_input):
-        actual: None = self.casino.handle_signup()
-
-        mock_input.assert_has_calls(
-            [call("Create your username or type back", return_in_lower=False),
-             call("Create your password or type back", return_in_lower=False)])
-
-        self.assertIsNone(actual)
-
     @patch("builtins.print")
     @patch("builtins.input", return_value="50")
     def test_handle_add_funds(self, mock_input, mock_print):
