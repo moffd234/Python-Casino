@@ -39,8 +39,8 @@ class TestCasino(BaseTest):
         expected_username = expected_username
         expected_password = expected_password
         expected_balance = 50.0
-        expected_email = "email@domain.com"
-        expected_questions = ["test_question", "test_answer", "test_question2", "test_answer2"]
+        expected_email = "test@email.com"
+        expected_questions = TEST_QUESTIONS
         actual_username = account.username
         actual_password = account.password
         actual_balance = account.balance
@@ -90,9 +90,8 @@ class TestCasino(BaseTest):
 
     @patch(f"{CASINO_CLASS_PATH}.prompt_username", return_value="test_username")
     @patch(f"{CASINO_CLASS_PATH}.prompt_password", return_value="ValidPassword123!")
-    @patch(f"{CASINO_CLASS_PATH}.prompt_email", return_value="email@domain.com")
-    @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=["test_question", "test_answer",
-                                                                                    "test_question2", "test_answer2"])
+    @patch(f"{CASINO_CLASS_PATH}.prompt_email", return_value="test@email.com")
+    @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=TEST_QUESTIONS)
     def test_handle_signup(self, mock_questions, mock_email, mock_password, mock_username):
         account: UserAccount = self.casino.handle_signup()
         self.assert_account_info(account)
@@ -100,13 +99,11 @@ class TestCasino(BaseTest):
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            side_effect=[None, UserAccount("test_username", "ValidPassword123!", 50.0,
-                                          "email@domain.com",
-                                          ["test_question", "test_answer", "test_question2", "test_answer2"])])
+                                          "test@email.com", TEST_QUESTIONS)])
     @patch(f"{CASINO_CLASS_PATH}.prompt_username", return_value="test_username")
     @patch(f"{CASINO_CLASS_PATH}.prompt_password", return_value="ValidPassword123!")
-    @patch(f"{CASINO_CLASS_PATH}.prompt_email", return_value="email@domain.com")
-    @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=["test_question", "test_answer",
-                                                                                    "test_question2", "test_answer2"])
+    @patch(f"{CASINO_CLASS_PATH}.prompt_email", return_value="test@email.com")
+    @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=TEST_QUESTIONS)
     def test_handle_signup_account_exist(self, mock_questions, mock_create_account, mock_email,
                                          mock_password, mock_username, mock_print):
         account: UserAccount = self.casino.handle_signup()
