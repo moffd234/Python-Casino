@@ -108,20 +108,6 @@ class TestCasino(BaseTest):
 
         self.assert_account_info(account)
 
-    @patch(f"{IOCONSOLE_PATH}.get_string_input",
-           side_effect=["test_username", "test_password", "test_username", "ValidPassword123!"])
-    @patch(f"{IOCONSOLE_PATH}.print_error")
-    def test_handle_signup_invalid_password(self, mock_print, mock_inputs):
-        account: UserAccount = self.casino.handle_signup()
-
-        mock_print.assert_called_once_with("Invalid password. Password must follow the following:\n"
-                                           "- At least 8 characters long\n"
-                                           "- At least one uppercase letter\n"
-                                           "- At least one lowercase letter\n"
-                                           "- At least one number\n"
-                                           "- At least one special character")
-        self.assert_account_info(account)
-
     @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="back")
     def test_handle_signup_username_back(self, mock_input):
         actual: None = self.casino.handle_signup()
@@ -656,3 +642,31 @@ class TestCasino(BaseTest):
 
         mock_input.assert_called_once_with("Create your username or type back", return_in_lower=False)
         self.assertIsNone(actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="ValidPass123!")
+    def test_prompt_password(self, mock_input):
+        expected: str = "ValidPass123!"
+        actual: str = self.casino.prompt_password()
+
+        mock_input.assert_called_once_with("Create your password: ", return_in_lower=False)
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input",
+           side_effect=["invalid_password", "ValidPassword123!"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_password_invalid(self, mock_print, mock_inputs):
+        expected: str = "ValidPassword123!"
+        actual: str = self.casino.prompt_password()
+
+        mock_print.assert_called_once_with("Invalid password. Password must follow the following:\n"
+                                           "- At least 8 characters long\n"
+                                           "- At least one uppercase letter\n"
+                                           "- At least one lowercase letter\n"
+                                           "- At least one number\n"
+                                           "- At least one special character")
+
+        expected_call_count: int = 2
+        actual_call_count: int = mock_inputs.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_call_count, actual_call_count)
