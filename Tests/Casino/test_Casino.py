@@ -641,3 +641,18 @@ class TestCasino(BaseTest):
 
         self.assertEqual(expected, actual)
         self.assertEqual(expected_mock_get_questions_call_count, actual_mock_get_questions_call_count)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="test_username")
+    def test_prompt_username(self, mock_input):
+        expected: str = "test_username"
+        actual: str = self.casino.prompt_username()
+
+        mock_input.assert_called_once_with("Create your username or type back", return_in_lower=False)
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="back")
+    def test_prompt_username_back(self, mock_input):
+        actual: None = self.casino.prompt_username()
+
+        mock_input.assert_called_once_with("Create your username or type back", return_in_lower=False)
+        self.assertIsNone(actual)
