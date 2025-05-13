@@ -39,13 +39,20 @@ class TestCasino(BaseTest):
         expected_username = expected_username
         expected_password = expected_password
         expected_balance = 50.0
+        expected_email = "email@domain.com"
+        expected_questions = ["test_question", "test_answer", "test_question2", "test_answer2"]
         actual_username = account.username
         actual_password = account.password
         actual_balance = account.balance
+        actual_email = account.email
+        actual_questions = [account.security_question_one, account.security_answer_one,
+                            account.security_question_two, account.security_answer_two]
 
         self.assertEqual(expected_username, actual_username)
         self.assertEqual(expected_password, actual_password)
         self.assertEqual(expected_balance, actual_balance)
+        self.assertEqual(expected_email, actual_email)
+        self.assertEqual(expected_questions, actual_questions)
 
     @patch("builtins.print")
     def test_print_welcome(self, mock_print):
@@ -81,40 +88,32 @@ class TestCasino(BaseTest):
         account = self.casino.handle_login()
         self.assertIsNone(account)
 
-    @patch(f"Application.Casino.Casino.is_password_valid")
-    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
-           return_value=UserAccount("test_username", "ValidPassword123!", 50.0,
-                                    "test@email.com", TEST_QUESTIONS))
-    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["test_username", "ValidPassword123!"])
-    def test_handle_signup(self, mock_inputs, mock_get_account, mock_is_password_valid):
+    @patch(f"{CASINO_CLASS_PATH}.prompt_username", return_value="test_username")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_password", return_value="ValidPassword123!")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_email", return_value="email@domain.com")
+    @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=["test_question", "test_answer",
+                                                                                    "test_question2", "test_answer2"])
+    def test_handle_signup(self, mock_questions, mock_email, mock_password, mock_username):
         account: UserAccount = self.casino.handle_signup()
-
-        mock_is_password_valid.assert_called_once_with("ValidPassword123!")
         self.assert_account_info(account)
 
-    @patch(f"Application.Casino.Casino.is_password_valid", side_effect=[True, True])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            side_effect=[None, UserAccount("test_username", "ValidPassword123!", 50.0,
-                                          "test@email.com", TEST_QUESTIONS)])
-    @patch(f"{IOCONSOLE_PATH}.get_string_input",
-           side_effect=["test_username", "ValidPassword123!", "test_username", "ValidPassword1234!"])
-    @patch(f"{IOCONSOLE_PATH}.print_error")
-    def test_handle_signup_account_exist(self, mock_print, mock_inputs, mock_create_account, mock_is_password_valid):
+                                          "email@domain.com",
+                                          ["test_question", "test_answer", "test_question2", "test_answer2"])])
+    @patch(f"{CASINO_CLASS_PATH}.prompt_username", return_value="test_username")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_password", return_value="ValidPassword123!")
+    @patch(f"{CASINO_CLASS_PATH}.prompt_email", return_value="email@domain.com")
+    @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=["test_question", "test_answer",
+                                                                                    "test_question2", "test_answer2"])
+    def test_handle_signup_account_exist(self, mock_questions, mock_create_account, mock_email,
+                                         mock_password, mock_username, mock_print):
         account: UserAccount = self.casino.handle_signup()
 
         mock_print.assert_called_once_with("Account with that username already exists")
-        mock_is_password_valid.assert_has_calls([call("ValidPassword123!"), call("ValidPassword1234!")])
-        self.assertEqual(mock_is_password_valid.call_count, 2)
 
         self.assert_account_info(account)
-
-    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="back")
-    def test_handle_signup_username_back(self, mock_input):
-        actual: None = self.casino.handle_signup()
-
-        mock_input.assert_called_once_with("Create your username or type back", return_in_lower=False)
-
-        self.assertIsNone(actual)
 
     @patch("builtins.print")
     @patch("builtins.input", return_value="50")
