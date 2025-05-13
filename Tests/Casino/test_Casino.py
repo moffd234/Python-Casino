@@ -148,29 +148,30 @@ class TestCasino(BaseTest):
         self.assertEqual(expected_balance, actual_balance)
 
     @patch(f"{IOCONSOLE_PATH}.print_colored")
-    @patch("builtins.input", side_effect=["password", "ValidPassword123!"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["ValidPassword123!", "NewValidPassword123!"])
     def test_reset_password(self, mock_input, mock_print):
         self.casino.reset_password()
 
-        expected_password = "ValidPassword123!"
+        expected_password = "NewValidPassword123!"
         actual_password = self.casino.account.password
 
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         self.assertEqual(expected_password, actual_password)
 
     @patch(f"{CASINO_CLASS_PATH}.update_password")
-    @patch("builtins.input", side_effect=["password", "ValidPassword123!"])
+    @patch("builtins.input", side_effect=["ValidPassword123!", "NewValidPassword123!"])
     def test_reset_password_assert_update_called(self, mock_input, mock_update_password):
         self.casino.reset_password()
 
-        expected_password = "ValidPassword123!"
+        expected_password = "NewValidPassword123!"
 
         mock_update_password.assert_called_once_with(expected_password)
 
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch("builtins.input", side_effect=["test_pAsSwOrD123!", "ValidPassword123!"])
     def test_reset_password_case_sensitive(self, mock_input, mock_print):
-        account: UserAccount = self.casino.manager.create_account("test_username", "test_pAsSwOrD123!")
+        account: UserAccount = self.casino.manager.create_account("test_username", "test_pAsSwOrD123!",
+                                                                  "email@domain.com", TEST_QUESTIONS)
         self.casino.account = account
         self.casino.reset_password()
 
@@ -201,11 +202,12 @@ class TestCasino(BaseTest):
 
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch(f"{IOCONSOLE_PATH}.print_error")
-    @patch("builtins.input", side_effect=["wrong_password", "wrong_password", "password", "ValidPassword123!"])
+    @patch("builtins.input",
+           side_effect=["wrong_password", "wrong_password", "ValidPassword123!", "NewValidPassword123!"])
     def test_reset_password_failed_then_works(self, mock_input, mock_print_error, mock_print):
         self.casino.reset_password()
 
-        expected_password: str = "ValidPassword123!"
+        expected_password: str = "NewValidPassword123!"
         actual_password = self.casino.account.password
 
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)

@@ -185,10 +185,12 @@ class Casino:
     def reset_password(self) -> None:
         for _ in range(5):
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
+
             if answer == self.account.password:
                 new_password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
                 self.update_password(new_password)
                 return
+
             else:
                 self.console.print_error("Passwords do not match")
         self.console.print_error("Too many invalid attempts. Please try again")
