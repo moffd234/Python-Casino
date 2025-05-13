@@ -628,3 +628,16 @@ class TestCasino(BaseTest):
         mock_print_error.assert_called_once_with("Invalid input. Please enter a number from the list.")
         self.assertEqual(expected, actual)
         self.assertEqual(expected_print_count, print_count)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=['test_answer', "test_answer"])
+    @patch(f"{CASINO_CLASS_PATH}.get_security_question",
+           side_effect=["What street did you grow up on?", "What was the name of your first pet?"])
+    def test_get_security_questions_and_answers(self, mock_get_questions, mock_input):
+        expected: list[str] = ["What street did you grow up on?", "test_answer",
+                               "What was the name of your first pet?", "test_answer"]
+        actual: list[str] = self.casino.get_security_questions_and_answers()
+        expected_mock_get_questions_call_count: int = 2
+        actual_mock_get_questions_call_count: int = mock_get_questions.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_mock_get_questions_call_count, actual_mock_get_questions_call_count)
