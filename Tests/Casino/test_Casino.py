@@ -95,7 +95,7 @@ class TestCasino(BaseTest):
     @patch(f"Application.Casino.Casino.is_password_valid", side_effect=[True, True])
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
            side_effect=[None, UserAccount("test_username", "ValidPassword123!", 50.0,
-                                    "test@email.com", TEST_QUESTIONS)])
+                                          "test@email.com", TEST_QUESTIONS)])
     @patch(f"{IOCONSOLE_PATH}.get_string_input",
            side_effect=["test_username", "ValidPassword123!", "test_username", "ValidPassword1234!"])
     @patch(f"{IOCONSOLE_PATH}.print_error")
@@ -593,10 +593,38 @@ class TestCasino(BaseTest):
     @patch(f"{CASINO_CLASS_PATH}.handle_initial_action", return_value=UserAccount("test_usr",
                                                                                   "ValidPass123!",
                                                                                   50.0,
-                                    "test@email.com", TEST_QUESTIONS))
+                                                                                  "test@email.com", TEST_QUESTIONS))
     def test_run_valid_account(self, mock_action, mock_prompt, mock_print):
         self.casino.run()
 
         mock_action.assert_called_once()
         mock_prompt.assert_called_once()
         mock_print.assert_called_once()
+
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.get_integer_input", return_value=1)
+    def test_get_security_question(self, mock_input, mock_print):
+        possible_questions: list[str] = ["question zero", "question one", "question two", "question three"]
+
+        expected: str = "question one"
+        actual: str = self.casino.get_security_question(possible_questions)
+        expected_print_count: int = len(possible_questions) + 1
+        print_count: int = mock_print.call_count
+
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_print_count, print_count)
+
+    @patch(f"{IOCONSOLE_PATH}.print_colored")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch("builtins.input", side_effect=['-1', "1"])
+    def test_get_security_question_invalid(self, mock_input, mock_print_error, mock_print):
+        possible_questions: list[str] = ["question zero", "question one", "question two", "question three"]
+
+        expected: str = "question one"
+        actual: str = self.casino.get_security_question(possible_questions)
+        expected_print_count: int = len(possible_questions) + 1
+        print_count: int = mock_print.call_count
+
+        mock_print_error.assert_called_once_with("Invalid input. Please enter a number from the list.")
+        self.assertEqual(expected, actual)
+        self.assertEqual(expected_print_count, print_count)
