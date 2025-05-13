@@ -1,6 +1,8 @@
+import datetime
 import logging
 from typing import Optional
 from sqlalchemy.orm import Session
+import uuid
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
@@ -56,3 +58,13 @@ class AccountManager:
     def update_password(self, account: UserAccount, new_password: str) -> None:
         account.password = new_password
         self.session.commit()
+
+    def generate_uuid_and_store_it(self, account: UserAccount) -> str:
+        token: uuid = uuid.uuid4()
+        token_expiration: datetime = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+
+        account.reset_token = token
+        account.reset_token_expiration = token_expiration
+
+        self.session.commit()
+        return str(token)
