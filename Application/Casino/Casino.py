@@ -98,8 +98,9 @@ class Casino:
             email: str = self.console.get_string_input("Enter your email address", return_in_lower=False)
 
             if is_password_valid(password) and is_email_valid(email):
-
-                account: UserAccount = self.manager.create_account(username=username, password=password)
+                questions_and_answers: list[str] = self.get_security_questions_and_answers()
+                account: UserAccount = self.manager.create_account(username=username, password=password, email=email,
+                                                                   questions=questions_and_answers)
                 if account:
                     return account
 
