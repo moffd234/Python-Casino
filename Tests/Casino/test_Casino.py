@@ -670,3 +670,80 @@ class TestCasino(BaseTest):
 
         self.assertEqual(expected, actual)
         self.assertEqual(expected_call_count, actual_call_count)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="email@testdomain.com")
+    def test_prompt_email_valid(self, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_input.assert_called_once_with("Enter your email: ", return_in_lower=False)
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["@testdomain.com", "email@testdomain.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_email_invalid_no_char_before_at(self, mock_print, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_print.assert_called_once_with("Invalid email.")
+        mock_input.assert_has_calls([call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False)])
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["emailtestdomain.com", "email@testdomain.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_email_invalid_no_at(self, mock_print, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_print.assert_called_once_with("Invalid email.")
+        mock_input.assert_has_calls([call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False)])
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["email@testdomaincom", "email@testdomain.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_email_invalid_no_dot(self, mock_print, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_print.assert_called_once_with("Invalid email.")
+        mock_input.assert_has_calls([call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False)])
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["email@testdomain.", "email@testdomain.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_email_invalid_no_char_after_dot(self, mock_print, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_print.assert_called_once_with("Invalid email.")
+        mock_input.assert_has_calls([call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False)])
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["email@testdomain.c", "email@testdomain.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_email_invalid_one_char_after_dot(self, mock_print, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_print.assert_called_once_with("Invalid email.")
+        mock_input.assert_has_calls([call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False)])
+        self.assertEqual(expected, actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["email@testdomain.c",
+                                                              "emailtestdomain.com",
+                                                              "email@testdomain.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_email_multiple_invalid(self, mock_print, mock_input):
+        expected: str = "email@testdomain.com"
+        actual: str = self.casino.prompt_email()
+
+        mock_print.assert_has_calls([call("Invalid email."), call("Invalid email.")])
+        mock_input.assert_has_calls([call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False),
+                                     call("Enter your email: ", return_in_lower=False)])
+        self.assertEqual(expected, actual)
