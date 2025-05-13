@@ -83,37 +83,23 @@ class Casino:
             else:
                 self.console.print_error("Invalid username or password")
 
-        print("Too many login attempts - returning to main screen\n\n\n")
+        self.console.print_error("Too many login attempts - returning to main screen\n\n\n")
         return None
 
     def handle_signup(self) -> UserAccount | None:
 
         while True:
-            username: str = self.console.get_string_input("Create your username or type back", return_in_lower=False)
+            username: str = self.prompt_username()
+            password: str = self.prompt_password()
+            email: str = self.prompt_email()
+            security_questions: list[str] = self.get_security_questions_and_answers()
 
-            if username == "back":
-                return None
+            account = self.manager.create_account(username, password, email, security_questions)
 
-            password: str = self.console.get_string_input("Create your password", return_in_lower=False)
-            email: str = self.console.get_string_input("Enter your email address", return_in_lower=False)
-
-            if is_password_valid(password) and is_email_valid(email):
-                questions_and_answers: list[str] = self.get_security_questions_and_answers()
-                account: UserAccount = self.manager.create_account(username=username, password=password, email=email,
-                                                                   questions=questions_and_answers)
-                if account:
-                    return account
-
-                else:
-                    self.console.print_error("Account with that username already exists")
-
+            if account:
+                return account
             else:
-                self.console.print_error("Invalid password. Password must follow the following:\n"
-                                         "- At least 8 characters long\n"
-                                         "- At least one uppercase letter\n"
-                                         "- At least one lowercase letter\n"
-                                         "- At least one number\n"
-                                         "- At least one special character")
+                self.console.print_error("Account with that username already exists")
 
     def handle_initial_action(self) -> UserAccount:
         account: UserAccount | None = None
@@ -248,7 +234,22 @@ class Casino:
             else:
                 self.console.print_error("Invalid input. Please try again")
 
-    def get_security_question(self) -> str:
+    def get_security_question(self, possible_questions) -> str:
+        self.console.print_colored("Please select a security question by typing the corresponding number: ")
+
+        for i, question in enumerate(possible_questions):
+            self.console.print_colored(f"{i}. {question}")
+
+        answer: int = self.console.get_integer_input("Your choice: ")
+
+        while answer < 0 or answer >= len(possible_questions):
+            self.console.print_error("Invalid input. Please enter a number from the list.")
+            answer = self.console.get_integer_input("Your choice: ")
+
+        return possible_questions[answer]
+
+    def get_security_questions_and_answers(self) -> list[str]:
+
         possible_questions: list[str] = [
             "What is your favorite sports team?",
             "What street did you grow up on?",
@@ -267,26 +268,38 @@ class Casino:
             "What was the name of your first stuffed animal?"
         ]
 
-        self.console.print_colored( "Please select a security question by typing the corresponding number: ")
-
-        for i, question in enumerate(possible_questions):
-            self.console.print_colored(f"{i}. {question}")
-
-        answer: int = self.console.get_integer_input("Your choice: ")
-
-        while answer < 0 or answer >= len(possible_questions):
-            self.console.print_error("Invalid input. Please enter a number from the list.")
-            answer = self.console.get_integer_input("Your choice: ")
-
-        return possible_questions[answer]
-
-
-    def get_security_questions_and_answers(self) -> list[str]:
-
-        first_question: str = self.get_security_question()
+        first_question: str = self.get_security_question(possible_questions)
         first_answer: str = self.console.get_string_input(f"You selected {first_question}. Please enter your answer")
+        possible_questions.remove(first_question)
 
-        second_question: str = self.get_security_question()
+        second_question: str = self.get_security_question(possible_questions)
         second_answer: str = self.console.get_string_input(f"You selected {second_question}. Please enter your answer")
 
         return [first_question, first_answer, second_question, second_answer]
+
+    def prompt_username(self) -> str | None:
+        username: str = self.console.get_string_input("Create your username or type back", return_in_lower=False)
+        return None if username == "back" else username
+
+    def prompt_password(self) -> str:
+        password: str = self.console.get_string_input("Create your password: ", return_in_lower=False)
+
+        while not is_password_valid(password):
+            self.console.print_error("Invalid password. Password must follow the following:\n"
+                                     "- At least 8 characters long\n"
+                                     "- At least one uppercase letter\n"
+                                     "- At least one lowercase letter\n"
+                                     "- At least one number\n"
+                                     "- At least one special character")
+            password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
+
+        return password
+
+    def prompt_email(self) -> str:
+        email: str = self.console.get_string_input("Enter your email: ", return_in_lower=False)
+
+        while not is_email_valid(email):
+            self.console.print_error("Invalid email.")
+            email = self.console.get_string_input("Enter your email: ", return_in_lower=False)
+
+        return email
