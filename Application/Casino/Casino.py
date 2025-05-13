@@ -278,3 +278,14 @@ class Casino:
             answer = self.console.get_integer_input("Your choice: ")
 
         return possible_questions[answer]
+
+
+    def get_security_questions_and_answers(self) -> list[str]:
+
+        first_question: str = self.get_security_question()
+        first_answer: str = self.console.get_string_input(f"You selected {first_question}. Please enter your answer")
+
+        second_question: str = self.get_security_question()
+        second_answer: str = self.console.get_string_input(f"You selected {second_question}. Please enter your answer")
+
+        return [first_question, first_answer, second_question, second_answer]
