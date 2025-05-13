@@ -1,4 +1,6 @@
-from unittest.mock import MagicMock
+import datetime
+import uuid
+from unittest.mock import MagicMock, patch
 
 from Tests.BaseTest import BaseTest, TEST_QUESTIONS
 from Application.Casino.Accounts.UserAccount import UserAccount
@@ -74,3 +76,19 @@ class TestAccountManager(BaseTest):
 
         self.assertEqual(expected, actual)
         self.manager.session.commit.assert_called_once()
+
+    @patch("sqlalchemy.orm.Session.commit")
+    def test_generate_uuid(self, mock_commit):
+        current_time: datetime = datetime.datetime.now(datetime.UTC)
+        min_time: datetime = current_time + datetime.timedelta(minutes=14, seconds=59)
+        max_time: datetime = current_time + datetime.timedelta(minutes=15, seconds=1)
+
+        expected_token: uuid.UUID = uuid.UUID(self.manager.generate_uuid_and_store_it(self.account))
+        actual_token: uuid.UUID = self.account.reset_token
+        actual_expiration = self.account.reset_token_expiration
+
+        is_time_valid: bool = min_time < actual_expiration < max_time
+
+        mock_commit.assert_called_once()
+        self.assertEqual(expected_token, actual_token)
+        self.assertTrue(is_time_valid)
