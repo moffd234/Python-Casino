@@ -26,6 +26,7 @@ def is_password_valid(password: str) -> bool:
     pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$"
     return True if re.match(pattern, password) else False
 
+
 def is_email_valid(email: str) -> bool:
     """
     Checks that the given email address has the following:
@@ -94,8 +95,10 @@ class Casino:
                 return None
 
             password: str = self.console.get_string_input("Create your password", return_in_lower=False)
+            email: str = self.console.get_string_input("Enter your email address", return_in_lower=False)
 
-            if is_password_valid(password):
+            if is_password_valid(password) and is_email_valid(email):
+
                 account: UserAccount = self.manager.create_account(username=username, password=password)
                 if account:
                     return account
@@ -243,3 +246,35 @@ class Casino:
 
             else:
                 self.console.print_error("Invalid input. Please try again")
+
+    def get_security_question(self) -> str:
+        possible_questions: list[str] = [
+            "What is your favorite sports team?",
+            "What street did you grow up on?",
+            "What was the name of your first pet?",
+            "What is your mother’s maiden name?",
+            "What was the name of your elementary school?",
+            "In what city were you born?",
+            "What was the make of your first car?",
+            "What is your favorite movie?",
+            "What is your childhood best friend's first name?",
+            "What was the name of your first employer?",
+            "What is your favorite food?",
+            "What is the name of your favorite teacher?",
+            "Where did you go on your first vacation?",
+            "What is the middle name of your oldest sibling?",
+            "What was the name of your first stuffed animal?"
+        ]
+
+        self.console.print_colored( "Please select a security question by typing the corresponding number: ")
+
+        for i, question in enumerate(possible_questions):
+            self.console.print_colored(f"{i}. {question}")
+
+        answer: int = self.console.get_integer_input("Your choice: ")
+
+        while answer < 0 or answer >= len(possible_questions):
+            self.console.print_error("Invalid input. Please enter a number from the list.")
+            answer = self.console.get_integer_input("Your choice: ")
+
+        return possible_questions[answer]
