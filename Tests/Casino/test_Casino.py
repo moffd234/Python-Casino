@@ -745,3 +745,20 @@ class TestCasino(BaseTest):
                                      call("Enter your email: ", return_in_lower=False),
                                      call("Enter your email: ", return_in_lower=False)])
         self.assertEqual(expected, actual)
+
+    def test_is_token_valid_true(self):
+        token: uuid.uuid4() = uuid.uuid4()
+        self.account.reset_token = token
+        self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+
+        actual: bool = self.casino.is_token_valid(str(token))
+        self.assertTrue(actual)
+
+    def test_is_token_valid_incorrect_token(self):
+        token: uuid.UUID = uuid.uuid4()
+        self.account.reset_token = uuid.uuid4()
+        self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+
+        actual: bool = self.casino.is_token_valid(str(token))
+        self.assertFalse(actual)
+
