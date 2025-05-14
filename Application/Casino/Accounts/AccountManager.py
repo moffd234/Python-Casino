@@ -15,7 +15,7 @@ def email_recovery_token(email: str, token: str) -> None:
     username: str = getenv("G_USERNAME")
     password: str = getenv("G_KEY")
 
-    with smtplib.SMTP("smtp.gmail.com", timeout=10) as smtp:
+    with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as smtp:
         smtp.starttls()
         smtp.login(username, password)
         subject: str = "Python Casino Password Reset"
