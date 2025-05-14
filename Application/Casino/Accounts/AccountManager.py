@@ -9,8 +9,12 @@ from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
 
 
-def email_recovery_token(email: str, token: str) -> None:
+def email_recovery_token(email: str, token: uuid.UUID) -> None:
     from os import getenv
+    from dotenv import load_dotenv, find_dotenv
+
+    dotenv_path = find_dotenv()
+    load_dotenv(dotenv_path)
 
     username: str = getenv("G_USERNAME")
     password: str = getenv("G_KEY")
