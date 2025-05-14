@@ -309,18 +309,23 @@ class Casino:
 
         return email
 
-    def validate_and_reset(self, token: uuid.UUID) -> None:
+    def validate_and_reset(self) -> None:
         for _ in range(5):
-            user_input: str = self.console.get_string_input("Please enter your reset token sent to your email")
-            try:
-                input_token = uuid.UUID(user_input)
-                now = datetime.datetime.now(datetime.UTC)
-                if input_token == token and self.account.reset_token_expiration >= now:
-                    self.reset_password()
-                    return
-                else:
-                    self.console.print_error("Invalid or expired token. Please try again.")
-            except ValueError:
-                self.console.print_error("Invalid token format. Please try again.")
+            user_input = self.console.get_string_input("Please enter your reset token sent to your email")
+
+            if self.is_token_valid(user_input):
+                self.reset_password()
+                return
+
+            self.console.print_error("Invalid or expired token. Please try again.")
 
         self.console.print_error("Too many attempts. Try again later.")
+
+    def is_token_valid(self, user_input: str) -> bool:
+        try:
+            input_token: uuid.UUID = uuid.UUID(user_input)
+            now = datetime.datetime.now(datetime.UTC)
+            return self.account.reset_token == input_token and self.account.reset_token_expiration >= now
+
+        except ValueError:
+            return False
