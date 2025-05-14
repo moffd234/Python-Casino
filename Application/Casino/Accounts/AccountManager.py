@@ -1,11 +1,28 @@
 import datetime
 import logging
+import smtplib
 from typing import Optional
 from sqlalchemy.orm import Session
 import uuid
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
+
+
+def email_recovery_token(email: str, token: str) -> None:
+    from os import getenv
+
+    username: str = getenv("G_USERNAME")
+    password: str = getenv("G_KEY")
+
+    with smtplib.SMTP("smtp.gmail.com", timeout=10) as smtp:
+        smtp.starttls()
+        smtp.login(username, password)
+        subject: str = "Python Casino Password Reset"
+        body: str = (f"Below is your password reset token.\n"
+                     f"Please paste it in the prompt on the application:\n\n{token}")
+        message = f"Subject: {subject}\n\n{body}"
+        smtp.sendmail(username, email, message)
 
 
 class AccountManager:
