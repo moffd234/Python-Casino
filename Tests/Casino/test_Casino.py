@@ -777,3 +777,53 @@ class TestCasino(BaseTest):
 
         actual: bool = self.casino.is_token_valid(str(token))
         self.assertFalse(actual)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value=str(uuid.uuid4()))
+    @patch(f"{CASINO_CLASS_PATH}.is_token_valid", return_value=True)
+    @patch(f"{CASINO_CLASS_PATH}.reset_password")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_validate_and_reset_valid(self, mock_print, mock_reset, mock_is_token_valid, mock_input):
+        self.casino.validate_and_reset()
+
+        mock_print.assert_not_called()
+        mock_reset.assert_called_once()
+        mock_is_token_valid.assert_called_once()
+        mock_input.is_called_once_with("Please enter your reset token sent to your email")
+
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["not-a-uuid"] * 5)
+    @patch("Application.Casino.Casino.Casino.reset_password")
+    def test_validate_and_reset_non_uuid_token(self, mock_reset, mock_input, mock_error):
+        self.account.reset_token = uuid.uuid4()
+        self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+
+        self.casino.validate_and_reset()
+
+        mock_reset.assert_not_called()
+        self.assertEqual(mock_error.call_count, 6)
+
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=[str(uuid.uuid4())] * 5)
+    @patch("Application.Casino.Casino.Casino.reset_password")
+    def test_validate_and_reset_wrong_token(self, mock_reset, mock_input, mock_error):
+        self.account.reset_token = uuid.uuid4()
+        self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+
+        self.casino.validate_and_reset()
+
+        mock_reset.assert_not_called()
+        self.assertEqual(mock_error.call_count, 6)
+
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    @patch(f"{IOCONSOLE_PATH}.get_string_input")
+    @patch("Application.Casino.Casino.Casino.reset_password")
+    def test_validate_and_reset_expired_token(self, mock_reset, mock_input, mock_error):
+        token = uuid.uuid4()
+        self.account.reset_token = token
+        self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) - datetime.timedelta(minutes=1)
+        mock_input.side_effect = [str(token)] * 5
+
+        self.casino.validate_and_reset()
+
+        mock_reset.assert_not_called()
+        self.assertEqual(mock_error.call_count, 6)
