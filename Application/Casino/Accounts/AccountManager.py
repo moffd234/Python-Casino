@@ -89,3 +89,8 @@ class AccountManager:
 
         self.session.commit()
         return str(token)
+
+    def invalidate_reset_token(self, account: UserAccount):
+        account.reset_token = None
+        account.reset_token_expiration = None
+        self.session.commit()
