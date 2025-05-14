@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from Application.Casino.Accounts.AccountManager import AccountManager
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
@@ -305,3 +308,19 @@ class Casino:
             email = self.console.get_string_input("Enter your email: ", return_in_lower=False)
 
         return email
+
+    def validate_and_reset(self, token: uuid.UUID) -> None:
+        for _ in range(5):
+            user_input: str = self.console.get_string_input("Please enter your reset token sent to your email")
+            try:
+                input_token = uuid.UUID(user_input)
+                now = datetime.datetime.now(datetime.UTC)
+                if input_token == token and self.account.reset_token_expiration >= now:
+                    self.reset_password()
+                    return
+                else:
+                    self.console.print_error("Invalid or expired token. Please try again.")
+            except ValueError:
+                self.console.print_error("Invalid token format. Please try again.")
+
+        self.console.print_error("Too many attempts. Try again later.")
