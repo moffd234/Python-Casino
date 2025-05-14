@@ -198,7 +198,7 @@ class Casino:
                 self.console.print_error("Passwords do not match")
         self.console.print_error("Too many invalid attempts. Please try again")
 
-    def update_password(self, new_password) -> None:
+    def update_password(self, new_password: str) -> bool:
 
         attempts_flag: int = 0
         while not is_password_valid(new_password) and attempts_flag < 5:
@@ -215,9 +215,11 @@ class Casino:
         if attempts_flag != 5:
             self.manager.update_password(self.account, new_password)
             self.console.print_success(f"Your password has been updated!")
+            return True
 
         else:
             self.console.print_error("Too many invalid attempts. Password was not updated.")
+            return False
 
     def handle_manage_selection(self) -> None:
         while True:
