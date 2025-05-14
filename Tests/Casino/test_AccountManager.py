@@ -92,3 +92,12 @@ class TestAccountManager(BaseTest):
         mock_commit.assert_called_once()
         self.assertEqual(expected_token, actual_token)
         self.assertTrue(is_time_valid)
+
+    def test_invalidate_reset_token(self):
+        self.account.reset_token = uuid.uuid4()
+        self.account.reset_token_expiration = datetime.datetime.now()
+
+        self.manager.invalidate_reset_token(self.account)
+
+        self.assertIsNone(self.account.reset_token)
+        self.assertIsNone(self.account.reset_token_expiration)
