@@ -520,17 +520,19 @@ class TestCasino(BaseTest):
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.update_password")
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_update_password_valid(self, mock_print, mock_update):
-        self.casino.update_password("ValidPassword123!")
+        actual: bool = self.casino.update_password("ValidPassword123!")
 
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         mock_update.assert_called_once()
+
+        self.assertTrue(actual)
 
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.update_password")
     @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="ValidPassword123!")
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_update_password_fail_then_valid(self, mock_print, mock_print_error, mock_input, mock_update):
-        self.casino.update_password("invalid_password")
+        actual: bool = self.casino.update_password("invalid_password")
 
         mock_print_error.assert_called_once_with("Invalid password. Password must follow the following:\n"
                                                  "- At least 8 characters long\n"
@@ -542,11 +544,13 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         mock_update.assert_called_once()
 
+        self.assertTrue(actual)
+
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.update_password")
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["none", "none", "none", "none", "none"])
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_update_password_max_fail(self, mock_print_error, mock_input, mock_update):
-        self.casino.update_password("invalid_password")
+        actual: bool = self.casino.update_password("invalid_password")
 
         expected_error: str = "Invalid password. Password must follow the following:\n" \
                               "- At least 8 characters long\n" \
@@ -571,6 +575,8 @@ class TestCasino(BaseTest):
             call("Enter new password: ", return_in_lower=False)])
 
         mock_update.assert_not_called()
+
+        self.assertFalse(actual)
 
     @patch(f"{CASINO_CLASS_PATH}.print_welcome")
     @patch(f"{CASINO_CLASS_PATH}.prompt_manage_or_select")
