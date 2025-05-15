@@ -185,18 +185,19 @@ class Casino:
         self.manager.add_and_save_account(self.account, answer)
         self.console.print_success(f"You have added ${answer} to your funds! New Balance is {self.account.balance}")
 
-    def reset_password(self) -> None:
+    def reset_password(self) -> bool:
         for _ in range(5):
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
 
             if answer == self.account.password:
                 new_password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
-                self.update_password(new_password)
-                return
+                was_successful: bool = self.update_password(new_password)
+                return was_successful
 
             else:
                 self.console.print_error("Passwords do not match")
         self.console.print_error("Too many invalid attempts. Please try again")
+        return False
 
     def update_password(self, new_password: str) -> bool:
 
