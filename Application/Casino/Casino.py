@@ -339,6 +339,7 @@ class Casino:
         """
         Prompts user to enter the email associated with their account. User will have up to 5 attempts to do so,
         otherwise they will be prompted to try again later
+
         :return: True if the email is correct, False otherwise.
         """
         for _ in range(5):
@@ -350,6 +351,25 @@ class Casino:
                 return True
             else:
                 self.console.print_error("Invalid email. Please try again.")
+
+        self.console.print_error("Too many attempts. Try again later.")
+        return False
+
+    def prompt_for_security_answer(self, question: str, answer: str) -> bool:
+        """
+        Prompts the user to answer a provided security question with up to 5 attempts.
+
+        :param question: The security question to display to the user.
+        :param answer: The correct answer to validate against the user's input.
+        :return: True if the answer is correct, False otherwise.
+        """
+        for _ in range(5):
+            user_answer: str = self.console.get_string_input(question)
+            if user_answer.strip() == answer.strip():
+
+                return True
+            else:
+                self.console.print_error("Incorrect answer. Please try again.")
 
         self.console.print_error("Too many attempts. Try again later.")
         return False
