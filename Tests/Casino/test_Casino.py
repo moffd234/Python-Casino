@@ -791,12 +791,14 @@ class TestCasino(BaseTest):
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value=str(uuid.uuid4()))
     @patch(f"{CASINO_CLASS_PATH}.is_token_valid", return_value=True)
-    @patch(f"{CASINO_CLASS_PATH}.reset_password")
+    @patch(f"{CASINO_CLASS_PATH}.reset_password", return_value=True)
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.invalidate_reset_token")
     @patch(f"{IOCONSOLE_PATH}.print_error")
-    def test_validate_and_reset_valid(self, mock_print, mock_reset, mock_is_token_valid, mock_input):
+    def test_validate_and_reset_valid(self, mock_print, mock_reset, mock_is_token_valid, mock_invalidate, mock_input):
         self.casino.validate_and_reset()
 
         mock_print.assert_not_called()
+        mock_invalidate.assert_called_once()
         mock_reset.assert_called_once()
         mock_is_token_valid.assert_called_once()
         mock_input.is_called_once_with("Please enter your reset token sent to your email")
