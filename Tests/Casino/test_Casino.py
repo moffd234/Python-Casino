@@ -840,3 +840,40 @@ class TestCasino(BaseTest):
 
         mock_reset.assert_not_called()
         self.assertEqual(mock_error.call_count, 6)
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="test@email.com")
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_and_check_email_valid(self, mock_print, mock_input):
+        actual: bool = self.casino.prompt_and_check_email()
+
+        self.assertTrue(actual)
+        mock_print.assert_not_called()
+        mock_input.assert_called_once_with("Please enter the email associated with your account: ")
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["incorrect_email", "test@email.com"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_and_check_email_invalid_then_valid(self, mock_print, mock_input):
+        actual: bool = self.casino.prompt_and_check_email()
+
+        self.assertTrue(actual)
+        mock_print.assert_called_once_with("Invalid email. Please try again.")
+        mock_input.assert_has_calls([call("Please enter the email associated with your account: "),
+                                     call("Please enter the email associated with your account: ")])
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["email", "email", "email", "email", "email"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_and_check_email_max_invalid(self, mock_print, mock_input):
+        actual: bool = self.casino.prompt_and_check_email()
+
+        self.assertFalse(actual)
+        mock_print.assert_has_calls([call("Invalid email. Please try again."),
+                                     call("Invalid email. Please try again."),
+                                     call("Invalid email. Please try again."),
+                                     call("Invalid email. Please try again."),
+                                     call("Invalid email. Please try again."),
+                                     call("Too many attempts. Try again later.")])
+        mock_input.assert_has_calls([call("Please enter the email associated with your account: "),
+                                     call("Please enter the email associated with your account: "),
+                                     call("Please enter the email associated with your account: "),
+                                     call("Please enter the email associated with your account: "),
+                                     call("Please enter the email associated with your account: ")])
