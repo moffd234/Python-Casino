@@ -877,3 +877,42 @@ class TestCasino(BaseTest):
                                      call("Please enter the email associated with your account: "),
                                      call("Please enter the email associated with your account: "),
                                      call("Please enter the email associated with your account: ")])
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="Test Answer")
+    def test_prompt_for_security_answer_valid(self, mock_input):
+        actual: bool = self.casino.prompt_for_security_answer("Test Question", "Test Answer")
+
+        self.assertTrue(actual)
+        mock_input.assert_called_once_with("Test Question")
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="  Test Answer  ")
+    def test_prompt_for_security_answer_valid_with_strip(self, mock_input):
+        actual: bool = self.casino.prompt_for_security_answer("Test Question", " Test Answer")
+
+        self.assertTrue(actual)
+        mock_input.assert_called_once_with("Test Question")
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["Wrong Answer","Test Answer"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_for_security_answer_invalid_then_valid(self, mock_print, mock_input):
+        actual: bool = self.casino.prompt_for_security_answer("Test Question", "Test Answer")
+
+        self.assertTrue(actual)
+        mock_input.assert_has_calls([call("Test Question"), call("Test Question")])
+        mock_print.assert_called_once_with("Incorrect answer. Please try again.")
+
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["Answer", "Answer", "Answer", "Answer", "Answer"])
+    @patch(f"{IOCONSOLE_PATH}.print_error")
+    def test_prompt_for_security_answer_max_attempts(self, mock_print, mock_input):
+        expected_input_call_count: int = 5
+        actual: bool = self.casino.prompt_for_security_answer("Test Question", "Test Answer")
+        actual_input_call_count: int = mock_input.call_count
+
+        self.assertEqual(actual_input_call_count, expected_input_call_count)
+        self.assertFalse(actual)
+        mock_print.assert_has_calls([call("Incorrect answer. Please try again."),
+                                     call("Incorrect answer. Please try again."),
+                                     call("Incorrect answer. Please try again."),
+                                     call("Incorrect answer. Please try again."),
+                                     call("Incorrect answer. Please try again."),
+                                     call("Too many attempts. Try again later.")])
