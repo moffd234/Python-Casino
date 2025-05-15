@@ -334,3 +334,22 @@ class Casino:
 
         except ValueError:
             return False
+
+    def prompt_and_check_email(self) -> bool:
+        """
+        Prompts user to enter the email associated with their account. User will have up to 5 attempts to do so,
+        otherwise they will be prompted to try again later
+        :return: True if the email is correct, False otherwise.
+        """
+        for _ in range(5):
+
+            email_input: str = self.console.get_string_input("Please enter the email associated with your account: ")
+            actual_email: str = self.account.email
+
+            if email_input == actual_email:
+                return True
+            else:
+                self.console.print_error("Invalid email. Please try again.")
+
+        self.console.print_error("Too many attempts. Try again later.")
+        return False
