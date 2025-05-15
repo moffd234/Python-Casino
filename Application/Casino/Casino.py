@@ -317,7 +317,9 @@ class Casino:
             user_input = self.console.get_string_input("Please enter your reset token sent to your email")
 
             if self.is_token_valid(user_input):
-                self.reset_password()
+                was_success: bool = self.reset_password()
+                if was_success:
+                    self.manager.invalidate_reset_token(self.account)
                 return
 
             self.console.print_error("Invalid or expired token. Please try again.")
