@@ -373,3 +373,14 @@ class Casino:
 
         self.console.print_error("Too many attempts. Try again later.")
         return False
+
+    def get_security_answers(self) -> bool:
+        """
+        Sequentially prompts the user to answer two account security questions.
+
+        :return: True if both security questions are correct, False otherwise.
+        """
+        if self.prompt_for_security_answer(self.account.security_question_one, self.account.security_answer_one):
+            return self.prompt_for_security_answer(self.account.security_question_two, self.account.security_answer_two)
+
+        return False
