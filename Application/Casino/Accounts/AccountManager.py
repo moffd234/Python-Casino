@@ -94,3 +94,12 @@ class AccountManager:
                          f"Please paste it in the prompt on the application:\n\n{token}")
             message = f"Subject: {subject}\n\n{body}"
             smtp.sendmail(username, account.email, message)
+
+    def get_account_by_email(self, email: str) -> UserAccount | None:
+        """
+        Queries the database for a UserAccount associated with the provided email.
+
+        :param email: The email address to search for.
+        :return: UserAccount if found, otherwise None.
+        """
+        return self.session.query(UserAccount).filter_by(email=email).first()
