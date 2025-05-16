@@ -892,7 +892,7 @@ class TestCasino(BaseTest):
         self.assertTrue(actual)
         mock_input.assert_called_once_with("Test Question")
 
-    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["Wrong Answer","Test Answer"])
+    @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["Wrong Answer", "Test Answer"])
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_prompt_for_security_answer_invalid_then_valid(self, mock_print, mock_input):
         actual: bool = self.casino.prompt_for_security_answer("Test Question", "Test Answer")
@@ -916,3 +916,31 @@ class TestCasino(BaseTest):
                                      call("Incorrect answer. Please try again."),
                                      call("Incorrect answer. Please try again."),
                                      call("Too many attempts. Try again later.")])
+
+    @patch(f"{CASINO_CLASS_PATH}.prompt_for_security_answer", side_effect=[True, True])
+    def test_get_security_answers_true(self, mock_prompt):
+        actual: bool = self.casino.get_security_answers()
+
+        mock_prompt.assert_has_calls([call(self.casino.account.security_question_one,
+                                           self.casino.account.security_answer_one),
+                                      call(self.casino.account.security_question_two,
+                                           self.casino.account.security_answer_two)])
+        self.assertTrue(actual)
+
+    @patch(f"{CASINO_CLASS_PATH}.prompt_for_security_answer", return_value=False)
+    def test_get_security_answers_failed_first_question(self, mock_prompt):
+        actual: bool = self.casino.get_security_answers()
+
+        mock_prompt.assert_called_once_with(self.casino.account.security_question_one,
+                                           self.casino.account.security_answer_one)
+        self.assertFalse(actual)
+
+    @patch(f"{CASINO_CLASS_PATH}.prompt_for_security_answer", side_effect=[True, False])
+    def test_get_security_answers_failed_second_question(self, mock_prompt):
+        actual: bool = self.casino.get_security_answers()
+
+        mock_prompt.assert_has_calls([call(self.casino.account.security_question_one,
+                                           self.casino.account.security_answer_one),
+                                      call(self.casino.account.security_question_two,
+                                           self.casino.account.security_answer_two)])
+        self.assertFalse(actual)
