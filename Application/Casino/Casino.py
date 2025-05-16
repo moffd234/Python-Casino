@@ -337,17 +337,17 @@ class Casino:
 
     def prompt_and_check_email(self) -> bool:
         """
-        Prompts user to enter the email associated with their account. User will have up to 5 attempts to do so,
-        otherwise they will be prompted to try again later
+        Prompts user to enter the email associated with their account. Then searches if there is an account tied with
+        that email address. User will have up to 5 attempts to do so, otherwise they will be prompted to try again later
 
-        :return: True if the email is correct, False otherwise.
+        :return: True if the email is tied to an account, False otherwise.
         """
         for _ in range(5):
 
             email_input: str = self.console.get_string_input("Please enter the email associated with your account: ")
-            actual_email: str = self.account.email
 
-            if email_input == actual_email:
+            self.account: UserAccount | None = self.manager.get_account_by_email(email_input)
+            if self.account:
                 return True
             else:
                 self.console.print_error("Invalid email. Please try again.")
