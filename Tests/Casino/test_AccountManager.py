@@ -108,3 +108,13 @@ class TestAccountManager(BaseTest):
         self.assertIsNone(self.account.reset_token)
         self.assertIsNone(self.account.reset_token_expiration)
 
+    def test_get_account_by_email(self):
+        self.manager.create_account("test_username", "test_password",
+                                    "test@email.com", TEST_QUESTIONS)
+        actual_account: UserAccount = self.manager.get_account_by_email("test@email.com")
+
+        self.assert_account_info(actual_account)
+
+    def test_get_account_by_email_fail(self):
+        account: UserAccount = self.manager.get_account_by_email("WRONG_EMAIL@DOMAIN.com")
+        self.assertIsNone(account)
