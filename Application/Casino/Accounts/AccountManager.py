@@ -8,27 +8,6 @@ import uuid
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
 
-
-def email_recovery_token(email: str, token: uuid.UUID) -> None:
-    from os import getenv
-    from dotenv import load_dotenv, find_dotenv
-
-    dotenv_path = find_dotenv()
-    load_dotenv(dotenv_path)
-
-    username: str = getenv("G_USERNAME")
-    password: str = getenv("G_KEY")
-
-    with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as smtp:
-        smtp.starttls()
-        smtp.login(username, password)
-        subject: str = "Python Casino Password Reset"
-        body: str = (f"Below is your password reset token.\n"
-                     f"Please paste it in the prompt on the application:\n\n{token}")
-        message = f"Subject: {subject}\n\n{body}"
-        smtp.sendmail(username, email, message)
-
-
 class AccountManager:
     def __init__(self, session=None):
         self.session: Session = session or init_db()
@@ -94,3 +73,24 @@ class AccountManager:
         account.reset_token = None
         account.reset_token_expiration = None
         self.session.commit()
+
+    def email_recovery_token(self, account: UserAccount) -> None:
+        from os import getenv
+        from dotenv import load_dotenv, find_dotenv
+
+        dotenv_path = find_dotenv()
+        load_dotenv(dotenv_path)
+
+        username: str = getenv("G_USERNAME")
+        password: str = getenv("G_KEY")
+
+        token: str = self.generate_uuid_and_store_it(account)
+
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=10) as smtp:
+            smtp.starttls()
+            smtp.login(username, password)
+            subject: str = "Python Casino Password Reset"
+            body: str = (f"Below is your password reset token.\n"
+                         f"Please paste it in the prompt on the application:\n\n{token}")
+            message = f"Subject: {subject}\n\n{body}"
+            smtp.sendmail(username, account.email, message)
