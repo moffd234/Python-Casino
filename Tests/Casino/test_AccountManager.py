@@ -43,10 +43,10 @@ class TestAccountManager(BaseTest):
         self.assertEqual(expected.password, actual.password)
         self.assertEqual(expected.balance, actual.balance)
         self.assertEqual(expected.email, actual.email)
-        self.assertEqual(expected.security_question_one, expected.security_question_one)
-        self.assertEqual(expected.security_question_two, expected.security_question_two)
-        self.assertEqual(expected.security_answer_one, expected.security_answer_one)
-        self.assertEqual(expected.security_answer_two, expected.security_answer_two)
+        self.assertEqual(expected.security_question_one, actual.security_question_one)
+        self.assertEqual(expected.security_question_two, actual.security_question_two)
+        self.assertEqual(expected.security_answer_one, actual.security_answer_one)
+        self.assertEqual(expected.security_answer_two, actual.security_answer_two)
 
     def test_get_account_none(self):
         actual: UserAccount = self.manager.get_account("this_name_won't_be_used", "secure123")
