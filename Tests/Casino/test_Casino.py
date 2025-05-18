@@ -1011,3 +1011,16 @@ class TestCasino(BaseTest):
         mock_prompt_email.assert_called_once()
         mock_get_answers.assert_called_once()
         self.assertFalse(actual)
+
+    @patch(f"{CASINO_CLASS_PATH}.prompt_and_check_email", return_value=True)
+    @patch(f"{CASINO_CLASS_PATH}.get_security_answers", return_value=True)
+    @patch(f"{CASINO_CLASS_PATH}.validate_and_reset", return_value=False)
+    @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.email_recovery_token")
+    def test_reset_from_login_fail_validate(self, mock_email, mock_validate, mock_get_answers, mock_prompt_email):
+        actual: bool = self.casino.reset_from_login()
+
+        mock_prompt_email.assert_called_once()
+        mock_get_answers.assert_called_once()
+        mock_validate.assert_called_once()
+        mock_email.assert_called_once()
+        self.assertFalse(actual)

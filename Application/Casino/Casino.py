@@ -393,8 +393,7 @@ class Casino:
     def reset_from_login(self) -> bool:
         if self.prompt_and_check_email() and self.get_security_answers():
             self.manager.email_recovery_token(self.account)
-            self.validate_and_reset()
-            return True
+            return self.validate_and_reset()
 
         return False
 
