@@ -190,8 +190,7 @@ class Casino:
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
 
             if answer == self.account.password:
-                new_password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
-                was_successful: bool = self.update_password(new_password)
+                was_successful: bool = self.update_password()
                 return was_successful
 
             else:
@@ -199,10 +198,11 @@ class Casino:
         self.console.print_error("Too many invalid attempts. Please try again")
         return False
 
-    def update_password(self, new_password: str) -> bool:
+    def update_password(self) -> bool:
+        password: str = self.console.get_string_input("Enter new password: ", return_in_lower=False)
 
         attempts_flag: int = 0
-        while not is_password_valid(new_password) and attempts_flag < 5:
+        while not is_password_valid(password) and attempts_flag < 5:
             self.console.print_error("Invalid password. Password must follow the following:\n"
                                      "- At least 8 characters long\n"
                                      "- At least one uppercase letter\n"
@@ -210,11 +210,11 @@ class Casino:
                                      "- At least one number\n"
                                      "- At least one special character")
 
-            new_password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
+            password = self.console.get_string_input("Enter new password: ", return_in_lower=False)
             attempts_flag += 1
 
         if attempts_flag != 5:
-            self.manager.update_password(self.account, new_password)
+            self.manager.update_password(self.account, password)
             self.console.print_success(f"Your password has been updated!")
             return True
 
