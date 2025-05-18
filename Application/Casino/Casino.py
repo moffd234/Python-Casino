@@ -315,7 +315,7 @@ class Casino:
 
         return email
 
-    def validate_and_reset(self) -> None:
+    def validate_and_reset(self) -> bool:
         for _ in range(5):
             user_input = self.console.get_string_input("Please enter your reset token sent to your email")
 
@@ -323,11 +323,12 @@ class Casino:
                 was_success: bool = self.update_password()
                 if was_success:
                     self.manager.invalidate_reset_token(self.account)
-                return
+                return True
 
             self.console.print_error("Invalid or expired token. Please try again.")
 
         self.console.print_error("Too many attempts. Try again later.")
+        return False
 
     def is_token_valid(self, user_input: str) -> bool:
         try:
