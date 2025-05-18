@@ -319,6 +319,32 @@ class TestCasino(BaseTest):
         mock_print.assert_called_once_with("Invalid input. Please try again\n\n")
         self.assert_account_info(actual_account)
 
+    @patch("builtins.input", side_effect=["reset", "login"])
+    @patch(f"{CASINO_CLASS_PATH}.reset_from_login")
+    @patch(f"{CASINO_CLASS_PATH}.handle_login",
+           return_value=UserAccount("test_username", "ValidPassword123!", 50,
+                                    "test@email.com", TEST_QUESTIONS))
+    def test_handle_initial_action_reset_then_login(self, mock_login, mock_reset, mock_input):
+        actual_account: UserAccount = self.casino.handle_initial_action()
+
+        mock_login.assert_called_once()
+        mock_reset.assert_called_once()
+
+        self.assert_account_info(actual_account)
+
+    @patch("builtins.input", side_effect=["reset", "signup"])
+    @patch(f"{CASINO_CLASS_PATH}.reset_from_login")
+    @patch(f"{CASINO_CLASS_PATH}.handle_signup",
+           return_value=UserAccount("test_username", "ValidPassword123!", 50,
+                                    "test@email.com", TEST_QUESTIONS))
+    def test_handle_initial_action_reset_then_signup(self, mock_login, mock_reset, mock_input):
+        actual_account: UserAccount = self.casino.handle_initial_action()
+
+        mock_login.assert_called_once()
+        mock_reset.assert_called_once()
+
+        self.assert_account_info(actual_account)
+
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["manage", "logout"])
     @patch(f"{CASINO_CLASS_PATH}.handle_manage_selection")
     def test_prompt_manage_or_select_manage(self, mock_selection, mock_input):
