@@ -2,11 +2,20 @@ import datetime
 import logging
 import smtplib
 from typing import Optional
+import bcrypt
 from sqlalchemy.orm import Session
 import uuid
 
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Accounts.db import init_db
+
+
+def hash_password(password: str) -> str:
+    encoded_bytes: bytes = password.encode('utf-8')
+    salt: bytes = bcrypt.gensalt()
+    hashed_password: bytes =  bcrypt.hashpw(encoded_bytes, salt)
+    return hashed_password.decode('utf-8')
+
 
 class AccountManager:
     def __init__(self, session=None):
