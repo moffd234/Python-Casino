@@ -2,6 +2,7 @@ import datetime
 import uuid
 from unittest.mock import MagicMock, patch
 
+from Application.Casino.Accounts.AccountManager import hash_password
 from Tests.BaseTest import BaseTest, TEST_QUESTIONS
 from Application.Casino.Accounts.UserAccount import UserAccount
 
@@ -118,3 +119,26 @@ class TestAccountManager(BaseTest):
     def test_get_account_by_email_fail(self):
         account: UserAccount = self.manager.get_account_by_email("WRONG_EMAIL@DOMAIN.com")
         self.assertIsNone(account)
+
+    def test_hash_password(self):
+        password: str = "ValidPassword123!"
+        hashed_password: str = hash_password(password)
+
+        self.assertNotEqual(password, hashed_password)
+
+    def test_hash_passwords_dont_match(self):
+        password: str = "ValidPassword123!"
+        hashed_password_one: str = hash_password(password)
+        hashed_password_two: str = hash_password(password)
+
+        self.assertNotEqual(hashed_password_one, hashed_password_two)
+
+    @patch("bcrypt.gensalt", return_value=b"salt")
+    @patch("bcrypt.hashpw", return_value=b"hashed_password")
+    def test_hash_passwords_assert_calls(self, mock_hashpw, mock_gensalt):
+        expected: str = "hashed_password"
+        actual: str = hash_password("Password")
+
+        mock_hashpw.assert_called_once_with(b"Password", mock_gensalt.return_value)
+        mock_gensalt.assert_called_once()
+        self.assertEqual(expected, actual)

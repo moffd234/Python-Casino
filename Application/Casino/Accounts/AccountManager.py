@@ -13,7 +13,7 @@ from Application.Casino.Accounts.db import init_db
 def hash_password(password: str) -> str:
     encoded_bytes: bytes = password.encode('utf-8')
     salt: bytes = bcrypt.gensalt()
-    hashed_password: bytes =  bcrypt.hashpw(encoded_bytes, salt)
+    hashed_password: bytes = bcrypt.hashpw(encoded_bytes, salt)
     return hashed_password.decode('utf-8')
 
 
