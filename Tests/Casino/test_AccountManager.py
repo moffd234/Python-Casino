@@ -2,7 +2,7 @@ import datetime
 import uuid
 from unittest.mock import MagicMock, patch
 
-from Application.Casino.Accounts.AccountManager import hash_password
+from Application.Casino.Accounts.AccountManager import hash_password, verify_password
 from Tests.BaseTest import BaseTest, TEST_QUESTIONS
 from Application.Casino.Accounts.UserAccount import UserAccount
 
@@ -142,3 +142,24 @@ class TestAccountManager(BaseTest):
         mock_hashpw.assert_called_once_with(b"Password", mock_gensalt.return_value)
         mock_gensalt.assert_called_once()
         self.assertEqual(expected, actual)
+
+    def test_verify_password_true(self):
+        password: str = "ValidPassword123!"
+        hashed_password: str = hash_password(password)
+
+        actual: bool = verify_password(password, hashed_password)
+        self.assertTrue(actual)
+
+    def test_verify_password_false(self):
+        password: str = "ValidPassword123!"
+        hashed_password: str = hash_password(password)
+
+        actual: bool = verify_password("password", hashed_password)
+        self.assertFalse(actual)
+
+    def test_verify_password_empty_string(self):
+        password: str = "ValidPassword123!"
+        hashed_password: str = hash_password(password)
+
+        actual: bool = verify_password("", hashed_password)
+        self.assertFalse(actual)
