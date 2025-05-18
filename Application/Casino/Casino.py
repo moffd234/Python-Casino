@@ -317,7 +317,7 @@ class Casino:
             user_input = self.console.get_string_input("Please enter your reset token sent to your email")
 
             if self.is_token_valid(user_input):
-                was_success: bool = self.reset_password()
+                was_success: bool = self.update_password()
                 if was_success:
                     self.manager.invalidate_reset_token(self.account)
                 return
@@ -385,3 +385,12 @@ class Casino:
             return self.prompt_for_security_answer(self.account.security_question_two, self.account.security_answer_two)
 
         return False
+
+    def reset_from_login(self) -> bool:
+        if self.prompt_and_check_email() and self.get_security_answers():
+            self.manager.email_recovery_token(self.account)
+            self.validate_and_reset()
+            return True
+
+        return False
+
