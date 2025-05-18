@@ -823,13 +823,14 @@ class TestCasino(BaseTest):
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.invalidate_reset_token")
     @patch(f"{IOCONSOLE_PATH}.print_error")
     def test_validate_and_reset_valid(self, mock_print, mock_reset, mock_is_token_valid, mock_invalidate, mock_input):
-        self.casino.validate_and_reset()
+        actual: bool = self.casino.validate_and_reset()
 
         mock_print.assert_not_called()
         mock_invalidate.assert_called_once()
         mock_reset.assert_called_once()
         mock_is_token_valid.assert_called_once()
         mock_input.is_called_once_with("Please enter your reset token sent to your email")
+        self.assertTrue(actual)
 
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["not-a-uuid"] * 5)
@@ -838,10 +839,11 @@ class TestCasino(BaseTest):
         self.account.reset_token = uuid.uuid4()
         self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
 
-        self.casino.validate_and_reset()
+        actual: bool = self.casino.validate_and_reset()
 
         mock_reset.assert_not_called()
         self.assertEqual(mock_error.call_count, 6)
+        self.assertFalse(actual)
 
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=[str(uuid.uuid4())] * 5)
@@ -850,10 +852,11 @@ class TestCasino(BaseTest):
         self.account.reset_token = uuid.uuid4()
         self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
 
-        self.casino.validate_and_reset()
+        actual: bool = self.casino.validate_and_reset()
 
         mock_reset.assert_not_called()
         self.assertEqual(mock_error.call_count, 6)
+        self.assertFalse(actual)
 
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{IOCONSOLE_PATH}.get_string_input")
@@ -864,10 +867,11 @@ class TestCasino(BaseTest):
         self.account.reset_token_expiration = datetime.datetime.now(datetime.UTC) - datetime.timedelta(minutes=1)
         mock_input.side_effect = [str(token)] * 5
 
-        self.casino.validate_and_reset()
+        actual: bool = self.casino.validate_and_reset()
 
         mock_reset.assert_not_called()
         self.assertEqual(mock_error.call_count, 6)
+        self.assertFalse(actual)
 
     @patch(f"{IOCONSOLE_PATH}.get_string_input", return_value="test@email.com")
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.get_account_by_email", return_value=True)
