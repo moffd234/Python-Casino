@@ -110,13 +110,16 @@ class Casino:
         while account is None:
             answer: str = self.console.get_string_input("Welcome to the Arcade Dashboard!" +
                                                         "\nFrom here, you can select any of the following options:" +
-                                                        "\n\t[ signup ], [ login ]")
+                                                        "\n\t[ signup ], [ login ], [ reset password ]")
 
             if answer == "login":
                 account = self.handle_login()
 
             elif answer == "signup":
                 account = self.handle_signup()
+
+            elif answer == "reset" or answer == "reset password":
+                self.reset_from_login()
 
             else:
                 self.console.print_error("Invalid input. Please try again\n\n")
