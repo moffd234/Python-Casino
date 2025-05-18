@@ -330,7 +330,8 @@ class Casino:
         try:
             input_token: uuid.UUID = uuid.UUID(user_input)
             now = datetime.datetime.now(datetime.UTC)
-            return self.account.reset_token == input_token and self.account.reset_token_expiration >= now
+            expiration: datetime = self.account.reset_token_expiration.replace(tzinfo=datetime.timezone.utc)
+            return self.account.reset_token == input_token and expiration >= now
 
         except ValueError:
             return False
