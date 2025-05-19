@@ -45,7 +45,8 @@ class AccountManager:
         if user:
             return None
 
-        user = UserAccount(username, password, 50.0, email, questions)
+        hashed_password: str = hash_password(password)
+        user = UserAccount(username, hashed_password, 50.0, email, questions)
         self.session.add(user)
         self.session.commit()
         logging.debug(f"Created new user account. With username: {username}")
@@ -54,7 +55,7 @@ class AccountManager:
     def get_account(self, username: str, password: str) -> UserAccount | None:
         user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
 
-        if user is not None and user.password == password:
+        if user is not None and verify_password(password, user.password):
             return user
 
         return None
@@ -68,7 +69,8 @@ class AccountManager:
         self.session.commit()
 
     def update_password(self, account: UserAccount, new_password: str) -> None:
-        account.password = new_password
+        hashed_password: str = hash_password(new_password)
+        account.password = hashed_password
         self.session.commit()
 
     def generate_uuid_and_store_it(self, account: UserAccount) -> str:
