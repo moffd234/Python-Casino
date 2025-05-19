@@ -15,16 +15,16 @@ class TestAccountManager(BaseTest):
     def test_create_account(self):
         subject = self.manager.create_account("username", "password", "test@email.com", TEST_QUESTIONS)
 
-        expected_username = "username"
-        expected_password = "password"
-        expected_balance = 50.0
+        expected_username: str = "username"
+        expected_password: str = "password"
+        expected_balance: float = 50.0
 
-        actual_username = subject.username
-        actual_password = subject.password
-        actual_balance = subject.balance
+        actual_username: str = subject.username
+        is_password_correct: bool = verify_password(expected_password, subject.password)
+        actual_balance: float = subject.balance
 
         self.assertEqual(expected_username, actual_username)
-        self.assertEqual(expected_password, actual_password)
+        self.assertTrue(is_password_correct)
         self.assertEqual(expected_balance, actual_balance)
 
     def test_create_account_username_exist(self):
