@@ -35,7 +35,8 @@ class TestCasino(BaseTest):
                                           '\n\t[ manage-account ], [ select-game ], [ logout ]')])
         mock_selection.assert_called_once()
 
-    def assert_account_info(self, account, expected_username="test_username", expected_password="ValidPassword123!"):
+    def assert_account_info(self, account, expected_username="test_username", expected_password="ValidPassword123!",
+                            hashed_password = None):
         expected_username = expected_username
         expected_password = expected_password
         expected_balance = 50.0
@@ -49,10 +50,15 @@ class TestCasino(BaseTest):
                             account.security_question_two, account.security_answer_two]
 
         self.assertEqual(expected_username, actual_username)
-        self.assertEqual(expected_password, actual_password)
         self.assertEqual(expected_balance, actual_balance)
         self.assertEqual(expected_email, actual_email)
         self.assertEqual(expected_questions, actual_questions)
+
+        if hashed_password:
+            actual: bool = verify_password(expected_password, actual_password)
+            self.assertTrue(actual)
+        else:
+            self.assertEqual(expected_password, actual_password)
 
     @patch("builtins.print")
     def test_print_welcome(self, mock_print):
@@ -94,7 +100,7 @@ class TestCasino(BaseTest):
     @patch(f"{CASINO_CLASS_PATH}.get_security_questions_and_answers", return_value=TEST_QUESTIONS)
     def test_handle_signup(self, mock_questions, mock_email, mock_password, mock_username):
         account: UserAccount = self.casino.handle_signup()
-        self.assert_account_info(account)
+        self.assert_account_info(account, hashed_password=mock_password.return_value)
 
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch(f"{ACCOUNT_MANAGER_CLASS_PATH}.create_account",
@@ -150,18 +156,24 @@ class TestCasino(BaseTest):
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     @patch(f"{IOCONSOLE_PATH}.get_string_input", side_effect=["ValidPassword123!", "NewValidPassword123!"])
     def test_reset_password(self, mock_input, mock_print):
+        self.casino.account = self.manager.create_account("test_username", "ValidPassword123!",
+                                                   "email@test_domain.com", TEST_QUESTIONS)
         was_successful: bool = self.casino.reset_password()
 
         expected_password = "NewValidPassword123!"
         actual_password = self.casino.account.password
 
+        actual: bool = verify_password(expected_password, actual_password)
+
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
-        self.assertEqual(expected_password, actual_password)
+        self.assertTrue(actual)
         self.assertTrue(was_successful)
 
     @patch(f"{CASINO_CLASS_PATH}.update_password")
     @patch("builtins.input", side_effect=["ValidPassword123!", "NewValidPassword123!"])
     def test_reset_password_assert_update_called(self, mock_input, mock_update_password):
+        self.casino.account = self.manager.create_account("test_username", "ValidPassword123!",
+                                                          "email@test_domain.com", TEST_QUESTIONS)
         was_successful: bool = self.casino.reset_password()
 
         expected_password = "NewValidPassword123!"
@@ -180,13 +192,17 @@ class TestCasino(BaseTest):
         expected_password = "ValidPassword123!"
         actual_password = self.casino.account.password
 
+        actual: bool = verify_password(expected_password, actual_password)
+
         mock_print.assert_called_once_with(f"Your password has been updated!", ANSI_COLORS.GREEN)
-        self.assertEqual(expected_password, actual_password)
+        self.assertTrue(actual)
         self.assertTrue(was_successful)
 
     @patch(f"{IOCONSOLE_PATH}.print_error")
     @patch("builtins.input", side_effect=["wrong_password"] * 5)
     def test_reset_password_failed_times(self, mock_input, mock_print_error):
+        self.casino.account = self.manager.create_account("test_username", "ValidPassword123!",
+                                                          "email@test_domain.com", TEST_QUESTIONS)
         expected_password: str = self.casino.account.password
         was_successful: bool = self.casino.reset_password()
 
@@ -209,17 +225,20 @@ class TestCasino(BaseTest):
     @patch("builtins.input",
            side_effect=["wrong_password", "wrong_password", "ValidPassword123!", "NewValidPassword123!"])
     def test_reset_password_failed_then_works(self, mock_input, mock_print_error, mock_print):
+        self.casino.account = self.manager.create_account("test_username", "ValidPassword123!",
+                                                          "email@test_domain.com", TEST_QUESTIONS)
         was_successful: bool = self.casino.reset_password()
 
         expected_password: str = "NewValidPassword123!"
         actual_password = self.casino.account.password
+        actual: bool = verify_password(expected_password, actual_password)
 
         mock_print.assert_called_once_with("Your password has been updated!", ANSI_COLORS.GREEN)
         mock_print_error.assert_has_calls([
             call("Passwords do not match"),
             call("Passwords do not match")
         ])
-        self.assertEqual(expected_password, actual_password)
+        self.assertTrue(actual)
         self.assertTrue(was_successful)
 
     @patch(f"{CASINO_CLASS_PATH}.add_funds")
