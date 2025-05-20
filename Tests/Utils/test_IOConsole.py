@@ -75,6 +75,22 @@ class TestIOConsole(unittest.TestCase):
         mock_print.assert_called_once_with("#### is not a valid integer.")
         self.assertEqual(actual, expected)
 
+    @patch("builtins.input", return_value="12")
+    @patch(f"{IOCONSOLE_PATH}.is_in_range", return_value=True)
+    def test_get_integer_input_valid_range_check(self, mock_range_change, mock_input):
+        result = self.console.get_integer_input("Some prompt: ", range_vals=(10, 15))
+
+        mock_range_change.assert_called_once_with(12, 10, 15)
+        self.assertEqual(result, int(mock_input.return_value))
+
+    @patch("builtins.input", side_effect=["12", "10"])
+    @patch(f"{IOCONSOLE_PATH}.is_in_range", side_effect=[False, True])
+    def test_get_integer_input_invalid_range_check(self, mock_range_change, mock_input):
+        result = self.console.get_integer_input("Some prompt: ", range_vals=(10, 11))
+
+        mock_range_change.assert_has_calls([call(12, 10, 11), call(10, 10, 11)])
+        self.assertEqual(10, result)
+
     @patch("builtins.input", return_value="42.23")
     def test_get_float_input_valid(self, mock_input):
         result = self.console.get_float_input("Some prompt: ")
