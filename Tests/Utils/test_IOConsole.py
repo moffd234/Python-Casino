@@ -272,4 +272,26 @@ class TestIOConsole(unittest.TestCase):
 
         mock_print.assert_called_once_with("Some Prompt", ANSI_COLORS.GREEN)
 
+    def test_is_in_range_true_int(self):
+        actual: bool = self.console.is_in_range(15, 10, 20)
+        self.assertTrue(actual)
 
+    def test_is_in_range_false_int_too_large(self):
+        actual: bool = self.console.is_in_range(15, 10, 11)
+        self.assertFalse(actual)
+
+    def test_is_in_range_false_int_too_small(self):
+        actual: bool = self.console.is_in_range(15, 20, 21)
+        self.assertFalse(actual)
+
+    def test_is_in_range_true_float(self):
+        actual: bool = self.console.is_in_range(15.0, 10.0, 20.0)
+        self.assertTrue(actual)
+
+    def test_is_in_range_false_float_too_small(self):
+        actual: bool = self.console.is_in_range(15.0, 15.01, 20.0)
+        self.assertFalse(actual)
+
+    def test_is_in_range_false_float_too_large(self):
+        actual: bool = self.console.is_in_range(15.0, 10.0, 14.99)
+        self.assertFalse(actual)
