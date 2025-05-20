@@ -30,11 +30,17 @@ class IOConsole:
 
         return user_input
 
-    def get_integer_input(self, prompt: str, color:ANSI_COLORS=None) -> int:
+    def get_integer_input(self, prompt: str, color:ANSI_COLORS=None, range_vals: tuple[int, int] = None) -> int:
         while True:
             string_response: str = self.get_string_input(prompt, color)
             try:
-                return int(string_response)
+                input_num: int = int(string_response)
+
+                if range_vals is None:
+                    return input_num
+                elif self.is_in_range(input_num, range_vals[0], range_vals[1]):
+                    return input_num
+
             except ValueError:
                 self.print_error(f"{string_response} is not a valid integer.")
 
