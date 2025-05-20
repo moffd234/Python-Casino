@@ -2,6 +2,12 @@ from Application.Utils.ANSI_COLORS import ANSI_COLORS
 
 
 def count_decimals(num: float) -> int:
+    """
+    Counts the number of decimal places in a number and returns the value.
+
+    :param num: The number to have its decimals counted.
+    :return: The number of decimal digits
+    """
     str_num = str(num)
     if '.' not in str_num:
         return 0
