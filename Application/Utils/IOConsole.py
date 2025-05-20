@@ -21,6 +21,18 @@ class IOConsole:
         self.color:str = color.value
 
     def get_string_input(self, prompt: str, color:ANSI_COLORS=None, return_in_lower: bool=True) -> str:
+        """
+        Prompts the user for input via the console and returns their response.
+
+        If color is specified the prompt will be printed using the given ANSI color.
+
+        If user types 'exit' the application will exit.
+
+        :param prompt: The prompt to be printed to the user
+        :param color: Optional ANSI_COLOR to display the prompt in
+        :param return_in_lower:  If True, converts and returns the input in lowercase
+        :return: The user's input as a string
+        """
         if color is None or not isinstance(color, ANSI_COLORS):
             color = self.color
 
