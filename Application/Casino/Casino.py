@@ -1,7 +1,7 @@
 import datetime
 import uuid
 
-from Application.Casino.Accounts.AccountManager import AccountManager
+from Application.Casino.Accounts.AccountManager import AccountManager, verify_password
 from Application.Casino.Accounts.UserAccount import UserAccount
 from Application.Casino.Games.CoinFlip.CoinFlip import CoinFlip
 from Application.Casino.Games.NumberGuess.NumberGuess import NumberGuess
@@ -192,7 +192,7 @@ class Casino:
         for _ in range(5):
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
 
-            if answer == self.account.password:
+            if verify_password(answer, self.account.password):
                 was_successful: bool = self.update_password()
                 return was_successful
 
