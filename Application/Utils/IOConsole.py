@@ -101,3 +101,18 @@ class IOConsole:
 
     def print_success(self, message: str) -> None:
         self.print_colored(message, ANSI_COLORS.GREEN)
+
+    def is_in_range(self, user_input: int | float, min_val: int | float, max_val: int | float) -> bool:
+        """
+        Checks if provided user input falls within a given range. If so, the method returns True.
+         Otherwise, returns False.
+        :param user_input: The value to be checked if it is within range
+        :param min_val: Minimum allowable value
+        :param max_val: Maximum allowable value
+        :return: True if user_input is within range, False otherwise
+        """
+        if not (min_val <= user_input <= max_val):
+            self.print_error(f"{user_input} is out of range. "
+                             f"Please enter a value between {min_val} and {max_val}.")
+            return False
+        return True
