@@ -15,6 +15,12 @@ def count_decimals(num: float) -> int:
 
 
 class IOConsole:
+    """
+    A utility class for managing user interaction with console using colorized output
+
+    Attributes:
+        color (str): The ANSI color code used for console prompts by default
+    """
     def __init__(self, color:ANSI_COLORS=ANSI_COLORS.GREEN):
         if not isinstance(color, ANSI_COLORS):
             raise TypeError("color must be an instance of ANSI_COLORS")
