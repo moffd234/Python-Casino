@@ -44,11 +44,16 @@ class IOConsole:
             except ValueError:
                 self.print_error(f"{string_response} is not a valid integer.")
 
-    def get_float_input(self, prompt: str, color: ANSI_COLORS=None) -> float:
+    def get_float_input(self, prompt: str, color: ANSI_COLORS=None, range_vals: tuple[float, float] = None) -> float:
         while True:
             string_response: str = self.get_string_input(prompt, color)
             try:
-                return float(string_response)
+                input_num: float = float(string_response)
+
+                if range_vals is None:
+                    return input_num
+                elif self.is_in_range(input_num, range_vals[0], range_vals[1]):
+                    return input_num
             except ValueError:
                 self.print_error(f"{string_response} is not a valid float.")
 
