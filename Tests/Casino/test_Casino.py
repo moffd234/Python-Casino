@@ -667,7 +667,7 @@ class TestCasino(BaseTest):
         expected_print_count: int = len(possible_questions) + 1
         print_count: int = mock_print.call_count
 
-        mock_print_error.assert_called_once_with("Invalid input. Please enter a number from the list.")
+        mock_print_error.assert_called_once_with("-1 is out of range. Please enter a value between 0 and 3.")
         self.assertEqual(expected, actual)
         self.assertEqual(expected_print_count, print_count)
 
