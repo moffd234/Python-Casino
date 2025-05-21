@@ -251,12 +251,7 @@ class Casino:
         for i, question in enumerate(possible_questions):
             self.console.print_colored(f"{i}. {question}")
 
-        answer: int = self.console.get_integer_input("Your choice: ")
-
-        while answer < 0 or answer >= len(possible_questions):
-            self.console.print_error("Invalid input. Please enter a number from the list.")
-            answer = self.console.get_integer_input("Your choice: ")
-
+        answer: int = self.console.get_integer_input("Your choice: ", range_vals=(0, len(possible_questions) - 1))
         return possible_questions[answer]
 
     def get_security_questions_and_answers(self) -> list[str]:
@@ -396,4 +391,3 @@ class Casino:
             return self.validate_and_reset()
 
         return False
-
