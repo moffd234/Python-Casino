@@ -55,6 +55,14 @@ class IOConsole:
         return user_input
 
     def get_integer_input(self, prompt: str, color:ANSI_COLORS=None, range_vals: tuple[int, int] = None) -> int:
+        """
+        Prompts the user to input an integer, optionally validating it against a specified range.
+
+        :param prompt: The prompt to be displayed.
+        :param color: Optional ANSI color to print the text in.
+        :param range_vals: Optional (min, max) range that the input will be validated against.
+        :return: A valid integer entered by the user.
+        """
         while True:
             string_response: str = self.get_string_input(prompt, color)
             try:
