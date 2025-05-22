@@ -117,6 +117,14 @@ class IOConsole:
                 self.print_error(f"{string_response} is not a valid boolean. Please enter yes or no.")
 
     def check_for_exit(self, user_input: str) -> bool:
+        """
+        Checks if the user input is the command to exit the application.
+
+        If the user types "exit", a message is printed and True is returned. Otherwise, returns False.
+
+        :param user_input: The string input provided by the user.
+        :return: True if the input is "exit", False otherwise.
+        """
         if user_input.lower() == "exit":
             print(self.color + "Exiting the game")
             return True
