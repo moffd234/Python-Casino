@@ -52,12 +52,20 @@ class Casino:
         self.account: UserAccount | None = None
 
     def run(self) -> None:
+        """
+        Starts the casino application and transitions to menu screen
+        :return: None
+        """
         self.print_welcome()
         self.account: UserAccount = self.handle_initial_action()
 
         self.prompt_manage_or_select()
 
     def print_welcome(self) -> None:
+        """
+        Prints welcome message to the console
+        :return: None
+        """
         self.console.print_colored(r"""
             888       888          888                                         888 888 
             888   o   888          888                                         888 888 
