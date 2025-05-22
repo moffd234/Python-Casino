@@ -98,6 +98,13 @@ class IOConsole:
                 self.print_error(f"{string_response} is not a valid float.")
 
     def get_boolean_input(self, prompt: str, color: ANSI_COLORS = None) -> bool:
+        """
+        Prompts the user to input a boolean then returns it.
+
+        :param prompt: The prompt to be displayed.
+        :param color: Optional ANSI color to print the text in.
+        :return: A valid boolean entered by the user.
+        """
         while True:
             string_response: str = self.get_string_input(prompt, color)
             string_response = string_response.strip().lower()
