@@ -82,6 +82,12 @@ class Casino:
             """)
 
     def handle_login(self) -> UserAccount | None:
+        """
+        Prompts the user to log in by entering their username and password.
+        Allows up to 5 attempts before returning to the main screen.
+
+        :return: UserAccount if credentials are valid, otherwise None.
+        """
         for i in range(0, 5):
 
             username: str = self.console.get_string_input("Enter your username", return_in_lower=False)
@@ -98,6 +104,12 @@ class Casino:
         return None
 
     def handle_signup(self) -> UserAccount | None:
+        """
+        Guides the user through the sign-up process including entering a username, password, email,
+        and answering two security questions. If the username already exists, the user is prompted to try again.
+
+        :return: The created UserAccount, or None if the username is taken.
+        """
 
         while True:
             username: str = self.prompt_username()
