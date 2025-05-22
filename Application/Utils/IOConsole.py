@@ -125,12 +125,22 @@ class IOConsole:
         :param user_input: The string input provided by the user.
         :return: True if the input is "exit", False otherwise.
         """
+
         if user_input.lower() == "exit":
             print(self.color + "Exiting the game")
             return True
         return False
 
     def print_colored(self, prompt: str, color: ANSI_COLORS = None) -> None:
+        """
+        Prints the provided prompt text in the specified ANSI color.
+
+        If no color is provided or the provided color is invalid, the default color is used.
+
+        :param prompt: The text to be printed to the console.
+        :param color: Optional ANSI_COLORS value to style the output text.
+        """
+
         if color is None or not isinstance(color, ANSI_COLORS):
             color = self.color
 
