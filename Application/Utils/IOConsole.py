@@ -158,6 +158,11 @@ class IOConsole:
         return money_input
 
     def print_success(self, message: str) -> None:
+        """
+        Prints a success message in green.
+        :param message: Message to print.
+        :return: None
+        """
         self.print_colored(message, ANSI_COLORS.GREEN)
 
     def is_in_range(self, user_input: int | float, min_val: int | float, max_val: int | float) -> bool:
