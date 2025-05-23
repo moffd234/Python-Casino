@@ -125,6 +125,12 @@ class Casino:
                 self.console.print_error("Account with that username already exists")
 
     def handle_initial_action(self) -> UserAccount:
+        """
+        Displays the main dashboard and prompts the user to either sign up, log in, or reset their password.
+        Keeps prompting until a valid option is selected and a UserAccount is returned.
+
+        :return: A valid UserAccount object after successful login or signup.
+        """
         account: UserAccount | None = None
 
         while account is None:
