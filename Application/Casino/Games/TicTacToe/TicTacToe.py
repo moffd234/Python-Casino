@@ -56,10 +56,6 @@ class TicTacToe(Game):
     def get_col(self) -> int:
         col = self.console.get_integer_input("Enter column number (1-3)")
 
-        while col < 1 or col > 3:
-            self.console.print_error("Column number must be between 1 and 3")
-            col = self.console.get_integer_input("Enter column number (1-3)")
-
         return col
 
     def handle_turn(self) -> None:

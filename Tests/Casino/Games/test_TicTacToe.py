@@ -172,28 +172,6 @@ class TestTicTacToe(BaseTest):
         actual: int = self.game.get_col()
         self.assertEqual(expected, actual)
 
-    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[0, 1])
-    def test_get_col_second_try(self, mock_input):
-
-        expected: int = 1
-        expected_call_count: int = 2
-        actual = self.game.get_col()
-        actual_call_count: int = self.game.console.get_integer_input.call_count
-
-        self.assertEqual(expected, actual)
-        self.assertEqual(expected_call_count, actual_call_count)
-
-    @patch(f"{IOCONSOLE_PATH}.get_integer_input", side_effect=[0, 5, 6, 7, 2])
-    def test_get_col_fifth_try(self, mock_input):
-
-        expected: int = 2
-        expected_call_count: int = 5
-        actual = self.game.get_col()
-        actual_call_count: int = self.game.console.get_integer_input.call_count
-
-        self.assertEqual(expected, actual)
-        self.assertEqual(expected_call_count, actual_call_count)
-
     @patch(f"{IOCONSOLE_PATH}.print_colored")
     def test_print_board_empty(self, mock_print):
         expected: str = ("  |   |  "
