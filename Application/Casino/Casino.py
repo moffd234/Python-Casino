@@ -219,6 +219,11 @@ class Casino:
                 self.console.print_error("Invalid input. Please try again\n\n")
 
     def add_funds(self) -> None:
+        """
+        Prompts the user to enter an amount of money to add to their balance.
+        Validates the input and updates the user's account with the new balance.
+        :return: None
+        """
         answer: float = self.console.get_monetary_input("Enter the amount of money you want to add to your funds"
                                                         " (no less than $1.00)")
         self.manager.add_and_save_account(self.account, answer)
