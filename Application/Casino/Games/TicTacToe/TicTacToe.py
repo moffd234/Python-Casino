@@ -51,13 +51,7 @@ class TicTacToe(Game):
         return self.game_board[row][col] == " "
 
     def get_row(self) -> int:
-        row = self.console.get_integer_input("Enter row number (1-3)")
-
-        while row < 1 or row > 3:
-            self.console.print_error("Row number must be between 1 and 3")
-            row = self.console.get_integer_input("Enter row number (1-3)")
-
-        return row
+        return self.console.get_integer_input("Enter row number (1-3)", range_vals=[1, 3])
 
     def get_col(self) -> int:
         col = self.console.get_integer_input("Enter column number (1-3)")
