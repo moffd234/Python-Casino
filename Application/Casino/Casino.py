@@ -230,6 +230,12 @@ class Casino:
         self.console.print_success(f"You have added ${answer} to your funds! New Balance is {self.account.balance}")
 
     def reset_password(self) -> bool:
+        """
+        Prompts the user to enter a new password and validates it.
+        Allows up to 5 invalid attempts before aborting the update.
+
+        :return: True if the password was successfully updated, False otherwise.
+        """
         for _ in range(5):
             answer = self.console.get_string_input("Enter old password: ", return_in_lower=False)
 
