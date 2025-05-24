@@ -153,6 +153,11 @@ class Casino:
         return account
 
     def prompt_manage_or_select(self) -> None:
+        """
+        Prompts the user to either manage their account, select a game, or log out.
+        If the user has insufficient funds, they are warned before attempting to select a game
+        :return: None
+        """
         while True:
             answer = self.console.get_string_input("You are logged in!" +
                                                    "\nFrom here, you can select any of the following options:" +
