@@ -177,6 +177,11 @@ class Casino:
                 self.console.print_error("Invalid input. Please try again\n\n")
 
     def prompt_game(self) -> None:
+        """
+        Displays a list of available games and prompts the user to select one.
+        Launches the selected game or returns to the previous menu if 'back' is entered.
+        :return: None
+        """
         while True:
             answer = self.console.get_string_input("Welcome to the Game Selection Dashboard!" +
                                                    "\nFrom here, you can select any of the following options:" +
