@@ -319,6 +319,11 @@ class Casino:
         return possible_questions[answer]
 
     def get_security_questions_and_answers(self) -> list[str]:
+        """
+        Guides the user through selecting and answering two security questions.
+
+        :return: A list containing two questions and their corresponding answers.
+        """
 
         possible_questions: list[str] = [
             "What is your favorite sports team?",
