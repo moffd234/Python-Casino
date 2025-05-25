@@ -249,6 +249,12 @@ class Casino:
         return False
 
     def update_password(self) -> bool:
+        """
+        Prompts the user to enter a new password and validates it.
+        Allows up to 5 invalid attempts before aborting the update.
+
+        :return: True if the password was successfully updated, False otherwise.
+        """
         password: str = self.console.get_string_input("Enter new password: ", return_in_lower=False)
 
         attempts_flag: int = 0
