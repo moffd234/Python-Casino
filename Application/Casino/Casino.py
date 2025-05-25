@@ -353,6 +353,11 @@ class Casino:
         return [first_question, first_answer, second_question, second_answer]
 
     def prompt_username(self) -> str | None:
+        """
+        Prompts the user to enter a username. If the user types "back", None is returned.
+
+        :return: The username string or None.
+        """
         username: str = self.console.get_string_input("Create your username or type back", return_in_lower=False)
         return None if username == "back" else username
 
