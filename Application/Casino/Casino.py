@@ -282,6 +282,7 @@ class Casino:
         """
         Prompts the user to choose an account management option: add funds, reset password, or go back.
         Executes the selected action.
+        :return: None
         """
         while True:
             answer: str = self.console.get_string_input(f"You have ${self.account.balance}" +
@@ -303,6 +304,12 @@ class Casino:
                 self.console.print_error("Invalid input. Please try again")
 
     def get_security_question(self, possible_questions) -> str:
+        """
+        Displays a list of possible security questions and prompts the user to select one by number.
+
+        :param possible_questions: A list of strings representing security questions.
+        :return: The selected security question as a string.
+        """
         self.console.print_colored("Please select a security question by typing the corresponding number: ")
 
         for i, question in enumerate(possible_questions):
