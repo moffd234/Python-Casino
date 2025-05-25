@@ -279,6 +279,10 @@ class Casino:
             return False
 
     def handle_manage_selection(self) -> None:
+        """
+        Prompts the user to choose an account management option: add funds, reset password, or go back.
+        Executes the selected action.
+        """
         while True:
             answer: str = self.console.get_string_input(f"You have ${self.account.balance}" +
                                                         "\nFrom here, you can select any of the following options:" +
