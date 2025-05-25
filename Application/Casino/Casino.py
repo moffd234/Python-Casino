@@ -362,6 +362,12 @@ class Casino:
         return None if username == "back" else username
 
     def prompt_password(self) -> str:
+        """
+        Prompts the user to enter a password and validates it using standard rules.
+        Repeats the prompt until a valid password is provided.
+
+        :return: The validated password string.
+        """
         password: str = self.console.get_string_input("Create your password: ", return_in_lower=False)
 
         while not is_password_valid(password):
