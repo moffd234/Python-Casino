@@ -396,6 +396,11 @@ class Casino:
         return email
 
     def validate_and_reset(self) -> bool:
+        """
+        Prompts the user to enter their password reset token and validates it.
+
+        :return: True if the token is valid and the password was successfully updated, False otherwise.
+        """
         for _ in range(5):
             user_input = self.console.get_string_input("Please enter your reset token sent to your email")
 
