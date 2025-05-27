@@ -382,6 +382,11 @@ class Casino:
         return password
 
     def prompt_email(self) -> str:
+        """
+        Prompts the user to enter a valid email address. Repeats the prompt until the email format is valid.
+
+        :return: The validated email string.
+        """
         email: str = self.console.get_string_input("Enter your email: ", return_in_lower=False)
 
         while not is_email_valid(email):
