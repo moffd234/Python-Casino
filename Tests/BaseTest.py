@@ -39,8 +39,8 @@ class BaseTest(unittest.TestCase):
         if hasattr(self.manager, 'session'):
             self.manager.session.close()
 
-        # if os.path.exists("casino.db"):
-        #     os.remove("casino.db")
+        if os.path.exists("casino.db"):
+            os.remove("casino.db")
 
         if os.path.exists("category_cache.txt"):
             os.remove("category_cache.txt")
