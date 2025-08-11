@@ -1,24 +1,24 @@
-# 🎰 Command Line Casino
+# Command Line Casino
 
-## 📝 Overview
+## Overview
 
 Welcome to **Command Line Casino**, a terminal-based Python application that simulates a virtual casino experience. Users can create accounts, manage funds, and enjoy a variety of games—all from the command line.
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🎮 Games  
+### Games  
 **Available Games**
-- 🧠 Number Guess — Guess the number and win!
-- ❓ Trivia Game — Test your general knowledge.
-- ❌⭕ Tic-Tac-Toe — Classic 3x3 strategy showdown.
-- 🪙 Coin Flip — Choose heads or tails, test your luck!
-- ✊🖐✌ Rock-Paper-Scissors
-- 🎰 Slot Machine
-- 🃏 Blackjack *(coming soon!)*
+-  Number Guess — Guess the number and win!
+-  Trivia Game — Test your general knowledge.
+-  Tic-Tac-Toe — Classic 3x3 strategy showdown.
+-  Coin Flip — Choose heads or tails, test your luck!
+-  Rock-Paper-Scissors
+-  Slot Machine
+-  Blackjack *(coming soon!)*
 
-### 🧾 Account Management
+### Account Management
 - Create, login, and delete accounts  
 - Check balances  
 - Add funds  
@@ -26,19 +26,19 @@ Welcome to **Command Line Casino**, a terminal-based Python application that sim
 
 ---
 
-## 🧪 Technologies Used
+## Technologies Used
 
-- 🐍 **Python 3** — Core language used to build the app  
-- 🗃️ **SQLite** — Lightweight database for storing account info  
-- 🧪 **unittest & unittest.mock** — Python testing frameworks for unit testing  
-- 📁 **CSV** — Used to read/write account data for lightweight persistence  
-- 🎨 **Custom Console Wrapper** — For stylized colored input/output in the terminal  
-- 🧩 **OOP Design** — Modular structure for accounts, games, and utilities  
-- ⚙️ **GitHub Actions** — Automates testing and workflows for CI/CD  
-- 📋 **GitHub Projects (Kanban)** — Organizes tasks and development roadmap using a Kanban board 
+-  **Python 3** — Core language used to build the app  
+-  **SQLite** — Lightweight database for storing account info  
+-  **unittest & unittest.mock** — Python testing frameworks for unit testing  
+-  **CSV** — Used to read/write account data for lightweight persistence  
+-  **Custom Console Wrapper** — For stylized colored input/output in the terminal  
+-  **OOP Design** — Modular structure for accounts, games, and utilities  
+-  **GitHub Actions** — Automates testing and workflows for CI/CD  
+-  **GitHub Projects (Kanban)** — Organizes tasks and development roadmap using a Kanban board 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Clone the repository
