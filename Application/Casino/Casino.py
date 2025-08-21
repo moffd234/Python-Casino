@@ -382,6 +382,11 @@ class Casino:
         return password
 
     def prompt_email(self) -> str:
+        """
+        Prompts the user to enter a valid email address. Repeats the prompt until the email format is valid.
+
+        :return: The validated email string.
+        """
         email: str = self.console.get_string_input("Enter your email: ", return_in_lower=False)
 
         while not is_email_valid(email):
@@ -391,6 +396,11 @@ class Casino:
         return email
 
     def validate_and_reset(self) -> bool:
+        """
+        Prompts the user to enter their password reset token and validates it.
+
+        :return: True if the token is valid and the password was successfully updated, False otherwise.
+        """
         for _ in range(5):
             user_input = self.console.get_string_input("Please enter your reset token sent to your email")
 
@@ -406,6 +416,12 @@ class Casino:
         return False
 
     def is_token_valid(self, user_input: str) -> bool:
+        """
+        Validates that the user's entered token matches the one stored and is not expired.
+
+        :param user_input: The token entered by the user.
+        :return: True if the token matches and has not expired, False otherwise.
+        """
         try:
             input_token: uuid.UUID = uuid.UUID(user_input)
             now = datetime.datetime.now(datetime.UTC)
@@ -466,6 +482,15 @@ class Casino:
         return False
 
     def reset_from_login(self) -> bool:
+        """
+        Initiates the password reset process by verifying the user's identity.
+
+        The user is prompted to enter their account email, followed by correct answers to their security questions.
+        If both steps are successful, a reset token is emailed to the user, and they are prompted to enter it.
+        Upon valid token entry, the user can set a new password.
+
+        :return: True if the password was successfully reset, False otherwise.
+        """
         if self.prompt_and_check_email() and self.get_security_answers():
             self.manager.email_recovery_token(self.account)
             return self.validate_and_reset()
