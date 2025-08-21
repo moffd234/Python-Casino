@@ -16,6 +16,7 @@ def hash_password(password: str) -> str:
     hashed_password: bytes = bcrypt.hashpw(encoded_bytes, salt)
     return hashed_password.decode('utf-8')
 
+
 def verify_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
@@ -37,8 +38,8 @@ class AccountManager:
             email (str): The email address tied to the account for recovery or contact purposes.
             questions (list[str]): A list of security questions for account recovery.
 
-        Returns:
-                UserAccount | None: The newly created UserAccount object if successful, or None if the username is already taken.
+        Returns: UserAccount | None: The newly created UserAccount object if successful, or None if the username is
+        already taken.
         """
         user: Optional[UserAccount] = self.session.query(UserAccount).filter_by(username=username).first()
 
