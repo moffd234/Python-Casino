@@ -26,16 +26,8 @@ Welcome to the Python CLI Casino, a Python application that allows you to play i
 - Create, login, and delete accounts  
 - Check balances  
 - Add funds  
-- Reset password  
-
-## Optimizations
-
-One performance improvement made was caching the available quiz categories locally after each successful API request. 
-Initially, the game fetched the list of categories from the API every time a user started a new quiz, 
-which added unnecessary latency and repeated network calls. 
-By storing the categories in a csv and reusing them for subsequent games played within the next few minutes, 
-I eliminated redundant API requests. Allowing for reduced game time, and improved user experience while still ensuring they can get new questions if ones are added.
-
+- Reset password
+  
 ## Lessons Learned:
 
 This project allowed me to explore many new technologies and aspects of programming. Before this project I had struggled with the 
@@ -45,6 +37,7 @@ the database of UserAccounts.
 
 ## Installation
 
+For Linux:
 ```bash
 # Clone the repository
 git clone https://github.com/moffd234/Python-Casino.git
@@ -56,4 +49,25 @@ source .venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+cd Application
+python -m MainApplication
+```
+
+For Windows:
+``` bash
+# Windows
+
+# Clone the repository
+git clone https://github.com/moffd234/Python-Casino.git
+cd Python-Casino
+
+# Set up a virtual environment (optional but recommended)
+".venv/Scripts/activate"
+
+# Install dependencies
+pip install -r requirements.txt
+
+cd Application
+python -m MainApplication
 ```
