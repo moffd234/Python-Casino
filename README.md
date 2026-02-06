@@ -1,10 +1,14 @@
-# Command Line Casino
+# Python CLI Casino
+Welcome to the Python CLI Casino, a Python application that allows you to play in a virtual casino. Users can create accounts, manage funds, and enjoy a variety of games from their command line.
 
-## Overview
-
-Welcome to **Command Line Casino**, a terminal-based Python application that simulates a virtual casino experience. Users can create accounts, manage funds, and enjoy a variety of games—all from the command line.
-
----
+## Tech used:
+-  **Python** - Core language
+-  **SQLite** - Lightweight database for storing account info
+-  **unittest** - Python testing framework for unit testing
+-  **CSV** - Used to read/write account data for lightweight persistence
+-  **Custom Console Wrapper** - For stylized colored input/output in the terminal
+-  **GitHub Actions** - Automates testing and workflows for CI/CD
+-  **GitHub Projects (Kanban)** - Organizes tasks and development roadmap using a Kanban board
 
 ## Features
 
@@ -24,19 +28,20 @@ Welcome to **Command Line Casino**, a terminal-based Python application that sim
 - Add funds  
 - Reset password  
 
----
+## Optimizations
 
-## Technologies Used
+One performance improvement made was caching the available quiz categories locally after each successful API request. 
+Initially, the game fetched the list of categories from the API every time a user started a new quiz, 
+which added unnecessary latency and repeated network calls. 
+By storing the categories in a csv and reusing them for subsequent games played within the next few minutes, 
+I eliminated redundant API requests. Allowing for reduced game time, and improved user experience while still ensuring they can get new questions if ones are added.
 
--  **Python 3** — Core language used to build the app  
--  **SQLite** — Lightweight database for storing account info  
--  **unittest & unittest.mock** — Python testing frameworks for unit testing  
--  **CSV** — Used to read/write account data for lightweight persistence  
--  **Custom Console Wrapper** — For stylized colored input/output in the terminal  
--  **OOP Design** — Modular structure for accounts, games, and utilities  
--  **GitHub Actions** — Automates testing and workflows for CI/CD  
--  **GitHub Projects (Kanban)** — Organizes tasks and development roadmap using a Kanban board 
----
+## Lessons Learned:
+
+This project allowed me to explore many new technologies and aspects of programming. Before this project I had struggled with the 
+concept of mocking in unit test; however, when testing the console wrapper and other methods I finally understood the concept and some of the
+reasons why it is needed. Another major lesson learned was managing a user account from handling the password to managing
+the database of UserAccounts. 
 
 ## Installation
 
